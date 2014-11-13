@@ -25,17 +25,67 @@
  
 % Object detection task has long been about predicting rectangular bounding boxes around the object. In this workthere has been significant many powerful object detectors such as Convolutional Neural Network or Part-Based Models \cite{Girshick14, Felzenszwalb10, Pepik12} 
 
-High performance object detectors usually generalizes very well. It can handle various intraclass variability, viewpoint change and occlusion. However due to this high generalization, sometimes it is very difficult to get accurate pose, category or 2D-3D matching. Our method, specialized in giving such accurate information, can be applied on any generic object detectors to give high quality metadata.
+Current approaches to object class detection have reached a remarkable
+level of performance in 2D bounding box
+localization~\cite{pascal12,Felzenszwalb10,Girshick14}, due to their
+ability to generalize across differences in object appearance,
+lighting, and viewpoint. While this generalization
+ability of these methods is benefitial for robustness, it also limits
+the level of detail that these detectors can deliver as an output.
 
-Matching 3D CAD model to an image has been a classical problem that dates back to eighties \cite{Lowe87}. Lowe \etal , the vision community instead focused on the object detection tasks that estimates a rectangular bounding box around an object\cite{Felzenszwalb10, Girshick14}. To infer what is more than a rectangle, several attempts have been made to estimate the pose of an object \cite{Xiang12, Pepik12, Fidler12, Hejrati14} or even finding corresponding CAD model as well \cite{Aubry14, Lim14}. 
+As a consequence, there has been increased interest in multi-view object
+recognition, where viewpoint estimates are provided by
+detectors in addition to 2D bounding boxes. Several attempts have been
+made to estimate viewpoint along with object class detections,
+implemented as extensions to existing detectors, such as the implicit
+shape models~\cite{}, the constellation model~\cite{}, or the
+deformable part model~\cite{Xiang12,Pepik12,Fidler12,Hejrati14}.
 
-However, there has been increasing demand for accurate pose and 2D-3D matching. Notably, in graphics community, there has been growing demand for accurate 2D-3D matching \cite{Kholgade14, Chen13, Kostas14} for image manipulation, editing and data augmentation respectively. 
-
-Recently, with the powerful computing capabilities and a large collection of CAD models, the 2D-3D matching (registration) problem gets more and more approachable but due to inherent difficulty and limited performance of existing methods, many applications still require supervision to achieve 2D-3D matching.
-
+Recently, an even higher level of geometric detail was reached in the
+form of aligning
+3D CAD models to real world test images~\cite{Aubry14,
+  Lim14}. Interestingly, the problem of matching 3D models to 2D
+images has been targeted since the early days of computer
+vision~\cite{Lowe87}, but had largely been neglected in recent years
+in favor of 2D detectors based on robust local features and
+statistical learning techniques. Now, this problem is being revisited
+mostly due to two reasons: the availability of sufficient artificial
+3D training data and the availability of robust image matching
+techniques.
+%
+% performance object detectors usually generalizes very well. It
+% can handle various intraclass variability, viewpoint change and
+% occlusion. However due to this high generalization, sometimes it is
+% very difficult to get accurate pose, category or 2D-3D matching. Our
+% method, specialized in giving such accurate information, can be
+% applied on any generic object detectors to give high quality metadata.
+% %
+% Matching 3D CAD model to an image has been a classical problem that
+% dates back to eighties . Lowe \etal , the vision
+% community instead focused on the object detection tasks that estimates
+% a rectangular bounding box around an object\cite{Felzenszwalb10,
+%   Girshick14}. 
+%
+In addition, there has been a growing emand for accurate 2D-3D
+matching \cite{Kholgade14, Chen13, Kostas14} for image manipulation,
+editing, and data augmentation in the computer graphics community.
+% Recently, with the powerful computing capabilities and a large
+% collection of CAD models, the 2D-3D matching (registration) problem
+% gets more and more approachable but due to inherent difficulty and
+% limited performance of existing methods, many applications still
+% require supervision to achieve 2D-3D matching.
 % In medical community, registering 3D scan data to 2D image enabled various minimally invasive surgeries \cite{Markelj12}.
 
-For category-level matching, \cite{Xiang12, Hejrati14, Pepik12} used 3D parts or aspect to represent underlying category-level 3D geometry of the object. With the advent of large public CAD datasets \cite{Trimble, Yobi}, the instance-level object detection and 2D-3D registration became possible. \cite{Aubry14, Lim14} used large collection of CAD models to faithfully align 3D CAD model to an image by rendering CAD models and creating 2D templates for various viewpoints.
+For category-level matching, \cite{Xiang12, Hejrati14, Pepik12} used
+3D parts or aspect to represent underlying category-level 3D geometry
+of the object. With the advent of large public CAD datasets
+\cite{Trimble, Yobi}, the instance-level object detection and 2D-3D
+registration became possible. \cite{Aubry14, Lim14} used large
+collection of CAD models to faithfully align 3D CAD model to an image
+by rendering CAD models and creating 2D templates for various
+viewpoints.
+
+
 
 Data-driven instance-level 2D-3D matching algorithms such as \cite{Aubry14, Lim14} require a large number of rendering and 2D templates for each of the CAD model with specific viewpoint. Since there are so many templates that it becomes almost impossible to get all the true positive image from training data. Instead \cite{Aubry14, Lim14} used whitening as a preprocessing stage \cite{Hariharan12} to make templates more discriminative. Then calibration is done on a small training dataset.
 
