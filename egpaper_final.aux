@@ -44,10 +44,10 @@
 \citation{Lim14}
 \citation{Hariharan12}
 \HyPL@Entry{0<</S/D>>}
-\@writefile{toc}{\contentsline {section}{\numberline {1}\hskip -1em.\nobreakspace  {}Introduction}{1}{section.1}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Using a bank of CAD models, we generate NZ-WHO templates which can be used to either detect objects directly or initialize pose of an object in the bounding box from other detectors. Once initialization is given, we use NZ-WHO to propose and validate plausible pose on-the-fly and further tune the translation, 3D viewpoint and focal length continuously.\relax }}{1}{figure.caption.1}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:front}{{1}{1}{Using a bank of CAD models, we generate NZ-WHO templates which can be used to either detect objects directly or initialize pose of an object in the bounding box from other detectors. Once initialization is given, we use NZ-WHO to propose and validate plausible pose on-the-fly and further tune the translation, 3D viewpoint and focal length continuously.\relax }{figure.caption.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}\hskip -1em.\nobreakspace  {}Introduction}{1}{section.1}}
 \citation{Malisiewicz11}
 \citation{Divvala14}
 \citation{Pepik12}
@@ -123,19 +123,20 @@
 \citation{Pepik12}
 \citation{Savarese07}
 \citation{Savarese07}
+\citation{Xiang14}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Average Precision(AP) and Average Viewpoint Precision(AVP) \cite  {Xiang14} of variations of WHO on 3DObject Car dataset\cite  {Savarese07}. WHO\cite  {Hariharan12} whitens all cell, WHO-ZZ whitens all cell then zero out textureless region. NZC-WHO-ZZ first substract mean $\mu $ on non-zero cells and whiten all cells then zero out textureless region. NZ-WHO whitens only non-zero cell. Note that WHO-ZZ got dramatic performance boost after calibration due to strong impact of substracting $\mu $ from all textureless region\relax }}{5}{table.caption.7}}
 \newlabel{tab:who_initializations}{{1}{5}{Average Precision(AP) and Average Viewpoint Precision(AVP) \cite {Xiang14} of variations of WHO on 3DObject Car dataset\cite {Savarese07}. WHO\cite {Hariharan12} whitens all cell, WHO-ZZ whitens all cell then zero out textureless region. NZC-WHO-ZZ first substract mean $\mu $ on non-zero cells and whiten all cells then zero out textureless region. NZ-WHO whitens only non-zero cell. Note that WHO-ZZ got dramatic performance boost after calibration due to strong impact of substracting $\mu $ from all textureless region\relax }{table.caption.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Effect of fine tuning. (left) original image, (middle) initial detection, (right) continuous fine tuning\relax }}{5}{figure.caption.8}}
-\newlabel{fig:tuning}{{7}{5}{Effect of fine tuning. (left) original image, (middle) initial detection, (right) continuous fine tuning\relax }{figure.caption.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Different modes of Metropolis Hasting proposals, see Section \ref  {sec:fine}\relax }}{5}{figure.caption.8}}
+\newlabel{fig:tuningmode}{{7}{5}{Different modes of Metropolis Hasting proposals, see Section \ref {sec:fine}\relax }{figure.caption.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}\hskip -1em.\nobreakspace  {}Continuous Viewpoint and Focal Length Estimation for Fine Tuning}{5}{section.4}}
+\newlabel{sec:fine}{{4}{5}{\hskip -1em.~Continuous Viewpoint and Focal Length Estimation for Fine Tuning}{section.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}\hskip -1em.\nobreakspace  {}Experiments}{5}{section.5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}\hskip -1em.\nobreakspace  {}Object Detection}{5}{subsection.5.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Average Precision(AP) and Average Viewpoint Accuracy(AVA) on 3DObject dataset. Though we do not need any training images and made templates in few minues, it performs on par with state of the art detectors yet it gives high quality 2D-3D matching.\relax }}{5}{table.caption.9}}
-\newlabel{tab:3dobject}{{2}{5}{Average Precision(AP) and Average Viewpoint Accuracy(AVA) on 3DObject dataset. Though we do not need any training images and made templates in few minues, it performs on par with state of the art detectors yet it gives high quality 2D-3D matching.\relax }{table.caption.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Detection results on 3D-Object dataset \cite  {Savarese07}, each of four images have (top left) original image, (top right) top detection rendering overlaid, (bottom right) false positives, (bottom left) true positives. Each with confidence score and colored bounding box\relax }}{5}{figure.caption.10}}
-\newlabel{fig:3dobject}{{8}{5}{Detection results on 3D-Object dataset \cite {Savarese07}, each of four images have (top left) original image, (top right) top detection rendering overlaid, (bottom right) false positives, (bottom left) true positives. Each with confidence score and colored bounding box\relax }{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Effect of fine tuning. (left) original image, (middle) initial detection, (right) continuous fine tuning\relax }}{5}{figure.caption.9}}
+\newlabel{fig:tuning}{{8}{5}{Effect of fine tuning. (left) original image, (middle) initial detection, (right) continuous fine tuning\relax }{figure.caption.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Average Precision(AP) and Average Viewpoint Accuracy(AVA) on 3DObject dataset. Though we do not need any training images and made templates in few minues, it performs on par with state of the art detectors yet it gives high quality 2D-3D matching.\relax }}{5}{table.caption.10}}
+\newlabel{tab:3dobject}{{2}{5}{Average Precision(AP) and Average Viewpoint Accuracy(AVA) on 3DObject dataset. Though we do not need any training images and made templates in few minues, it performs on par with state of the art detectors yet it gives high quality 2D-3D matching.\relax }{table.caption.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}\hskip -1em.\nobreakspace  {}Fine-Tuning and Viewpoint Estimation}{5}{subsection.5.2}}
-\citation{Xiang14}
 \citation{Xiang14}
 \citation{Pepik12}
 \citation{Pepik12}
@@ -156,15 +157,17 @@
 \bibcite{Dalal05}{7}
 \bibcite{Divvala14}{8}
 \bibcite{Felzenszwalb10}{9}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Detection results on 3D-Object dataset \cite  {Savarese07}, each of four images have (top left) original image, (top right) top detection rendering overlaid, (bottom right) false positives, (bottom left) true positives. Each with confidence score and colored bounding box\relax }}{6}{figure.caption.11}}
+\newlabel{fig:3dobject}{{9}{6}{Detection results on 3D-Object dataset \cite {Savarese07}, each of four images have (top left) original image, (top right) top detection rendering overlaid, (bottom right) false positives, (bottom left) true positives. Each with confidence score and colored bounding box\relax }{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}\hskip -1em.\nobreakspace  {}Stability of Our Method for Irregular Bounding Boxes}{6}{subsection.5.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Stability of our method for overlapping R-CNN detection \cite  {Girshick14}. Blue box is the R-CNN detection that is feed into the system as initial detection. Purple box and overlaid rendering is the final output of the system. Note that for various overlapping bounding boxes, our system accurately estimated the reasonable result\relax }}{6}{figure.caption.13}}
+\newlabel{fig:stability}{{10}{6}{Stability of our method for overlapping R-CNN detection \cite {Girshick14}. Blue box is the R-CNN detection that is feed into the system as initial detection. Purple box and overlaid rendering is the final output of the system. Note that for various overlapping bounding boxes, our system accurately estimated the reasonable result\relax }{figure.caption.13}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}\hskip -1em.\nobreakspace  {}Conclusion}{6}{section.6}}
 \bibcite{Fidler12}{10}
 \bibcite{Gharbi12}{11}
 \bibcite{Girshick14}{12}
 \bibcite{Hariharan12}{13}
 \bibcite{Hejrati14}{14}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}\hskip -1em.\nobreakspace  {}Stability of Our Method for Irregular Bounding Boxes}{6}{subsection.5.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}\hskip -1em.\nobreakspace  {}Conclusion}{6}{section.6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Stability of our method for overlapping R-CNN detection \cite  {Girshick14}. Blue box is the R-CNN detection that is feed into the system as initial detection. Purple box and overlaid rendering is the final output of the system. Note that for various overlapping bounding boxes, our system accurately estimated the reasonable result\relax }}{6}{figure.caption.12}}
-\newlabel{fig:stability}{{9}{6}{Stability of our method for overlapping R-CNN detection \cite {Girshick14}. Blue box is the R-CNN detection that is feed into the system as initial detection. Purple box and overlaid rendering is the final output of the system. Note that for various overlapping bounding boxes, our system accurately estimated the reasonable result\relax }{figure.caption.12}{}}
 \bibcite{Lim14}{15}
 \bibcite{Lowe87}{16}
 \bibcite{Malisiewicz11}{17}
@@ -178,5 +181,5 @@
 \bibcite{Xiang14}{25}
 \bibcite{Xiang12}{26}
 \bibcite{Zia13}{27}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Average Precision(AP) and Average Viewpoint Precision(AVP) on PASCAL 3D dataset\cite  {Xiang14}. For combined method (* + Ours), we use bounding boxes from * and augment viewpoint using our method. R-CNN and run our method to produce 2D-3D matching. If our method fails to give viewpoint, it predicts the viewpoint to be 0. Note that our method gives high quality metadata such as continuous 3D viewpoint, CAD model (rendering depth) and fine-grained category, whereas base-line methods gives 1D discrete azimuths. Our R-CNN was not an optimized version so the detection AP is lower than the state-of-the-art R-CNN performance\relax }}{7}{table.caption.11}}
-\newlabel{tab:pascal12}{{3}{7}{Average Precision(AP) and Average Viewpoint Precision(AVP) on PASCAL 3D dataset\cite {Xiang14}. For combined method (* + Ours), we use bounding boxes from * and augment viewpoint using our method. R-CNN and run our method to produce 2D-3D matching. If our method fails to give viewpoint, it predicts the viewpoint to be 0. Note that our method gives high quality metadata such as continuous 3D viewpoint, CAD model (rendering depth) and fine-grained category, whereas base-line methods gives 1D discrete azimuths. Our R-CNN was not an optimized version so the detection AP is lower than the state-of-the-art R-CNN performance\relax }{table.caption.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Average Precision(AP) and Average Viewpoint Precision(AVP) on PASCAL 3D dataset\cite  {Xiang14}. For combined method (* + Ours), we use bounding boxes from * and augment viewpoint using our method. R-CNN and run our method to produce 2D-3D matching. If our method fails to give viewpoint, it predicts the viewpoint to be 0. Note that our method gives high quality metadata such as continuous 3D viewpoint, CAD model (rendering depth) and fine-grained category, whereas base-line methods gives 1D discrete azimuths. Our R-CNN was not an optimized version so the detection AP is lower than the state-of-the-art R-CNN performance\relax }}{7}{table.caption.12}}
+\newlabel{tab:pascal12}{{3}{7}{Average Precision(AP) and Average Viewpoint Precision(AVP) on PASCAL 3D dataset\cite {Xiang14}. For combined method (* + Ours), we use bounding boxes from * and augment viewpoint using our method. R-CNN and run our method to produce 2D-3D matching. If our method fails to give viewpoint, it predicts the viewpoint to be 0. Note that our method gives high quality metadata such as continuous 3D viewpoint, CAD model (rendering depth) and fine-grained category, whereas base-line methods gives 1D discrete azimuths. Our R-CNN was not an optimized version so the detection AP is lower than the state-of-the-art R-CNN performance\relax }{table.caption.12}{}}

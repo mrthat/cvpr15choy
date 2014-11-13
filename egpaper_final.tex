@@ -347,6 +347,7 @@ We also used iterative Conjugate Gradient to make use of low rank property of th
   \caption{Comparison of HOG variants generation time and final }
   \label{fig:whotime}
 \end{figure}
+
 [Figure spectral analysis]
 
 \begin{figure}[t]
@@ -470,6 +471,7 @@ We implemented the convolution using FFT on GPU and got 10x speed up.
 %------------------------------------------------------------------------
 
 \section{Continuous Viewpoint and Focal Length Estimation for Fine Tuning}
+\label{sec:fine}
 
 % Estimating viewpoint continuously to fine tune a initial matching 
 Since creating a template and validating the template become computationally inexpensive, making a proposal and validating the proposal to fine tune a 2D-3D matching became affordable. We used Metropolis-Hastings algorithm to generate a proposal pose and focal length and validate the proposal using the convolution and returning maximum response as a return.
@@ -479,17 +481,34 @@ We modeled the distribution of the convolution as an exponential distribution an
 We run experiments on PASCAL 2007 car category images with at least one car (num images) and got x percent improvement after fine tuning.
 
 % there are several advantages that was not possible such as \textbf{on-the-fly} template generation and making large number of templates  
+
+
+\begin{figure}[t]
+\centering
+    \includegraphics[width=0.7\linewidth]{tuning2} \\ [-5pt]
+    \caption{Different modes of Metropolis Hasting proposals, see Section \ref{sec:fine}}
+ \label{fig:tuningmode}
+\end{figure}
+    
 \begin{figure}[t]
  \begin{center}
-    \includegraphics[width=0.9\linewidth]{tuning2} 
-    \includegraphics[width=0.9\linewidth]{tuning} 
+    \setlength\tabcolsep{0pt}
+    \begin{tabular}{ccc}
+    % \includegraphics[width=0.9\linewidth]{tuning} 
+   \includegraphics[width=0.33\linewidth]{tuning/1.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/2.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/3.png} \\[-5pt]
+   (a) & (b) & (c)\\
+   \includegraphics[width=0.33\linewidth]{tuning/4.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/5.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/6.png} \\[-5pt]
+   (d) & (e) & (f)\\
+   \end{tabular}
  \end{center}
  \caption{Effect of fine tuning. (left) original image, (middle) initial detection, (right) continuous fine tuning}
  \label{fig:tuning}
 \end{figure}
  
-
-
 \section{Experiments}
 
 In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as ensembles of weak detectors and show that the rendering image can be We want to see how robust the NZ-WHO to real images a
