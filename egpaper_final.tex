@@ -59,14 +59,10 @@ First line of institution2 address\\
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-A large body of recent work on object detection has focused on exploiting 3D CAD model databases to improve detection performance. Many of these approaches work by aligning exact 3D models to images using templates generated from renderings of the 3D models at a finite set of discrete viewpoints. The training procedures for these approaches, however, are very expensive and require gigabytes of memory and storage, and the viewpoint discretization hampers pose estimation performance.
+    Using 3D model to detect and register the model to RGB image has been a growing field of study. Recently, Aubry \etal \cite{Aubry14} and J. Lim \etal \cite{Lim14} tried to estimate pose and align exact CAD model to an image using part-based templates. Malisiewicz \etal \cite{Malisiewicz11} also addresses the issue by transferring metadata after detection. Hejrati \etal \cite{Hejrati14} uses template synthesis to detect an object. All these approaches require extensive training, a lot of memory space. Also, the training based approach requires defining fixed viewpoints which limit themselves.
+  To overcome these difficulties, we propose an efficient and fast way to synthesize and validate templates using on the fly realistic rendering that can jointly optimize scale, translation, rotation and focal length continuously. We render an object and extract features and decorrelate spatial dependencies within them on the fly to make a discriminative template. To speed up the decorrelation procedure, we adopt a gradient based algorithm which is numerically more stable than decomposition procedure. Finally, we efficiently search for candidate match by computing convolution using FFT and jointly optimize to match the object accurately. To speed up further, we propose an efficient GPU implementation and tested on PASCAL images.
 
-We propose an efficient method for synthesizing templates from 3D models that runs on the fly -- that is, it quickly produces detectors for an arbitrary viewpoint of a 3D model without expensive dataset-dependent training or template storage. Given a 3D model and an arbitrary continuous detection viewpoint, our method synthesizes a discriminative template by extracting features from a rendered view of the object and decorrelating spatial dependences among the features. Our decorrelation procedure relies on a gradient-based algorithm that is more numerically stable than standard decomposition-based procedures, and we efficiently search for candidate detections by computing FFT-based template convolutions. Due to the speed of our template synthesis procedure, we are able to perform joint optimization on continuous scale, translation, rotation, and focal length. We provide an efficient GPU implementation of our algorithm, and we validate its performance on 3DObject dataset and PASCAL 2012 dataset.
-
-%     Using 3D model to detect and register the model to RGB image has been a growing field of study. Recently, Aubry \etal \cite{Aubry14} and J. Lim \etal \cite{Lim14} tried to estimate pose and align exact CAD model to an image using part-based templates. Malisiewicz \etal \cite{Malisiewicz11} also addresses the issue by transferring metadata after detection. Hejrati \etal \cite{Hejrati14} uses template synthesis to detect an object. All these approaches require extensive training, a lot of memory space. Also, the training based approach requires defining fixed viewpoints which limit themselves.
-%  To overcome these difficulties, we propose an efficient and fast way to synthesize and validate templates using on the fly realistic rendering that can jointly optimize scale, translation, rotation and focal length continuously. We render an object and extract features and decorrelate spatial dependencies within them on the fly to make a discriminative template. To speed up the decorrelation procedure, we adopt a gradient based algorithm which is numerically more stable than decomposition procedure. Finally, we efficiently search for candidate match by computing convolution using FFT and jointly optimize to match the object accurately. To speed up further, we propose an efficient GPU implementation and tested on PASCAL images.
-
-%   In contrast to other mid-level patch based 3D matching methods which requires extensive training and more than 10Gb of memory space and physical storage, ours require no training nor saving the templates thus enabling it to run on any personal computer. 
+  In contrast to other mid-level patch based 3D matching methods which requires extensive training and more than 10Gb of memory space and physical storage, ours require no training nor saving the templates thus enabling it to run on any personal computer. 
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
@@ -77,9 +73,10 @@ We propose an efficient method for synthesizing templates from 3D models that ru
 \section{Related Works}
 \subsection{Whitened Histograms of Orientations (WHO)}
 % History of Whitening and how whitening works
-Recently, Hariharan \etal. introduced Whitened Histograms of Orientations (WHO) \cite{Hariharan12}, which used statistics from natural images to whiten HOG templates, making them more discriminative. Whitening is a common signal processing operation for decorrelating a set of random variables \cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By whitening the signal, i.e., $\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X])$, we remove 2nd order correlation between all features. So, all elements in the random variable $\tilde{X} = \left[\tilde{X}_1, \tilde{X}_2, \dots, \tilde{X}_k\right]$, become more independent. In the context of HOG features, a whitened HOG template will produce Gaussian noise when convolved with a random natural image, but a delta-like response on an image matching the template. WHO templates are more discriminative than standard HOG templates because they only capture the gradients that differentiate the object from random images. \scream{chris added the following} Hariharan \etal. also interpreted the whitening as Linear Discriminant Analysis (LDA) where all classes have different means but have the same covariance. The whitening and LDA have the same formulation when we make a decision boundary $w = \Sigma^{-1}(\mu_+ - \mu_0)$ where $\mu_+$ is the features from a class (LDA) or a signal to whiten (whitening), $\mu_0$ is the negative class center (LDA) or a signal statistics (whitening) and $\Sigma$ is the covariance matrix of classes (LDA) or correlation within signal (whitening).
+Recently, Hariharan \emph{et al.} introduced Whitened Histograms of Orientations (WHO) \cite{Hariharan12}, which used statistics from natural images to whiten HOG templates, making them more discriminative. Whitening is a common signal processing operation for decorrelating a set of random variables \cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By whitening the signal, i.e., $\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X])$, we remove 2nd order correlation between all features. So, all elements in the random variable $\tilde{X} = \left[\tilde{X}_1, \tilde{X}_2, \dots, \tilde{X}_k\right]$, become more independent. In the context of HOG features, a whitened HOG template will produce Gaussian noise when convolved with a random natural image, but a delta-like response on an image matching the template. WHO templates are more discriminative than standard HOG templates because they only capture the gradients that differentiate the object from random images.
 
 \textcolor{red}{Should we mention how our method improves on this (ie by using CG)?}
+
 % Using HOG
 % In this paper, we also used Histograms of Orientations feature \cite{Dalal05} but in general, we could use any dense features. 
 
@@ -127,7 +124,7 @@ We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both 
 
 The computational efficiency of our approach comes from using the iterative conjugate gradient method to whiten the HOG template. Whitening a feature vector $x$ requires a system of linear equations $\Sigma w = (x - \mu)$ to be solved, usually by decomposing the covariance matrix $\Sigma$ (with LU or Cholesky decomposition). Since the covariance matrices of HOG templates have nice spectral properties (see Section \ref{sec:fast_whitening}), the conjugate gradient method will converge to the solution several orders of magnitude faster than decomposition methods.
 
-Our second innovation is 'Non-Zero' whitening. When synthesizing detection templates from rendered images, a common problem is how to handle the background. If we render the model over a natural image background, gradients in the background will be incorporated into the discriminative template. Alternatively, we could leave the background textureless \scream{did Hariharan do this?} (see Fig.~\ref{fig:rendering}), but whitening the resulting HOG template produces in undesirable background artifacts. These are created when centering the template (by subtracting the mean $\mu$), where strong negative weights are introduced in the textureless region (as seen in Fig.~\ref{fig:whocomparison}). This could result in positive matches being suppressed due to spurious background gradients.
+Our second innovation is 'Non-Zero' whitening. When synthesizing detection templates from rendered images, a common problem is how to handle the background. Some methods \scream{which?} render the model over a natural image background, but this results in gradients in the background being incorporated into the discriminative template. Alternatively, we could leave the background textureless \scream{did Hariharan do this?} (see Fig.~\ref{fig:rendering}), but whitening the resulting HOG template produces in undesirable background artifacts. These are created when centering the template (by subtracting the mean $\mu$), where strong negative weights are introduced in the textureless region (as seen in Fig.~\ref{fig:whocomparison}). This could result in positive matches being suppressed due to spurious background gradients.
 
 To remove such artifacts, we construct $x$ using only cells with non-zero gradients. After whitening we restore the full template, with the zero-gradient cells left unchanged. This approach has the added benefit of reducing the size of the linear system we need to solve, further speeding up our method.
 
@@ -250,7 +247,7 @@ We use the GPU to parallelize the lookup of the correct autocovariance cells dur
 % \end{algorithm}
 % \end{comment}
 
-\subsection{Fast Whitening and Non-Zero Selection}
+\subsection{Fast Whitening and Convolution}
 \label{sec:fast_whitening}
 \begin{figure}[t]
   \begin{center}
@@ -263,6 +260,8 @@ We use the GPU to parallelize the lookup of the correct autocovariance cells dur
 To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$. In \cite{Hariharan12}, the authors make use of the fact that covariance matrices are Hermitian and positive semidefinite to solve the system via the Cholesky decomposition, which is twice as fast as the LU decomposition. These decompositions require $O(n^3)$ time, whereas the conjugate gradient method takes $O(n^2\kappa)$ time, where $\kappa$ is the condition number of the matrix. This makes conjugate gradient a faster option for matrices with small condition numbers relative to their size.
 
 Figure \ref{fig:spectral} shows the singular values of a covariance matrix for one HOG template after a small regularization constant is added to the diagonal. The condition number of of the matrix is \scream{x}, much smaller than the size of the matrix (7500). As a result, conjugate gradient converges in \scream{x ms}, two orders of magnitude faster than the system can be solved using the Cholesky factorization (\scream{5 s}).
+
+The final challenge in on-the-fly template evaluation is performing the convolution between the template and the target image. Standard convolution would be prohibitively slow for the high resolution templates we're using, so we implemented the convolution via Fast Fourier Transform on the GPU. This allows template evaluation to run in \scream{x ms}, compared to \scream{x ms} for the naive CPU implementation.
 
   
 %  If we use a high resolution template such as \ref{fig:rendering}
@@ -306,20 +305,20 @@ We empirically found out that NZ-WHO performs reasonably well without time consu
 
 \begin{table*}[!htbp]
     \begin{center}
-\begin{tabular}{|c|c|r|c|r|}
+\begin{tabular}{|c|c|c|c|c|}
 \hline
-Methods (AP/MPPE) & before calibration  & time & after Calibration \cite{Aubry14} & time \\
+Methods &  without Calibration (AP/AVP) & time & w/ Calibration \cite{Aubry14} (AP/AVP) & time \\
 \hline\hline
-HOG\cite{Dalal05}     & 72.3 / 65.0  &  31ms  & 60.4 / 50.2                 &   8.7 sec \\ 
-WHO\cite{Hariharan12} & 82.1 / 85.4  &  3811ms&                             &   12.4 sec  \\
-WHO-CG                & 81.7 / \textbf{84.9}  &  104ms &     83.7 / 87.3             &   8.3 sec \\
-WHO-CG-Z              & 54.4 / 65.1  &  103ms & \textbf{92.8} / 86.7 &   8.7 sec  \\
+HOG\cite{Dalal05}     & 72.28/48.38  &  31ms  & 60.37/50.19               &   8.7 sec \\ 
+WHO-Chol\cite{Hariharan12} &              &3811ms    &                           &   12.4 sec  \\
+WHO-CG                & 81.70/74.20  &104ms &     83.714/75.37              &   8.3 sec \\
+WHO-CG-Z              & 54.42/49.71  &103ms & \textbf{92.80}/\textbf{81.44} &   8.7 sec  \\
 % NZC-WHO-Z    & 89.10/\textbf{78.64} &    & 91.15/74.79                  &     \\
-NZ-WHO-CG        & \textbf{90.0} / 82.8 & 79ms & 90.3 / \textbf{86.8}                   &  8.5 sec   \\
+NZ-WHO-CG        & \textbf{90.00}/78.23 & 79ms & 90.31/78.00                   &  8.5 sec   \\
 \hline
 \end{tabular}
 \end{center}
-\caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11} variations of WHO on 3DObject Car dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}.}
+\caption{Average Precision(AP) and Average Viewpoint Precision(AVP) \cite{Xiang14} of variations of WHO on 3DObject Car dataset\cite{Savarese07}. WHO\cite{Hariharan12} whitens all cell, WHO-ZZ whitens all cell then zero out textureless region. NZC-WHO-ZZ first substract mean $\mu$ on non-zero cells and whiten all cells then zero out textureless region. NZ-WHO whitens only non-zero cell. Note that WHO-ZZ got dramatic performance boost after calibration due to strong impact of substracting $\mu$ from all textureless region}
 \label{tab:who_initializations}
 \end{table*}
 
@@ -388,7 +387,7 @@ Number of non-zero cells & 84.734 & N/A\\
 \end{table}
 \end{comment}
 
-
+\begin{comment}
 \subsection{High Resolution Templates and FFT based Convolution}
 \label{sec:fft} 
 We generate high resolution templates with more than 250 HOG cells to capture details of an object to give accurate 2D-3D matching. These large templates cause computational burden when computing convolution. Though good for detecting accurate model and pose, convolution of high-resolution templates are much more slower since computation time scales linearly with the number of HOG cells in the template. To overcome and speed up the convolution, we propose FFT based GPU convolution which scales. Suppose there are length $n$ signal and length $m$ filter, naive convolution takes $O(nm)$ time where as FFT-based convolution takes $O\left( (n + m)\log (n+m) \right)$ time. For large $m$, high resolution template, we can gain computational advantage.
@@ -409,7 +408,7 @@ For each dimension of features, we transform kernel and image feature into frequ
 We implemented the convolution using FFT on GPU and got 10x speed up.
 
 [Figure for convolution time for different template resolution, CPU, GPU, naive convolution]
-
+\end{comment}
 %------------------------------------------------------------------------
 
 \section{Continuous Viewpoint and Focal Length Estimation for Fine Tuning}
@@ -423,32 +422,14 @@ We run experiments on PASCAL 2007 car category images with at least one car (num
 
 % there are several advantages that was not possible such as \textbf{on-the-fly} template generation and making large number of templates  
 \begin{figure}[t]
-\centering
-    \includegraphics[width=0.7\linewidth]{tuning2} \\ [-5pt]
-    \caption{Different modes of Metropolis Hasting proposals, see Section \ref{sec:fine}}
- \label{fig:tuningmode}
-\end{figure}
-    
-\begin{figure}[t]
  \begin{center}
-    \setlength\tabcolsep{0pt}
-    \begin{tabular}{ccc}
-    % \includegraphics[width=0.9\linewidth]{tuning} 
-   \includegraphics[width=0.33\linewidth]{tuning/1.png} &
-   \includegraphics[width=0.33\linewidth]{tuning/2.png} &
-   \includegraphics[width=0.33\linewidth]{tuning/3.png} \\[-5pt]
-   (a) & (b) & (c)\\
-   \includegraphics[width=0.33\linewidth]{tuning/4.png} &
-   \includegraphics[width=0.33\linewidth]{tuning/5.png} &
-   \includegraphics[width=0.33\linewidth]{tuning/6.png} \\[-5pt]
-   (d) & (e) & (f)\\
-   \end{tabular}
+    \includegraphics[width=0.9\linewidth]{tuning2} 
+    \includegraphics[width=0.9\linewidth]{tuning} 
  \end{center}
  \caption{Effect of fine tuning. (left) original image, (middle) initial detection, (right) continuous fine tuning}
  \label{fig:tuning}
 \end{figure}
-
-
+ 
 
 
 \section{Experiments}
@@ -457,9 +438,20 @@ In this section, we validate our proposed NZ-WHO templates in two different ways
 
 \subsection{Object Detection} 
 Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
-Our ensemble of NZ-WHO templates is generated from rendering image with no calibration but shows strong performance on object detection. The baseline method are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Note that the baseline methods require complex 3D modeling and viewpoint annotated natural images.
-
-The detection result is on Table \ref{tab:3dobject} and example output from our method is on Figure \ref{fig:3dobject}. 
+\begin{table}[!htbp]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+     AP/MPPE& Ours & ALM\cite{Xiang12} & VOCDPM\cite{Pepik12} \\
+    \hline\hline
+    car & \textbf{99.8}/91.7 &  98.4/93.4 & \textbf{99.8}/\textbf{97.5} \\ 
+    bicycle & 93.0/87.4 & 93.0/91.4 & \textbf{98.8}/\textbf{97.5} \\
+    \hline
+    \end{tabular}
+  \end{center}
+  \caption{Average Precision(AP) and Average Viewpoint Accuracy(AVA) on 3DObject dataset. Though we do not need any training images and made templates in few minues, it performs on par with state of the art detectors yet it gives high quality 2D-3D matching.}
+  \label{tab:3dobject}
+\end{table}
 
 \begin{figure}[h]
     \begin{center}
@@ -473,7 +465,7 @@ The detection result is on Table \ref{tab:3dobject} and example output from our 
 %  (c) & (d) \\[0pt]
 \end{tabular}
 \end{center}
-\caption{Detection results on 3D-Object dataset \cite{Savarese07}. Original image (left) and detection result overlaid on top with a bounding box and corresponding confidence score(right)}
+\caption{Detection results on 3D-Object dataset \cite{Savarese07}, each of four images have (top left) original image, (top right) top detection rendering overlaid, (bottom right) false positives, (bottom left) true positives. Each with confidence score and colored bounding box}
   \label{fig:3dobject}
 \end{figure}
 
@@ -507,7 +499,7 @@ To show such ability, we evaluated our method on PASCAL 3D dataset \cite{Xiang14
   \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-AP/AVP              & V-DPM \cite{Xiang14} & VOC-DPM \cite{Pepik12}  & \cite{Pepik12} + Ours (discrete) & \cite{Pepik12} + Ours (full) & R-CNN + Ours (discrete) & R-CNN + Ours (full)\\
+AP/AVP              & VDPM \cite{Xiang14} & VOC-DPM \cite{Pepik12}  & \cite{Pepik12} + Ours (discrete) & \cite{Pepik12} + Ours (full) & R-CNN + Ours (discrete) & R-CNN + Ours (full)\\
 \hline\hline
 car-4v              & 37.2 / 20.2         & 45.6 / 36.9             & 47.6 / 42.7       & 47.6 / \textbf{42.7}        & 49.6 / 41.5         & 49.6 / 41.5\\ \hline
 car-8v              & 37.3 / 23.5         & 47.6 / 36.6             & 47.6 / \textbf{39.8}       & 47.6 / 39.5        & 49.6 / 38.0         & 49.6 / 39.0\\ \hline
@@ -526,13 +518,9 @@ bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.
 
 \subsection{Stability of Our Method for Irregular Bounding Boxes}
 
-% Generic object detectors give overlapping detection bounding boxes of the same object which can be handled by non maximal suppression. For these overlapping detections, 
+Generic object detectors sometimes give overlapping detection bounding boxes of the same object with different aspect ratio or truncation. For instance, R-CNN \cite{Girshick14} usually gives very irregular bounding boxes since the proposals bounding boxes comes from various methods.
 
-R-CNN detection bounding boxes are irregular in shape since they come from other region proposal methods and sometimes they truncate objects. To handle such irregular shape and truncation, we added small context around the bounding boxes and run our method. 
-
-We assumed that object can be arbitrarily truncated by the bounding box and search all plausible scales and translations. This can be efficiently computed using FFT-based convolution (refer Section. \ref{sec:fft}). We put examples of such conditions in Figure \ref{fig:stability}. Although the input bounding boxes are irregular and truncate objects, our method reliably generated a reasonable prediction of pose, translation, scale and CAD model.
-
-
+To handle such irregular shape and truncation, we added small context around the bounding boxes and run our method. We consider all possible truncation which can be efficiently computed using FFT-based convolution (refer Section. \ref{sec:fft}). We put examples of such conditions in Figure \ref{fig:stability}. Although the input bounding boxex are drastically different and have sever truncations. Our method reliably generated reasonable prediction of pose and model.
 
 \begin{figure}[h]
 \setlength\tabcolsep{5pt}
