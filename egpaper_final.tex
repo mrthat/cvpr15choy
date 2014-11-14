@@ -413,7 +413,8 @@ We implemented the convolution using FFT on GPU and got 10x speed up.
 
 \section{Continuous Viewpoint and Focal Length Estimation for Fine Tuning}
 
-% Estimating viewpoint continuously to fine tune a initial matching 
+% Estimating viewpoint continuously to fine tune a initial matching
+The NZ-WHO template matching method we have presented makes template generation and evaluation computationally inexpensive. 
 Since creating a template and validating the template become computationally inexpensive, making a proposal and validating the proposal to fine tune a 2D-3D matching became affordable. We used Metropolis-Hastings algorithm to generate a proposal pose and focal length and validate the proposal using the convolution and returning maximum response as a return.
 
 We modeled the distribution of the convolution as an exponential distribution and used Gaussian as our proposal distribution.  
