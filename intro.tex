@@ -18,7 +18,7 @@
   %  %   \end{tabular}
   % \end{tabular}\\
   % (b)
-  \caption{Using a bank of CAD models, we generate NZ-WHO templates which can be used to either detect objects directly or initialize pose of an object in the bounding box from other detectors. Once initialization is given, we use NZ-WHO to propose and validate plausible pose on-the-fly and further tune the translation, 3D viewpoint and focal length continuously.}
+  \caption{Using a bank of CAD models, we generate NZ-WHO templates which can be used to either detecting objects directly or initializing pose of an object in the bounding box from other detectors. Once the initialization is given, we use NZ-WHO to propose and validate plausible pose on-the-fly and further tune the translation, 3D viewpoint and focal length continuously.}
   % \vspace{-1em}
   \label{fig:front}
 \end{figure}
@@ -113,8 +113,7 @@ calibration, and greatly enhances the scalability of E-LDA. As a
 result, we can render novel views and train corresponding exemplar
 models {\em on the fly}, without the need for offline processing. As a
 by-product, we can formulate the alignment problem as a parameter
-search in a continuos pose space, consisting of azimuth, elevation,
-and ~\scream{}, resulting in truely continuous pose estimates, which
+search in a continuos pose space, consisting of yaw, pitch and roll, resulting in truely continuous pose estimates, which
 we implement using MCMC sampling.
 %  require a large number of rendering and 2D
 % templates for each of the CAD model with specific viewpoint. Since

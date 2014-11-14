@@ -75,6 +75,13 @@ A.~K. J.~Lim and A.~Torralba.
 \newblock Fpm: Fine pose parts-based model with 3d cad models.
 \newblock In {\em ECCV}, 2014.
 
+\bibitem{Lopez-Sastre11}
+R.~Lopez-Sastre, T.~Tuytelaars, and S.~Savarese.
+\newblock Deformable part models revisited: A performance evaluation for object
+  category pose estimation.
+\newblock In {\em Computer Vision Workshops (ICCV Workshops), 2011 IEEE
+  International Conference on}, pages 1052--1059, Nov 2011.
+
 \bibitem{Lowe87}
 D.~G. Lowe.
 \newblock Three-dimensional object recognition from single two-dimensional
