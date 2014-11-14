@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=latex 2014.5.25)  13 NOV 2014 14:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=latex 2014.5.25)  13 NOV 2014 16:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -357,23 +357,35 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip66
 )) (./egpaper_final.aux)
+Runaway argument?
+{{2}{3}{Comparison of HOG, WHO and NZ-WHO. Visualization of positive \ETC.
+./egpaper_final.tex:35: File ended while scanning use of \@newl@bel.
+<inserted text> 
+                \par 
+l.35 \begin{document}
+                     
+I suspect you have forgotten a `}', causing me
+to read past where you wanted me to stop.
+I'll try to recover; but if the error is serious,
+you'd better type `E' or `X' now and fix your file.
+
 \openout1 = `egpaper_final.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 32.
-LaTeX Font Info:    ... okay on input line 32.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 32.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 35.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 ) ABD: EveryShipout initializing macros (/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/color.sty
@@ -391,7 +403,7 @@ Package caption Info: rotating package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box40
 Package atbegshi Info: Package `everyshi' patched.
-Package hyperref Info: Link coloring OFF on input line 32.
+Package hyperref Info: Link coloring OFF on input line 35.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -399,43 +411,44 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count123
 )
-LaTeX Info: Redefining \ref on input line 32.
-LaTeX Info: Redefining \pageref on input line 32.
-LaTeX Info: Redefining \nameref on input line 32.
+LaTeX Info: Redefining \ref on input line 35.
+LaTeX Info: Redefining \pageref on input line 35.
+LaTeX Info: Redefining \nameref on input line 35.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 55.
-LaTeX Font Info:    Try loading font information for U+msa on input line 55.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 59.
+LaTeX Font Info:    Try loading font information for U+msa on input line 59.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 55.
+LaTeX Font Info:    Try loading font information for U+msb on input line 59.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 57.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 61.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 58.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 62.
 
-LaTeX Warning: Citation `Aubry14' on page 1 undefined on input line 58.
-
-
-LaTeX Warning: Citation `Lim14' on page 1 undefined on input line 58.
+LaTeX Warning: Citation `Aubry14' on page 1 undefined on input line 62.
 
 
-LaTeX Warning: Citation `Malisiewicz11' on page 1 undefined on input line 58.
+LaTeX Warning: Citation `Lim14' on page 1 undefined on input line 62.
 
 
-LaTeX Warning: Citation `Hejrati14' on page 1 undefined on input line 58.
+LaTeX Warning: Citation `Malisiewicz11' on page 1 undefined on input line 62.
 
 
-./egpaper_final.tex:70: LaTeX Error: File `front' not found.
+LaTeX Warning: Citation `Hejrati14' on page 1 undefined on input line 62.
+
+(./intro.tex
+
+./intro.tex:4: LaTeX Error: File `front' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.70 ...cludegraphics[width=0.99\linewidth]{front}
+l.4 ...ncludegraphics[width=0.99\linewidth]{front}
                                                    % \\[-5pt]
 I could not locate the file with any of these extensions:
 .eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
@@ -443,81 +456,71 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+LaTeX Warning: Citation `pascal12' on page 1 undefined on input line 30.
 
 
-LaTeX Warning: Citation `Lowe87' on page 1 undefined on input line 96.
+LaTeX Warning: Citation `Felzenszwalb10' on page 1 undefined on input line 30.
 
 
-LaTeX Warning: Citation `Felzenszwalb10' on page 1 undefined on input line 96.
+LaTeX Warning: Citation `Girshick14' on page 1 undefined on input line 30.
 
 
-LaTeX Warning: Citation `Girshick14' on page 1 undefined on input line 96.
+Underfull \hbox (badness 2932) in paragraph at lines 28--35
+[]\OT1/ptm/m/n/10 Current ap-proaches to ob-ject class de-tec-tion have
+ []
 
 
-LaTeX Warning: Citation `Xiang12' on page 1 undefined on input line 96.
+LaTeX Warning: Citation `Xiang12' on page 1 undefined on input line 42.
 
 
-LaTeX Warning: Citation `Pepik12' on page 1 undefined on input line 96.
+LaTeX Warning: Citation `Pepik12' on page 1 undefined on input line 42.
 
 
-LaTeX Warning: Citation `Fidler12' on page 1 undefined on input line 96.
+LaTeX Warning: Citation `Fidler12' on page 1 undefined on input line 42.
 
 
-LaTeX Warning: Citation `Hejrati14' on page 1 undefined on input line 96.
+LaTeX Warning: Citation `Hejrati14' on page 1 undefined on input line 42.
 
 
-LaTeX Warning: Citation `Aubry14' on page 1 undefined on input line 96.
+LaTeX Warning: Citation `Aubry14' on page 1 undefined on input line 47.
 
 
-LaTeX Warning: Citation `Lim14' on page 1 undefined on input line 96.
+LaTeX Warning: Citation `Lim14' on page 1 undefined on input line 47.
 
 
-LaTeX Warning: Citation `Kholgade14' on page 1 undefined on input line 98.
+LaTeX Warning: Citation `Kholgade14' on page 1 undefined on input line 47.
 
 
-LaTeX Warning: Citation `Chen13' on page 1 undefined on input line 98.
+LaTeX Warning: Citation `Chen13' on page 1 undefined on input line 47.
 
 
-LaTeX Warning: Citation `Kostas14' on page 1 undefined on input line 98.
+LaTeX Warning: Citation `Kostas14' on page 1 undefined on input line 47.
 
 
-LaTeX Warning: Citation `Xiang12' on page 1 undefined on input line 104.
+LaTeX Warning: Citation `Lowe87' on page 1 undefined on input line 49.
 
 
-LaTeX Warning: Citation `Hejrati14' on page 1 undefined on input line 104.
+LaTeX Warning: Citation `Aubry14' on page 1 undefined on input line 89.
 
 
-LaTeX Warning: Citation `Pepik12' on page 1 undefined on input line 104.
+LaTeX Warning: Citation `Lim14' on page 1 undefined on input line 89.
 
 
-LaTeX Warning: Citation `Trimble' on page 1 undefined on input line 104.
+LaTeX Warning: Citation `Dalal05' on page 1 undefined on input line 97.
 
 
-LaTeX Warning: Citation `Yobi' on page 1 undefined on input line 104.
+LaTeX Warning: Citation `Hariharan12' on page 1 undefined on input line 99.
 
 
-LaTeX Warning: Citation `Aubry14' on page 1 undefined on input line 104.
+LaTeX Warning: Citation `Aubry14' on page 1 undefined on input line 101.
 
 
-LaTeX Warning: Citation `Lim14' on page 1 undefined on input line 104.
+LaTeX Warning: Citation `Dalal05' on page 1 undefined on input line 106.
 
 
-LaTeX Warning: Citation `Aubry14' on page 1 undefined on input line 106.
+LaTeX Warning: Citation `Felzenszwalb10' on page 1 undefined on input line 106.
 
-
-LaTeX Warning: Citation `Lim14' on page 1 undefined on input line 106.
-
-
-LaTeX Warning: Citation `Aubry14' on page 1 undefined on input line 106.
-
-
-LaTeX Warning: Citation `Lim14' on page 1 undefined on input line 106.
-
-
-LaTeX Warning: Citation `Hariharan12' on page 1 undefined on input line 106.
-
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 107.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 134.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/ot1phv.fd
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 ) [1
@@ -525,118 +528,124 @@ File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 
 ]
 
-LaTeX Warning: Citation `Malisiewicz11' on page 2 undefined on input line 108.
+LaTeX Warning: Citation `Felzenszwalb10' on page 2 undefined on input line 155.
 
 
-LaTeX Warning: Citation `Divvala14' on page 2 undefined on input line 108.
+LaTeX Warning: Citation `Girshick14' on page 2 undefined on input line 156.
 
 
-LaTeX Warning: Citation `Pepik12' on page 2 undefined on input line 112.
+LaTeX Warning: Citation `Xiang14' on page 2 undefined on input line 163.
 
 
-LaTeX Warning: Citation `Aubry13' on page 2 undefined on input line 127.
+LaTeX Warning: Citation `Pepik12' on page 2 undefined on input line 175.
 
 
-LaTeX Warning: Citation `Aubry14' on page 2 undefined on input line 127.
+LaTeX Warning: Citation `Aubry13' on page 2 undefined on input line 214.
 
 
-LaTeX Warning: Citation `Lim14' on page 2 undefined on input line 127.
+LaTeX Warning: Citation `Aubry14' on page 2 undefined on input line 214.
 
 
-LaTeX Warning: Citation `Aubry14' on page 2 undefined on input line 140.
+LaTeX Warning: Citation `Lim14' on page 2 undefined on input line 214.
 
 
-LaTeX Warning: Citation `Lim14' on page 2 undefined on input line 140.
+LaTeX Warning: Citation `Aubry14' on page 2 undefined on input line 231.
 
 
-Underfull \hbox (badness 1484) in paragraph at lines 146--147
+LaTeX Warning: Citation `Lim14' on page 2 undefined on input line 231.
+
+
+Underfull \hbox (badness 1484) in paragraph at lines 261--269
 []\OT1/ptm/m/n/10 To com-ple-ment de-tec-tion bound-ing boxes, we first
  []
 
+[2])
 
-LaTeX Warning: Citation `Martinsson05' on page 2 undefined on input line 155.
-
-
-LaTeX Warning: Citation `Belouchrani00' on page 2 undefined on input line 155.
+LaTeX Warning: Citation `Martinsson05' on page 3 undefined on input line 76.
 
 
-LaTeX Warning: Citation `Hariharan12' on page 2 undefined on input line 155.
-
-[2]
-
-LaTeX Warning: Citation `Felzenszwalb10' on page 3 undefined on input line 162.
+LaTeX Warning: Citation `Belouchrani00' on page 3 undefined on input line 76.
 
 
-LaTeX Warning: Citation `Girshick14' on page 3 undefined on input line 162.
+LaTeX Warning: Citation `Hariharan12' on page 3 undefined on input line 76.
 
 
-LaTeX Warning: Citation `Pepik12' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Felzenszwalb10' on page 3 undefined on input line 83.
 
 
-LaTeX Warning: Citation `Xiang12' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Girshick14' on page 3 undefined on input line 83.
 
 
-LaTeX Warning: Citation `Fidler12' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Pepik12' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Xiang14' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Xiang12' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Hejrati14' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Fidler12' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Aubry14' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Xiang14' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Lim14' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Hejrati14' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Xiang12' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Aubry14' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Hejrati14' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Lim14' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Fidler12' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Xiang12' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Pepik12' on page 3 undefined on input line 164.
+LaTeX Warning: Citation `Hejrati14' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Zia13' on page 3 undefined on input line 166.
+LaTeX Warning: Citation `Fidler12' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Aubry14' on page 3 undefined on input line 168.
+LaTeX Warning: Citation `Pepik12' on page 3 undefined on input line 85.
 
 
-LaTeX Warning: Citation `Lim14' on page 3 undefined on input line 168.
+LaTeX Warning: Citation `Zia13' on page 3 undefined on input line 87.
 
 
-LaTeX Warning: Citation `Aubry14' on page 3 undefined on input line 168.
+LaTeX Warning: Citation `Aubry14' on page 3 undefined on input line 89.
 
 
-LaTeX Warning: Citation `Lim14' on page 3 undefined on input line 168.
+LaTeX Warning: Citation `Lim14' on page 3 undefined on input line 89.
 
 
-LaTeX Warning: Citation `Hariharan12' on page 3 undefined on input line 199.
+LaTeX Warning: Citation `Aubry14' on page 3 undefined on input line 89.
 
 
-LaTeX Warning: Reference `fig:rendering' on page 3 undefined on input line 203.
+LaTeX Warning: Citation `Lim14' on page 3 undefined on input line 89.
 
 
-LaTeX Warning: Reference `fig:whocomparison' on page 3 undefined on input line 203.
+LaTeX Warning: Citation `Hariharan12' on page 3 undefined on input line 120.
 
 
-LaTeX Warning: Reference `tab:who_initializations' on page 3 undefined on input line 205.
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-./egpaper_final.tex:231: LaTeX Error: File `hog_crop' not found.
+LaTeX Warning: Reference `fig:rendering' on page 3 undefined on input line 124.
+
+
+LaTeX Warning: Reference `fig:whocomparison' on page 3 undefined on input line 124.
+
+
+LaTeX Warning: Reference `tab:who_initializations' on page 3 undefined on input line 126.
+
+
+./egpaper_final.tex:152: LaTeX Error: File `hog_crop' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.231 ...egraphics[width=0.28\linewidth]{hog_crop}
+l.152 ...egraphics[width=0.28\linewidth]{hog_crop}
                                                    &
 I could not locate the file with any of these extensions:
 .eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
@@ -644,13 +653,13 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./egpaper_final.tex:232: LaTeX Error: File `whiten_all_crop' not found.
+./egpaper_final.tex:153: LaTeX Error: File `whiten_all_crop' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.232 ...cs[width=0.28\linewidth]{whiten_all_crop}
+l.153 ...cs[width=0.28\linewidth]{whiten_all_crop}
                                                    &
 I could not locate the file with any of these extensions:
 .eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
@@ -658,13 +667,13 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./egpaper_final.tex:233: LaTeX Error: File `whiten_non_zero_crop' not found.
+./egpaper_final.tex:154: LaTeX Error: File `whiten_non_zero_crop' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.233 ...dth=0.28\linewidth]{whiten_non_zero_crop}
+l.154 ...dth=0.28\linewidth]{whiten_non_zero_crop}
                                                    \\
 I could not locate the file with any of these extensions:
 .eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
@@ -672,13 +681,13 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./egpaper_final.tex:237: LaTeX Error: File `hog_neg_crop' not found.
+./egpaper_final.tex:158: LaTeX Error: File `hog_neg_crop' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.237 ...phics[width=0.28\linewidth]{hog_neg_crop}
+l.158 ...phics[width=0.28\linewidth]{hog_neg_crop}
                                                    &
 I could not locate the file with any of these extensions:
 .eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
@@ -686,13 +695,13 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./egpaper_final.tex:238: LaTeX Error: File `whiten_all_neg_crop' not found.
+./egpaper_final.tex:159: LaTeX Error: File `whiten_all_neg_crop' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.238 ...idth=0.28\linewidth]{whiten_all_neg_crop}
+l.159 ...idth=0.28\linewidth]{whiten_all_neg_crop}
                                                     &
 I could not locate the file with any of these extensions:
 .eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
@@ -700,13 +709,13 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./egpaper_final.tex:239: LaTeX Error: File `whiten_non_zero_neg' not found.
+./egpaper_final.tex:160: LaTeX Error: File `whiten_non_zero_neg' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.239 ...idth=0.28\linewidth]{whiten_non_zero_neg}
+l.160 ...idth=0.28\linewidth]{whiten_non_zero_neg}
                                                    \\
 I could not locate the file with any of these extensions:
 .eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
@@ -714,13 +723,13 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./egpaper_final.tex:243: LaTeX Error: Cannot determine size of graphic in figures/ihog_hog200_crop.png (no BoundingBox).
+./egpaper_final.tex:164: LaTeX Error: Cannot determine size of graphic in figures/ihog_hog200_crop.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.243 ...dth=0.28\linewidth]{ihog_hog200_crop.png}
+l.164 ...dth=0.28\linewidth]{ihog_hog200_crop.png}
                                                    &
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -728,13 +737,13 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/ihog_hog200_crop.png Graphic file (type eps)
 <figures/ihog_hog200_crop.png>
 
-./egpaper_final.tex:244: LaTeX Error: Cannot determine size of graphic in figures/ihog_whiten_all200_crop.png (no BoundingBox).
+./egpaper_final.tex:165: LaTeX Error: Cannot determine size of graphic in figures/ihog_whiten_all200_crop.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.244 ...8\linewidth]{ihog_whiten_all200_crop.png}
+l.165 ...8\linewidth]{ihog_whiten_all200_crop.png}
                                                    &
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -742,13 +751,13 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/ihog_whiten_all200_crop.png Graphic file (type eps)
 <figures/ihog_whiten_all200_crop.png>
 
-./egpaper_final.tex:245: LaTeX Error: Cannot determine size of graphic in figures/ihog_whiten_non_zero200_crop.png (no BoundingBox).
+./egpaper_final.tex:166: LaTeX Error: Cannot determine size of graphic in figures/ihog_whiten_non_zero200_crop.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.245 ...ewidth]{ihog_whiten_non_zero200_crop.png}
+l.166 ...ewidth]{ihog_whiten_non_zero200_crop.png}
                                                    \\
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -756,38 +765,40 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/ihog_whiten_non_zero200_crop.png Graphic file (type eps)
 <figures/ihog_whiten_non_zero200_crop.png>
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 248.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 169.
 
-LaTeX Warning: Citation `vondrick2013' on page 3 undefined on input line 248.
-
-
-LaTeX Warning: Citation `vondrick2013' on page 3 undefined on input line 248.
+LaTeX Warning: Citation `vondrick2013' on page 3 undefined on input line 169.
 
 
-LaTeX Warning: Citation `Hariharan12' on page 3 undefined on input line 260.
+LaTeX Warning: Citation `vondrick2013' on page 3 undefined on input line 169.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 276--277
+LaTeX Warning: Citation `Hariharan12' on page 3 undefined on input line 181.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 197--198
 []\OT1/ptm/m/n/10 More for-mally, let $\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 u\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 be the HOG fea-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 276--277
+Underfull \hbox (badness 10000) in paragraph at lines 197--198
 \OT1/ptm/m/n/10 ture on lo-ca-tion $\OML/cmm/m/it/10 u$ \OT1/ptm/m/n/10 then, by WSS, $\U/msb/m/n/10 E [] \OT1/cmr/m/n/10 =
  []
 
-[3]
 
-LaTeX Warning: Reference `fig:covariancetime' on page 4 undefined on input line 280.
+LaTeX Warning: Reference `fig:covariancetime' on page 4 undefined on input line 201.
 
 
-./egpaper_final.tex:290: LaTeX Error: File `covariancetime' not found.
+./egpaper_final.tex:211: LaTeX Error: File `covariancetime' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.290 ...hics[width=0.9\linewidth]{covariancetime}
+l.211 ...hics[width=0.9\linewidth]{covariancetime}
                                                   
 I could not locate the file with any of these extensions:
 .eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
@@ -795,13 +806,13 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-./egpaper_final.tex:317: LaTeX Error: File `whiten_orig_depth' not found.
+./egpaper_final.tex:238: LaTeX Error: File `whiten_orig_depth' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.317 ...s[width=0.9\linewidth]{whiten_orig_depth}
+l.238 ...s[width=0.9\linewidth]{whiten_orig_depth}
                                                   
 I could not locate the file with any of these extensions:
 .eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
@@ -809,220 +820,52 @@ Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 
-LaTeX Warning: Citation `Hariharan12' on page 4 undefined on input line 323.
+LaTeX Warning: Citation `Hariharan12' on page 4 undefined on input line 244.
 
 
-LaTeX Warning: Reference `fig:rendering' on page 4 undefined on input line 327.
+LaTeX Warning: Reference `fig:rendering' on page 4 undefined on input line 248.
 
 
-LaTeX Warning: Citation `Gharbi12' on page 4 undefined on input line 337.
+LaTeX Warning: Citation `Gharbi12' on page 4 undefined on input line 258.
 
 
-LaTeX Warning: Reference `fig:spectral' on page 4 undefined on input line 337.
+LaTeX Warning: Reference `fig:spectral' on page 4 undefined on input line 258.
 
 
-./egpaper_final.tex:342: LaTeX Error: File `whotime' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.342 ...udegraphics[width=0.5\linewidth]{whotime}
-                                                   &
-I could not locate the file with any of these extensions:
-.eps,.ps,.eps.gz,.ps.gz,.eps.Z,.mps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-./egpaper_final.tex:343: LaTeX Error: File `speedup' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...  LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.504 ...phics[width=0.33\linewidth]{tuning/6.png}
-                                                   \\[-5pt]
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figures/tuning/6.png Graphic file (type eps)
-<figures/tuning/6.png>
-
-./egpaper_final.tex:537: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/7.png (no BoundingBox).
+./egpaper_final.tex:263: LaTeX Error: File `whotime' not found.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.537 ...width=0.45\linewidth]{car_3dobject/7.png}
-                                                   &
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figures/car_3dobject/7.png Graphic file (type eps)
-<figures/car_3dobject/7.png>
-
-./egpaper_final.tex:538: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/8.png (no BoundingBox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.538 ...width=0.45\linewidth]{car_3dobject/8.png}
-                                                  \\ [-15pt]
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figures/car_3dobject/8.png Graphic file (type eps)
-<figures/car_3dobject/8.png>
-
-./egpaper_final.tex:540: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/11.png (no BoundingBox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.540 ...idth=0.45\linewidth]{car_3dobject/11.png}
-                                                   &
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figures/car_3dobject/11.png Graphic file (type eps)
-<figures/car_3dobject/11.png>
-
-./egpaper_final.tex:541: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/12.png (no BoundingBox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.541 ...idth=0.45\linewidth]{car_3dobject/12.png}
-                                                  \\ [-5pt]
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figures/car_3dobject/12.png Graphic file (type eps)
-<figures/car_3dobject/12.png>
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[5]
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 581.
-
-./egpaper_final.tex:605: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/1.png (no BoundingBox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.605 ...s[width=0.45\linewidth]{car_pascal/1.png}
-                                                   &
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figures/car_pascal/1.png Graphic file (type eps)
-<figures/car_pascal/1.png>
-
-./egpaper_final.tex:606: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/2.png (no BoundingBox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.606 ...s[width=0.45\linewidth]{car_pascal/2.png}
-                                                   \\
-Try typing  <return>  to proceed.
-If that doesn'tn for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.499 ...phics[width=0.33\linewidth]{tuning/2.png}
-                                                   &
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figures/tuning/2.png Graphic file (type eps)
-<figures/tuning/2.png>
-
-./egpaper_final.tex:500: LaTeX Error: Cannot determine size of graphic in figures/tuning/3.png (no BoundingBox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.500 ...phics[width=0.33\linewidth]{tuning/3.png}
-                                                   \\[-5pt]
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figures/tuning/3.png Graphic file (type eps)
-<figures/tuning/3.png>
-
-./egpaper_final.tex:502: LaTeX Error: Cannot determine size of graphic in figures/tuning/4.png (no BoundingBox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.502 ...phics[width=0.33\linewidth]{tuning/4.png}
-                                                   &
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figures/tuning/4.png Graphic file (type eps)
-<figures/tuning/4.png>
-
-./egpaper_final.tex:503: LaTeX Error: Cannot determine size of graphic in figures/tuning/5.png (no BoundingBox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.503 ...phics[width=0.33\linewidth]{tuning/5.png}
-                                                   &
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+l.263 ...udegraphics[width=0.5\t.
 
 File: figures/tuning/5.png Graphic file (type eps)
 <figures/tuning/5.png>
 
-./egpaper_final.tex:504: LaTeX Error: Cannot determine size of graphic in figures/tuning/6.png (no BoundingBox).
+./egpaper_final.tex:425: LaTeX Error: Cannot determine size of graphic in figures/tuning/6.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.504 ...phics[width=0.33\linewidth]{tuning/6.png}
+l.425 ...phics[width=0.33\linewidth]{tuning/6.png}
                                                    \\[-5pt]
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 File: figures/tuning/6.png Graphic file (type eps)
 <figures/tuning/6.png>
-
-LaTeX Warning: Citation `Aubry14' on page 5 undefined on input line 517.
-
-
-LaTeX Warning: Citation `Lim14' on page 5 undefined on input line 517.
+Underfull \vbox (badness 1226) has occurred while \output is active []
 
 
-LaTeX Warning: Citation `Xiang12' on page 5 undefined on input line 522.
-
-
-LaTeX Warning: Citation `Pepik12' on page 5 undefined on input line 522.
-
-
-./egpaper_final.tex:537: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/7.png (no BoundingBox).
+./egpaper_final.tex:458: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/7.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.537 ...width=0.45\linewidth]{car_3dobject/7.png}
+l.458 ...width=0.45\linewidth]{car_3dobject/7.png}
                                                    &
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1030,13 +873,13 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/car_3dobject/7.png Graphic file (type eps)
 <figures/car_3dobject/7.png>
 
-./egpaper_final.tex:538: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/8.png (no BoundingBox).
+./egpaper_final.tex:459: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/8.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.538 ...width=0.45\linewidth]{car_3dobject/8.png}
+l.459 ...width=0.45\linewidth]{car_3dobject/8.png}
                                                   \\ [-15pt]
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1044,13 +887,13 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/car_3dobject/8.png Graphic file (type eps)
 <figures/car_3dobject/8.png>
 
-./egpaper_final.tex:540: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/11.png (no BoundingBox).
+./egpaper_final.tex:461: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/11.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.540 ...idth=0.45\linewidth]{car_3dobject/11.png}
+l.461 ...idth=0.45\linewidth]{car_3dobject/11.png}
                                                    &
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1058,13 +901,13 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/car_3dobject/11.png Graphic file (type eps)
 <figures/car_3dobject/11.png>
 
-./egpaper_final.tex:541: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/12.png (no BoundingBox).
+./egpaper_final.tex:462: LaTeX Error: Cannot determine size of graphic in figures/car_3dobject/12.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.541 ...idth=0.45\linewidth]{car_3dobject/12.png}
+l.462 ...idth=0.45\linewidth]{car_3dobject/12.png}
                                                   \\ [-5pt]
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1072,55 +915,277 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/car_3dobject/12.png Graphic file (type eps)
 <figures/car_3dobject/12.png>
 
-LaTeX Warning: Citation `Savarese07' on page 5 undefined on input line 545.
-
-
-LaTeX Warning: Citation `Savarese07' on page 5 undefined on input line 545.
-
-
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-LaTeX Warning: Citation `Xiang14' on page 5 undefined on input line 571.
-
 [5]
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 579.
 
-LaTeX Warning: Citation `Xiang14' on page 6 undefined on input line 579.
-
-
-LaTeX Warning: Citation `Pepik12' on page 6 undefined on input line 579.
-
-
-LaTeX Warning: Citation `Pepik12' on page 6 undefined on input line 579.
-
-
-LaTeX Warning: Citation `Pepik12' on page 6 undefined on input line 579.
-
-
-LaTeX Warning: Citation `Xiang14' on page 6 undefined on input line 592.
-
-
-LaTeX Warning: Citation `Xiang14' on page 6 undefined on input line 592.
-
-
-LaTeX Warning: Citation `Girshick14' on page 6 undefined on input line 598.
-
-
-LaTeX Warning: Reference `sec:fft' on page 6 undefined on input line 600.
-
-
-LaTeX Warning: Reference `fig:stability' on page 6 undefined on input line 600.
-
-
-./egpaper_final.tex:605: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/1.png (no BoundingBox).
+./egpaper_final.tex:499: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/1a.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.605 ...s[width=0.45\linewidth]{car_pascal/1.png}
+l.499 ...ics[width=0.24\textwidth]{car_cnn/1a.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/1a.png Graphic file (type eps)
+<figures/car_cnn/1a.png>
+
+./egpaper_final.tex:500: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/1b.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.500 ...ics[width=0.24\textwidth]{car_cnn/1b.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/1b.png Graphic file (type eps)
+<figures/car_cnn/1b.png>
+
+./egpaper_final.tex:501: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/1c.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.501 ...ics[width=0.24\textwidth]{car_cnn/1c.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/1c.png Graphic file (type eps)
+<figures/car_cnn/1c.png>
+
+./egpaper_final.tex:502: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/1d.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.502 ...ics[width=0.24\textwidth]{car_cnn/1d.png}
+                                                    \\
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/1d.png Graphic file (type eps)
+<figures/car_cnn/1d.png>
+
+./egpaper_final.tex:504: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/2a.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.504 ...ics[width=0.24\textwidth]{car_cnn/2a.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/2a.png Graphic file (type eps)
+<figures/car_cnn/2a.png>
+
+./egpaper_final.tex:505: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/2b.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.505 ...ics[width=0.24\textwidth]{car_cnn/2b.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/2b.png Graphic file (type eps)
+<figures/car_cnn/2b.png>
+
+./egpaper_final.tex:506: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/2c.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.506 ...ics[width=0.24\textwidth]{car_cnn/2c.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/2c.png Graphic file (type eps)
+<figures/car_cnn/2c.png>
+
+./egpaper_final.tex:507: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/2e.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.507 ...ics[width=0.24\textwidth]{car_cnn/2e.png}
+                                                    \\
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/2e.png Graphic file (type eps)
+<figures/car_cnn/2e.png>
+
+./egpaper_final.tex:509: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/4a.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.509 ...ics[width=0.24\textwidth]{car_cnn/4a.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/4a.png Graphic file (type eps)
+<figures/car_cnn/4a.png>
+
+./egpaper_final.tex:510: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/4b.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.510 ...ics[width=0.24\textwidth]{car_cnn/4b.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/4b.png Graphic file (type eps)
+<figures/car_cnn/4b.png>
+
+./egpaper_final.tex:511: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/4c.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.511 ...ics[width=0.24\textwidth]{car_cnn/4c.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/4c.png Graphic file (type eps)
+<figures/car_cnn/4c.png>
+
+./egpaper_final.tex:512: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/4d.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.512 ...ics[width=0.24\textwidth]{car_cnn/4d.png}
+                                                    \\
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/4d.png Graphic file (type eps)
+<figures/car_cnn/4d.png>
+
+./egpaper_final.tex:524: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/7a.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.524 ...width=0.24\textwidth]{bicycle_cnn/7a.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/7a.png Graphic file (type eps)
+<figures/bicycle_cnn/7a.png>
+
+./egpaper_final.tex:525: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/7b.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.525 ...width=0.24\textwidth]{bicycle_cnn/7b.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/7b.png Graphic file (type eps)
+<figures/bicycle_cnn/7b.png>
+
+./egpaper_final.tex:528: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/4a.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.528 ...width=0.24\textwidth]{bicycle_cnn/4a.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/4a.png Graphic file (type eps)
+<figures/bicycle_cnn/4a.png>
+
+./egpaper_final.tex:529: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/4b.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.529 ...width=0.24\textwidth]{bicycle_cnn/4b.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/4b.png Graphic file (type eps)
+<figures/bicycle_cnn/4b.png>
+
+./egpaper_final.tex:530: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/4c.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.530 ...width=0.24\textwidth]{bicycle_cnn/4c.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/4c.png Graphic file (type eps)
+<figures/bicycle_cnn/4c.png>
+
+./egpaper_final.tex:531: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/4d.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.531 ...width=0.24\textwidth]{bicycle_cnn/4d.png}
+                                                    \\
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/4d.png Graphic file (type eps)
+<figures/bicycle_cnn/4d.png>
+
+LaTeX Warning: Float too large for page by 20.6787pt on input line 538.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 548.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+./egpaper_final.tex:572: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/1.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.572 ...s[width=0.45\linewidth]{car_pascal/1.png}
                                                    &
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1128,13 +1193,13 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/car_pascal/1.png Graphic file (type eps)
 <figures/car_pascal/1.png>
 
-./egpaper_final.tex:606: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/2.png (no BoundingBox).
+./egpaper_final.tex:573: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/2.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.606 ...s[width=0.45\linewidth]{car_pascal/2.png}
+l.573 ...s[width=0.45\linewidth]{car_pascal/2.png}
                                                    \\
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1142,13 +1207,13 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/car_pascal/2.png Graphic file (type eps)
 <figures/car_pascal/2.png>
 
-./egpaper_final.tex:607: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/3.png (no BoundingBox).
+./egpaper_final.tex:574: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/3.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.607 ...s[width=0.45\linewidth]{car_pascal/3.png}
+l.574 ...s[width=0.45\linewidth]{car_pascal/3.png}
                                                    &
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1156,13 +1221,216 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/car_pascal/3.png Graphic file (type eps)
 <figures/car_pascal/3.png>
 
-./egpaper_final.tex:608: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/4.png (no BoundingBox).
+./egpaper_final.tex:575: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/4.png (no BoundingBox).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.608 ...s[width=0.45\linewidth]{car_pascal/4.png}
+l.575 ...s[width=0.45\linewidth]{car_pascal/4.png}
+                                                   \\
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_pascal/4.png Graphic file (type eps)
+<figures/car_pascal/4.png> (./egpaper_final.bbl
+LaTeX Font Info:    F                        
+l.511 ...ics[width=0.24\textwidth]{car_cnn/4c.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/4c.png Graphic file (type eps)
+<figures/car_cnn/4c.png>
+
+./egpaper_final.tex:512: LaTeX Error: Cannot determine size of graphic in figures/car_cnn/4d.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.512 ...ics[width=0.24\textwidth]{car_cnn/4d.png}
+                                                    \\
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_cnn/4d.png Graphic file (type eps)
+<figures/car_cnn/4d.png>
+
+./egpaper_final.tex:524: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/7a.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.524 ...width=0.24\textwidth]{bicycle_cnn/7a.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/7a.png Graphic file (type eps)
+<figures/bicycle_cnn/7a.png>
+
+./egpaper_final.tex:525: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/7b.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.525 ...width=0.24\textwidth]{bicycle_cnn/7b.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/7b.png Graphic file (type eps)
+<figures/bicycle_cnn/7b.png>
+
+./egpaper_final.tex:528: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/4a.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.528 ...width=0.24\textwidth]{bicycle_cnn/4a.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/4a.png Graphic file (type eps)
+<figures/bicycle_cnn/4a.png>
+
+./egpaper_final.tex:529: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/4b.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.529 ...width=0.24\textwidth]{bicycle_cnn/4b.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/4b.png Graphic file (type eps)
+<figures/bicycle_cnn/4b.png>
+
+./egpaper_final.tex:530: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/4c.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.530 ...width=0.24\textwidth]{bicycle_cnn/4c.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/4c.png Graphic file (type eps)
+<figures/bicycle_cnn/4c.png>
+
+./egpaper_final.tex:531: LaTeX Error: Cannot determine size of graphic in figures/bicycle_cnn/4d.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.531 ...width=0.24\textwidth]{bicycle_cnn/4d.png}
+                                                    \\
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/bicycle_cnn/4d.png Graphic file (type eps)
+<figures/bicycle_cnn/4d.png>
+
+LaTeX Warning: Citation `Girshick14' on page 6 undefined on input line 536.
+
+
+LaTeX Warning: Citation `Girshick14' on page 6 undefined on input line 536.
+
+
+LaTeX Warning: Float too large for page by 20.6787pt on input line 538.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 546.
+
+LaTeX Warning: Citation `Xiang14' on page 6 undefined on input line 546.
+
+
+LaTeX Warning: Citation `Pepik12' on page 6 undefined on input line 546.
+
+
+LaTeX Warning: Citation `Pepik12' on page 6 undefined on input line 546.
+
+
+LaTeX Warning: Citation `Pepik12' on page 6 undefined on input line 546.
+
+
+LaTeX Warning: Citation `Xiang14' on page 6 undefined on input line 559.
+
+
+LaTeX Warning: Citation `Xiang14' on page 6 undefined on input line 559.
+
+
+LaTeX Warning: Citation `Girshick14' on page 6 undefined on input line 565.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+LaTeX Warning: Reference `sec:fft' on page 6 undefined on input line 567.
+
+
+LaTeX Warning: Reference `fig:stability' on page 6 undefined on input line 567.
+
+
+./egpaper_final.tex:572: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/1.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.572 ...s[width=0.45\linewidth]{car_pascal/1.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_pascal/1.png Graphic file (type eps)
+<figures/car_pascal/1.png>
+
+./egpaper_final.tex:573: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/2.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.573 ...s[width=0.45\linewidth]{car_pascal/2.png}
+                                                   \\
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_pascal/2.png Graphic file (type eps)
+<figures/car_pascal/2.png>
+
+./egpaper_final.tex:574: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/3.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.574 ...s[width=0.45\linewidth]{car_pascal/3.png}
+                                                   &
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figures/car_pascal/3.png Graphic file (type eps)
+<figures/car_pascal/3.png>
+
+./egpaper_final.tex:575: LaTeX Error: Cannot determine size of graphic in figures/car_pascal/4.png (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.575 ...s[width=0.45\linewidth]{car_pascal/4.png}
                                                    \\
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -1170,35 +1438,39 @@ If that doesn't work, type  X <return>  to quit.
 File: figures/car_pascal/4.png Graphic file (type eps)
 <figures/car_pascal/4.png>
 
-LaTeX Warning: Citation `Girshick14' on page 6 undefined on input line 610.
+LaTeX Warning: Citation `Girshick14' on page 6 undefined on input line 577.
 
 
-LaTeX Warning: Citation `Girshick14' on page 6 undefined on input line 610.
+LaTeX Warning: Citation `Girshick14' on page 6 undefined on input line 577.
 
 (./egpaper_final.bbl [6]
+Overfull \hbox (2.57323pt too wide) in paragraph at lines 32--37
+\OT1/ptm/m/n/9 network.org/challenges/VOC/voc2012/workshop/index.html. 
+ []
+
 Missing character: There is no ¿ in font ptmr7t!
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 696.
-[7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 696.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 663.
+[7] [8]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 663.
 (./egpaper_final.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 696.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 696.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 663.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 663.
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 696.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 663.
  ) 
 Here is how much of TeX's memory you used:
- 8609 strings out of 493118
- 128761 string characters out of 6135459
- 249656 words of memory out of 5000000
- 11941 multiletter control sequences out of 15000+600000
+ 8647 strings out of 493118
+ 129360 string characters out of 6135459
+ 252656 words of memory out of 5000000
+ 11960 multiletter control sequences out of 15000+600000
  20165 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  36i,10n,41p,3291b,460s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on egpaper_final.dvi (7 pages, 74812 bytes).
+Output written on egpaper_final.dvi (8 pages, 80208 bytes).

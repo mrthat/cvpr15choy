@@ -1,11 +1,5 @@
 \begin{thebibliography}{10}\itemsep=-1pt
 
-\bibitem{Trimble}
-http://3dwarehouse.sketchup.com/.
-
-\bibitem{Yobi}
-http://yobi3d.com.
-
 \bibitem{Aubry14}
 M.~Aubry, D.~Maturana, A.~Efros, B.~Russell, and J.~Sivic.
 \newblock Seeing 3d chairs: exemplar part-based 2d-3d alignment using a large
@@ -34,11 +28,12 @@ N.~Dalal and B.~Triggs.
   IEEE Computer Society Conference on}, volume~1, pages 886--893 vol. 1, June
   2005.
 
-\bibitem{Divvala14}
-S.~Divvala, A.~Farhadi, and C.~Guestrin.
-\newblock Learning everything about anything: Webly-supervised visual concept
-  learning.
-\newblock 2014.
+\bibitem{pascal12}
+M.~Everingham, L.~Van~Gool, C.~K.~I. Williams, J.~Winn, and A.~Zisserman.
+\newblock The {PASCAL} {V}isual {O}bject {C}lasses {C}hallenge 2012 {(VOC2012)}
+  {R}esults.
+\newblock
+  http://www.pascal-network.org/challenges/VOC/voc2012/workshop/index.html.
 
 \bibitem{Felzenszwalb10}
 P.~F. Felzenszwalb, R.~B. Girshick, D.~McAllester, and D.~Ramanan.

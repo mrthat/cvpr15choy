@@ -491,6 +491,52 @@ High performance object detectors usually generalizes very well. It can handle v
 
 To show such ability, we evaluated our method on PASCAL 3D dataset \cite{Xiang14}. The dataset augments PASCAL 2012 images with high quality viewpoint annotations thus is ideal to measure pose estimation. The dataset proposes new metric called Average Viewpoint Precision (AVP) where it measures the area under viewpoint precision and detection recall curve. The viewpoints is measured by azimuth similarity. If the distance between predicted azimuth and ground truth azimuth is below a certain threshold, the viewpoint is correct. Note that the baseline methods (V-DPM, VOC-DPM) reported on the PASCAL 3D dataset are variants of DPM where each component of DPM account for various azimuths. Thus V-DPM and VOC-DPM provide discrete azimuth only whereas our method provides 3D viewpoint (yaw, pitch, roll), CAD instance (model index, rendering, depth) and focal length.
 
+\begin{figure*}[h]
+\setlength\tabcolsep{1pt}
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+   \hline
+  \includegraphics[width=0.24\textwidth]{car_cnn/1a.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/1b.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/1c.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/1d.png}  \\  
+   \hline
+  \includegraphics[width=0.24\textwidth]{car_cnn/2a.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/2b.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/2c.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/2e.png}  \\  
+   \hline
+  \includegraphics[width=0.24\textwidth]{car_cnn/4a.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/4b.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/4c.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/4d.png}  \\  
+%    \hline
+%   \includegraphics[width=0.24\textwidth]{car_cnn/10a.png} &   
+%   \includegraphics[width=0.24\textwidth]{car_cnn/10b.png} &   
+%   \includegraphics[width=0.24\textwidth]{car_cnn/10c.png} &   
+%   \includegraphics[width=0.24\textwidth]{car_cnn/10d.png}  \\  
+%   \hline 
+%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3a.png} &   
+%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3b.png} &   
+%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3c.png} &   
+%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3d.png}  \\
+  \hline
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7a.png} &   
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7b.png} &   
+  &\\
+  \hline
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4a.png} &   
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4b.png} &   
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4c.png} &   
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4d.png}  \\
+  \hline
+  CNN Proposals & \multicolumn{3}{|c|}{Our matching results on proposal bounding boxes} \\
+  \hline
+\end{tabular}
+\caption{Example enriched bounding boxex. Given R-CNN\cite{Girshick14} detection bounding boxes, our method predicted 2D-3D matching reasonably. On the first column, R-CNN detection bounding boxes overlaid. From the second to the last columns, output of our method given a R-CNN box. Blue boxes are R-CNN output and purle boxes are the tightest bounding box enclosing predicted CAD model}
+  \label{fig:pascal12cnn}
+\end{figure*}
+
 
 \begin{table*}[!htbp]
     \footnotesize
