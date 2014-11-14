@@ -1,23 +1,23 @@
 %
 In this section, we give an experimental evaluation of our approach,
 highlighting three different aspects.
-
+%
 First, we verify that our NZ-WHO method delivers performance that is
 at least on par with the original WHO formulation~\cite{Hariharan12} in terms of
 accuracy, while at the same time resulting in large computational
 savings (Sect.~\ref{sec:variations}).
-
+%
 Second, we demonstrate that our method can be used for multi-view
 object class detection in isolation. It can be applied in a sliding
 window fashion and deliver 2D bounding box as well as viewpoint
 information. Our method compares on par to state-of-the-art in this
 case (Sect.~\ref{sec:exp_iso}).
-
+%
 And third, we show that our method can be used to complement the
 detections provided by an existing object class detector, such
 as DPM~\cite{Felzenszwalb10} or RCNN~\cite{Girshick14}. In this case,
 we show a considerable performance improvement compared to previous
-work in the task of joint object class detection and viewpoint
+work in the task of joint object class detection and VP
 estimation (Sect.~\ref{sec:exp_enrich}).
 
 \paragraph{Setup.}
@@ -90,25 +90,34 @@ ms vs. 8.7 s when using calibration.
 
 
 \begin{table}[!htbp]
-    \footnotesize
-    \setlength{\tabcolsep}{1pt}
-    \centering
-\begin{tabular}{|c|c|r|c|r|}
-\hline
-Methods (AP/MPPE) & before calib.  & time & after calib.~\cite{Aubry14} & time \\
-\hline\hline
-HOG\cite{Dalal05}     & 72.3 / 65.0           &  31ms  & 60.4 / 50.2                 & 8.7 sec \\ 
-WHO\cite{Hariharan12} & 82.1 / 85.4           &  3811ms& 84.4 / 83.0                 & 12.4 sec  \\
-WHO-CG                & 81.7 / \textbf{84.9}  &  104ms & 83.7 / 87.3                 & 8.3 sec \\
-WHO-CG-Z              & 54.4 / 65.1           &  103ms & \textbf{92.8} / 86.7        & 8.7 sec  \\
-% NZC-WHO-Z    & 89.10/\textbf{78.64} &    & 91.15/74.79                  &     \\
-NZ-WHO-CG {\em (ours)}  & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}        & 8.5 sec   \\
-\hline
-\end{tabular}
-\caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11} variations of WHO on 3DObject Car dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}.}
-\label{tab:who_initializations}
+  \footnotesize
+  \setlength{\tabcolsep}{1pt}
+  \centering
+  \begin{tabular}{|c|c|r|c|r|}
+    \hline
+    Methods (AP/MPPE) & before calib.  & time & after calib.~\cite{Aubry14} & time \\
+    \hline\hline
+    HOG\cite{Dalal05}     & 72.3 / 65.0           &  31ms  & 60.4 / 50.2                 & 8.7 sec \\ 
+    WHO\cite{Hariharan12} & 82.1 / 85.4           &  3811ms& 84.4 / 83.0                 & 12.4 sec  \\
+    WHO-CG                & 81.7 / \textbf{84.9}  &  104ms & 83.7 / 87.3                 & 8.3 sec \\
+    WHO-CG-Z              & 54.4 / 65.1           &  103ms & \textbf{92.8} / 86.7        & 8.7 sec  \\
+    % NZC-WHO-Z    & 89.10/\textbf{78.64} &    & 91.15/74.79                  &     \\
+    NZ-WHO-CG {\em (ours)}  & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}        & 8.5 sec   \\
+    \hline
+  \end{tabular}
+  \caption{Average Precision(AP), Mean Precision in Pose Estimation
+    (MPPE)~\cite{Lopez-Sastre11}, and runtime for variations of WHO on
+    3D Object Classes cars~\cite{Savarese07}. Please see text for
+    details.}
+  % WHO refers to standard WHO using the
+  % method presented in \cite{Hariharan12}, WHO-CG uses iterative
+  % Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the
+  % whole template and zero out textureless region. NZ-WHO-CG is the
+  % NZ-WHO which whitens only non-zero cells using iterative Conjugate
+  % Gradient method. The time column indicates the time to generate one
+  % template. We followed calibration procedure presented in \cite{Aubry14}.}
+  \label{tab:who_initializations}
 \end{table}
-
 
 
 \subsection{2D-3D Matching as an Object Detector} 
@@ -172,7 +181,8 @@ with costly bounding box and viewpoint annotations.
     \hline
     \end{tabular}
   \end{center}
-  \caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) on 3DObject dataset car category. Our method produces high quality 2D-3D matching yet performs on par with state-of-the art detectors.}
+  \caption{Average Precision (AP) and Mean Precision in Pose
+    Estimation (MPPE) on 3D Object Classes~\cite{Savarese07} cars.}% Our method produces high quality 2D-3D matching yet performs on par with state-of-the art detectors.}
   \label{tab:3dobject}
 \end{table}
 
@@ -180,15 +190,17 @@ with costly bounding box and viewpoint annotations.
     \begin{center}
     \setlength\tabcolsep{0pt}
 \begin{tabular}{cc}
-  \includegraphics[width=0.45\linewidth]{car_3dobject/7.png} &   
-  \includegraphics[width=0.45\linewidth]{car_3dobject/8.png}\\ [-15pt]
+  \includegraphics[width=0.35\linewidth]{car_3dobject/7.png} &   
+  \includegraphics[width=0.35\linewidth]{car_3dobject/8.png}\\ [-15pt]
 %   (a) & (b) \\[0pt]
-  \includegraphics[width=0.45\linewidth]{car_3dobject/11.png} &   
-  \includegraphics[width=0.45\linewidth]{car_3dobject/12.png}\\ [-5pt]
+  \includegraphics[width=0.35\linewidth]{car_3dobject/11.png} &   
+  \includegraphics[width=0.35\linewidth]{car_3dobject/12.png}\\ [-5pt]
 %  (c) & (d) \\[0pt]
 \end{tabular}
 \end{center}
-\caption{Detection results on 3D Object Classes~\cite{Savarese07}. Original image (left) and detection result overlaid on top with a bounding box and corresponding confidence score(right)}
+\caption{Detection results on 3D Object
+  Classes~\cite{Savarese07}. Original image (left) and detection
+  result overlaid on top (right).}% with a bounding box and corresponding confidence score (right).}
   \label{fig:3dobject}
 \end{figure}
 
@@ -246,11 +258,11 @@ roll), CAD instance (model index, rendering, depth) and focal length.
    \includegraphics[width=0.33\linewidth]{tuning/1.png} &
    \includegraphics[width=0.33\linewidth]{tuning/2.png} &
    \includegraphics[width=0.33\linewidth]{tuning/3.png} \\[-5pt]
-   (a) & (b) & (c)\\
+%   (a) & (b) & (c)\\
    \includegraphics[width=0.33\linewidth]{tuning/4.png} &
    \includegraphics[width=0.33\linewidth]{tuning/5.png} &
    \includegraphics[width=0.33\linewidth]{tuning/6.png} \\[-5pt]
-   (d) & (e) & (f)\\
+%   (d) & (e) & (f)\\
    \end{tabular}
  \end{center}
  \caption{Effect of fine tuning. (left) original image, (middle) initial detection, (right) continuous fine tuning}
@@ -313,21 +325,21 @@ fine-tuned visually comes closer to the true 3D pose.
 % estimation, fine-grained categorization whereas V-DPM, VOC-DPM only
 % estimate discrete viewpoints.
 
-\begin{figure*}[h]
+\begin{figure*}[t]
 \setlength\tabcolsep{1pt}
 \centering
 \begin{tabular}{|c|c|c|c|c|}
-   \hline
+%   \hline
   \includegraphics[width=0.24\textwidth]{car_cnn/1a.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1b.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1c.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1d.png}  \\  
-   \hline
+%   \hline
   \includegraphics[width=0.24\textwidth]{car_cnn/2a.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/2b.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/2c.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/2e.png}  \\  
-   \hline
+%   \hline
   \includegraphics[width=0.24\textwidth]{car_cnn/4a.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/4b.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/4c.png} &   
@@ -342,23 +354,31 @@ fine-tuned visually comes closer to the true 3D pose.
 %   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3b.png} &   
 %   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3c.png} &   
 %   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3d.png}  \\
-  \hline
-  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7a.png} &   
-  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7b.png} &   
-  &\\
-  \hline
+%
+% sorry no space
+%  \hline
+%  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7a.png} &   
+%  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7b.png} &   
+%  &\\
+%  \hline
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4a.png} &   
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4b.png} &   
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4c.png} &   
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4d.png}  \\
-  \hline
+%  \hline
   CNN Proposals & \multicolumn{3}{|c|}{Our matching results on proposal bounding boxes} \\
-  \hline
+%  \hline
 \end{tabular}
-\caption{Example enriched bounding boxes. Given R-CNN\cite{Girshick14} detection bounding boxes, our method predicted 2D-3D matching reasonably. On the first column, R-CNN detection bounding boxes overlaid. From the second to the last columns, output of our method given a R-CNN box. Blue boxes are R-CNN output and purple boxes are the tightest bounding box enclosing predicted CAD model}
+\caption{Example enriched bounding boxes. Given R-CNN\cite{Girshick14}
+  detection bounding boxes, our method predicted 2D-3D matching
+  reasonably. On the first column, R-CNN detection bounding boxes
+  overlaid. From the second to the last columns, output of our method
+  given a R-CNN box. Blue boxes are R-CNN output and purple boxes are
+  the tightest bounding box enclosing predicted CAD model.}
   \label{fig:pascal12cnn}
 \end{figure*}
-\begin{table*}[!htbp]
+%
+\begin{table*}[t]
     \footnotesize
   \begin{center}
 \begin{tabular}{|c||c||c||c|c||c|c|}
@@ -376,7 +396,17 @@ bicycle-16v         & 46.5 / 18.4         & 45.6 / 22.9             & 48.1 / 26.
 bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.5       & 48.1 / 20.9        & 61.7 / \textbf{27.0}         & 61.7 / 23.9\\ \hline
 \end{tabular}
 \end{center}
-\caption{Average Precision(AP) and Average Viewpoint Precision(AVP) on PASCAL3D+~\cite{Xiang14}. For combined method (* + Ours), we use bounding boxes from * and augment viewpoint using our method. R-CNN and run our method to produce 2D-3D matching. If our method fails to give viewpoint, it predicts the viewpoint to be 0. Note that our method gives high quality metadata such as continuous 3D viewpoint, CAD model (rendering depth) and fine-grained category, whereas base-line methods gives 1D discrete azimuths. Our R-CNN was not an optimized version so the detection AP is lower than the state-of-the-art R-CNN performance}
+\caption{Average Precision(AP) and Average Viewpoint Precision (AVP) on
+  PASCAL3D+~\cite{Xiang14}. For combined methods (* + Ours), we use
+  bounding boxes from * and augment viewpoint using our method.}
+  % R-CNN
+  % and run our method to produce 2D-3D matching. If our method fails to
+  % give viewpoint, it predicts the viewpoint to be 0. Note that our
+  % method gives high quality metadata such as continuous 3D viewpoint,
+  % CAD model (rendering depth) and fine-grained category, whereas
+  % base-line methods gives 1D discrete azimuths. Our R-CNN was not an
+  % optimized version so the detection AP is lower than the
+  % state-of-the-art R-CNN performance}
 \label{tab:pascal12}
 \end{table*}
 
@@ -393,7 +423,13 @@ bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.
 \end{tabular}
 \caption{Average Precision (AP) and Average Viewpoint Precision (AVP)
   and viewpoint confusion table on PASCAL 12 car validation set using
-  R-CNN + Ours (full). From the top left, 4 views, 8 views, 16 views and 24 views. Since our method only augment the object detection, the AP remains the same for all cases. As we increase the viewpoint estimation, the AVP decreases. Note that since we estimate null viewpoint if our method fails to find match, there are more 0 viewpoint predictions (top row of confusion matrices) }
+  R-CNN + Ours (full). From the top left, 4 views, 8 views, 16 views
+  and 24 views.}
+ % Since our method only augment the object detection,
+ %  the AP remains the same for all cases. As we increase the viewpoint
+ %  estimation, the AVP decreases. Note that since we estimate null
+ %  viewpoint if our method fails to find match, there are more 0
+ %  viewpoint predictions (top row of confusion matrices) }
   \label{fig:car_cnn_ap}
 \end{figure}
 
@@ -428,7 +464,13 @@ model (magenta bounding boxes enclose the output of our system).
   \includegraphics[width=0.45\linewidth]{car_pascal/3.png} &   
   \includegraphics[width=0.45\linewidth]{car_pascal/4.png} \\   
 \end{tabular}
-\caption{Stability of our method for overlapping R-CNN detection \cite{Girshick14}. Blue box is the R-CNN detection that is feed into the system as initial detection. Purple box and overlaid rendering is the final output of the system. Note that for various overlapping bounding boxes, our system accurately estimated the reasonable result}
+\caption{Robustness of our method for against irregular and truncated
+  R-CNN detection proposals (cyan).}
+  % \cite{Girshick14}. Blue box is the R-CNN detection that is feed into
+  % the system as initial detection. Purple box and overlaid rendering
+  % is the final output of the system. Note that for various overlapping
+  % bounding boxes, our system accurately estimated the reasonable
+  % result}
   \label{fig:stability}
 \end{figure}
 
