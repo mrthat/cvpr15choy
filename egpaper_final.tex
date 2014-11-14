@@ -67,6 +67,8 @@ We propose an efficient method for synthesizing templates from 3D models that ru
 %  To overcome these difficulties, we propose an efficient and fast way to synthesize and validate templates using on the fly realistic rendering that can jointly optimize scale, translation, rotation and focal length continuously. We render an object and extract features and decorrelate spatial dependencies within them on the fly to make a discriminative template. To speed up the decorrelation procedure, we adopt a gradient based algorithm which is numerically more stable than decomposition procedure. Finally, we efficiently search for candidate match by computing convolution using FFT and jointly optimize to match the object accurately. To speed up further, we propose an efficient GPU implementation and tested on PASCAL images.
 
 %   In contrast to other mid-level patch based 3D matching methods which requires extensive training and more than 10Gb of memory space and physical storage, ours require no training nor saving the templates thus enabling it to run on any personal computer. 
+%   To overcome these difficulties, we propose an efficient and fast way to synthesize and validate templates using on the fly realistic rendering that can jointly optimize scale, translation, rotation and focal length continuously. We render an object and extract features and decorrelate spatial dependencies within them on the fly to make a discriminative template. To speed up the decorrelation procedure, we adopt a gradient based algorithm which is numerically more stable than decomposition procedure. Finally, we efficiently search for candidate match by computing convolution using FFT and jointly optimize to match the object accurately. To speed up further, we propose an efficient GPU implementation and tested on PASCAL images.
+
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
@@ -80,6 +82,7 @@ We propose an efficient method for synthesizing templates from 3D models that ru
 Recently, Hariharan \etal. introduced Whitened Histograms of Orientations (WHO) \cite{Hariharan12}, which used statistics from natural images to whiten HOG templates, making them more discriminative. Whitening is a common signal processing operation for decorrelating a set of random variables \cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By whitening the signal, i.e., $\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X])$, we remove 2nd order correlation between all features. So, all elements in the random variable $\tilde{X} = \left[\tilde{X}_1, \tilde{X}_2, \dots, \tilde{X}_k\right]$, become more independent. In the context of HOG features, a whitened HOG template will produce Gaussian noise when convolved with a random natural image, but a delta-like response on an image matching the template. WHO templates are more discriminative than standard HOG templates because they only capture the gradients that differentiate the object from random images. \scream{chris added the following} Hariharan \etal. also interpreted the whitening as Linear Discriminant Analysis (LDA) where all classes have different means but have the same covariance. The whitening and LDA have the same formulation when we make a decision boundary $w = \Sigma^{-1}(\mu_+ - \mu_0)$ where $\mu_+$ is the features from a class (LDA) or a signal to whiten (whitening), $\mu_0$ is the negative class center (LDA) or a signal statistics (whitening) and $\Sigma$ is the covariance matrix of classes (LDA) or correlation within signal (whitening).
 
 \textcolor{red}{Should we mention how our method improves on this (ie by using CG)?}
+
 % Using HOG
 % In this paper, we also used Histograms of Orientations feature \cite{Dalal05} but in general, we could use any dense features. 
 
@@ -250,7 +253,7 @@ We use the GPU to parallelize the lookup of the correct autocovariance cells dur
 % \end{algorithm}
 % \end{comment}
 
-\subsection{Fast Whitening and Non-Zero Selection}
+\subsection{Fast Whitening and Convolution}
 \label{sec:fast_whitening}
 \begin{figure}[t]
   \begin{center}
@@ -263,6 +266,8 @@ We use the GPU to parallelize the lookup of the correct autocovariance cells dur
 To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$. In \cite{Hariharan12}, the authors make use of the fact that covariance matrices are Hermitian and positive semidefinite to solve the system via the Cholesky decomposition, which is twice as fast as the LU decomposition. These decompositions require $O(n^3)$ time, whereas the conjugate gradient method takes $O(n^2\kappa)$ time, where $\kappa$ is the condition number of the matrix. This makes conjugate gradient a faster option for matrices with small condition numbers relative to their size.
 
 Figure \ref{fig:spectral} shows the singular values of a covariance matrix for one HOG template after a small regularization constant is added to the diagonal. The condition number of of the matrix is \scream{x}, much smaller than the size of the matrix (7500). As a result, conjugate gradient converges in \scream{x ms}, two orders of magnitude faster than the system can be solved using the Cholesky factorization (\scream{5 s}).
+
+The final challenge in on-the-fly template evaluation is performing the convolution between the template and the target image. Standard convolution would be prohibitively slow for the high resolution templates we're using, so we implemented the convolution via Fast Fourier Transform on the GPU. This allows template evaluation to run in \scream{x ms}, compared to \scream{x ms} for the naive CPU implementation.
 
   
 %  If we use a high resolution template such as \ref{fig:rendering}
@@ -305,10 +310,11 @@ We empirically found out that NZ-WHO performs reasonably well without time consu
 
 
 \begin{table*}[!htbp]
+    \footnotesize
     \begin{center}
 \begin{tabular}{|c|c|r|c|r|}
 \hline
-Methods (AP/MPPE) & before calibration  & time & after Calibration \cite{Aubry14} & time \\
+Methods (AP/MPPE) & before calibration  & time & after calibration \cite{Aubry14} & time \\
 \hline\hline
 HOG\cite{Dalal05}     & 72.3 / 65.0           &  31ms  & 60.4 / 50.2                 & 8.7 sec \\ 
 WHO\cite{Hariharan12} & 82.1 / 85.4           &  3811ms& 84.4 / 83.0                 & 12.4 sec  \\
@@ -388,7 +394,7 @@ Number of non-zero cells & 84.734 & N/A\\
 \end{table}
 \end{comment}
 
-
+\begin{comment}
 \subsection{High Resolution Templates and FFT based Convolution}
 \label{sec:fft} 
 We generate high resolution templates with more than 250 HOG cells to capture details of an object to give accurate 2D-3D matching. These large templates cause computational burden when computing convolution. Though good for detecting accurate model and pose, convolution of high-resolution templates are much more slower since computation time scales linearly with the number of HOG cells in the template. To overcome and speed up the convolution, we propose FFT based GPU convolution which scales. Suppose there are length $n$ signal and length $m$ filter, naive convolution takes $O(nm)$ time where as FFT-based convolution takes $O\left( (n + m)\log (n+m) \right)$ time. For large $m$, high resolution template, we can gain computational advantage.
@@ -409,12 +415,13 @@ For each dimension of features, we transform kernel and image feature into frequ
 We implemented the convolution using FFT on GPU and got 10x speed up.
 
 [Figure for convolution time for different template resolution, CPU, GPU, naive convolution]
-
+\end{comment}
 %------------------------------------------------------------------------
 
 \section{Continuous Viewpoint and Focal Length Estimation for Fine Tuning}
 
-% Estimating viewpoint continuously to fine tune a initial matching 
+% Estimating viewpoint continuously to fine tune a initial matching
+The NZ-WHO template matching method we have presented makes template generation and evaluation computationally inexpensive. 
 Since creating a template and validating the template become computationally inexpensive, making a proposal and validating the proposal to fine tune a 2D-3D matching became affordable. We used Metropolis-Hastings algorithm to generate a proposal pose and focal length and validate the proposal using the convolution and returning maximum response as a return.
 
 We modeled the distribution of the convolution as an exponential distribution and used Gaussian as our proposal distribution.  
@@ -450,16 +457,37 @@ We run experiments on PASCAL 2007 car category images with at least one car (num
 
 
 
-
 \section{Experiments}
 
 In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as ensembles of weak detectors and show that the rendering image can be We want to see how robust the NZ-WHO to real images a
 
-\subsection{Object Detection} 
-Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
-Our ensemble of NZ-WHO templates is generated from rendering image with no calibration but shows strong performance on object detection. The baseline method are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Note that the baseline methods require complex 3D modeling and viewpoint annotated natural images.
+Second, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
+
+\subsection{2D-3D Matching as an Object Detector} 
+
+We created ensemble of NZ-WHO templates using 9 CAD models and measured the Average Precision (AP) of object detection task and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11}. MPPE is the average of viewpoint accuracy.  
+
+% Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
+
+Our ensemble of NZ-WHO templates is generated from rendering images within few minutes but shows reasonable performance on object detection task. The baseline method are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Note that the baseline methods require complex 3D modeling and viewpoint annotated natural images.
 
 The detection result is on Table \ref{tab:3dobject} and example output from our method is on Figure \ref{fig:3dobject}. 
+
+\begin{table}[!htbp]
+    \footnotesize
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+     AP/MPPE& Ours & ALM\cite{Xiang12} & VOC-DPM\cite{Pepik12} \\
+    \hline\hline
+    car & \textbf{99.8}/91.7 &  98.4/93.4 & \textbf{99.8}/\textbf{97.5} \\ 
+    bicycle & 93.0/87.4 & 93.0/91.4 & \textbf{98.8}/\textbf{97.5} \\
+    \hline
+    \end{tabular}
+  \end{center}
+  \caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) on 3DObject dataset car category. Our method produces high quality 2D-3D matching yet performs on par with state-of-the art detectors.}
+  \label{tab:3dobject}
+\end{table}
 
 \begin{figure}[h]
     \begin{center}
@@ -501,7 +529,58 @@ High performance object detectors usually generalizes very well. It can handle v
 
 To show such ability, we evaluated our method on PASCAL 3D dataset \cite{Xiang14}. The dataset augments PASCAL 2012 images with high quality viewpoint annotations thus is ideal to measure pose estimation. The dataset proposes new metric called Average Viewpoint Precision (AVP) where it measures the area under viewpoint precision and detection recall curve. The viewpoints is measured by azimuth similarity. If the distance between predicted azimuth and ground truth azimuth is below a certain threshold, the viewpoint is correct. Note that the baseline methods (V-DPM, VOC-DPM) reported on the PASCAL 3D dataset are variants of DPM where each component of DPM account for various azimuths. Thus V-DPM and VOC-DPM provide discrete azimuth only whereas our method provides 3D viewpoint (yaw, pitch, roll), CAD instance (model index, rendering, depth) and focal length.
 
+We used detection bounding boxes and augment it using our method to give viewpoint estimation. We used detection bounding boxes from two different methods: VOC-DPM \cite{Pepik12} and R-CNN \cite{Girshick14}. VOC-DPM is a variation of DPM that can estimate viewpoint and is the state-of-the-art performance in viewpoint estimation \cite{Xiang14}. The result is on Table \ref{tab:pascal12} and precision recall curves for car using R-CNN + Ours are on Figure \ref{fig:car_cnn_ap}. 
 
+We got significant improvement on viewpoint estimation by using our method on top of general purpose detectors. Note that our method estimates azimuth, elevation, in-plane rotation, focal length estimation, fine-grained categorization whereas V-DPM, VOC-DPM only estimate discrete viewpoints.
+
+Example outputs are on Figure \ref{fig:pascal12cnn}.
+
+
+\begin{figure*}[h]
+\setlength\tabcolsep{1pt}
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+   \hline
+  \includegraphics[width=0.24\textwidth]{car_cnn/1a.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/1b.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/1c.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/1d.png}  \\  
+   \hline
+  \includegraphics[width=0.24\textwidth]{car_cnn/2a.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/2b.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/2c.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/2e.png}  \\  
+   \hline
+  \includegraphics[width=0.24\textwidth]{car_cnn/4a.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/4b.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/4c.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/4d.png}  \\  
+%    \hline
+%   \includegraphics[width=0.24\textwidth]{car_cnn/10a.png} &   
+%   \includegraphics[width=0.24\textwidth]{car_cnn/10b.png} &   
+%   \includegraphics[width=0.24\textwidth]{car_cnn/10c.png} &   
+%   \includegraphics[width=0.24\textwidth]{car_cnn/10d.png}  \\  
+%   \hline 
+%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3a.png} &   
+%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3b.png} &   
+%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3c.png} &   
+%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3d.png}  \\
+  \hline
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7a.png} &   
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7b.png} &   
+  &\\
+  \hline
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4a.png} &   
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4b.png} &   
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4c.png} &   
+  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4d.png}  \\
+  \hline
+  CNN Proposals & \multicolumn{3}{|c|}{Our matching results on proposal bounding boxes} \\
+  \hline
+\end{tabular}
+\caption{Example enriched bounding boxes. Given R-CNN\cite{Girshick14} detection bounding boxes, our method predicted 2D-3D matching reasonably. On the first column, R-CNN detection bounding boxes overlaid. From the second to the last columns, output of our method given a R-CNN box. Blue boxes are R-CNN output and purple boxes are the tightest bounding box enclosing predicted CAD model}
+  \label{fig:pascal12cnn}
+\end{figure*}
 \begin{table*}[!htbp]
     \footnotesize
   \begin{center}
@@ -523,6 +602,21 @@ bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.
 \caption{Average Precision(AP) and Average Viewpoint Precision(AVP) on PASCAL 3D dataset\cite{Xiang14}. For combined method (* + Ours), we use bounding boxes from * and augment viewpoint using our method. R-CNN and run our method to produce 2D-3D matching. If our method fails to give viewpoint, it predicts the viewpoint to be 0. Note that our method gives high quality metadata such as continuous 3D viewpoint, CAD model (rendering depth) and fine-grained category, whereas base-line methods gives 1D discrete azimuths. Our R-CNN was not an optimized version so the detection AP is lower than the state-of-the-art R-CNN performance}
 \label{tab:pascal12}
 \end{table*}
+
+\begin{figure}[h]
+\setlength\tabcolsep{1pt}
+\centering
+\begin{tabular}{cc}
+  \hline
+  \includegraphics[width=0.49\linewidth]{car_cnn4_crop.png} &   
+  \includegraphics[width=0.49\linewidth]{car_cnn8_crop.png} \\   
+  \includegraphics[width=0.49\linewidth]{car_cnn16_crop.png} &   
+  \includegraphics[width=0.49\linewidth]{car_cnn24_crop.png} \\   
+  \hline
+\end{tabular}
+\caption{Average Precision (AP) and Average Viewpoint Precision (AVP) and viewpoint confusion table on PASCAL 12 car validation set using R-CNN + Ours. From the top left, 4 views, 8 views, 16 views and 24 views. Since our method only augment the object detection, the AP remains the same for all cases. As we increase the viewpoint estimation, the AVP decreases. Note that since we estimate null viewpoint if our method fails to find match, there are more 0 viewpoint predictions (top row of confusion matrices) }
+  \label{fig:car_cnn_ap}
+\end{figure}
 
 \subsection{Stability of Our Method for Irregular Bounding Boxes}
 

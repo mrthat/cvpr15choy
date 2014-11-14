@@ -100,10 +100,6 @@ B.~Pepik, M.~Stark, P.~Gehler, and B.~Schiele.
 \newblock In {\em IEEE Conference on Computer Vision and Pattern Recognition
   (CVPR)}, June 2012.
 
-\bibitem{Podlozhnyuk}
-V.~Podlozhnyuk.
-\newblock Fft-based 2d convolution, June 2007.
-
 \bibitem{Kostas14}
 K.~Rematas, T.~Ritschel, M.~Fritz, and T.~Tuytelaars.
 \newblock Image-based synthesis and re-synthesis of viewpoints guided by 3d
