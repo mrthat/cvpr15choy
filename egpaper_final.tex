@@ -437,10 +437,29 @@ We run experiments on PASCAL 2007 car category images with at least one car (num
 
 In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as an ensemble of weak classifiers and show that our method can work as a standalone detector for simple task. This validates that our ensemble of NZ-WHO templates, though each of templates takes 70ms to generate from a rendering image, can robustly perform 2D-3D matching on real images. 
 
-Then, we show that our method can complement  enrich object detection 
+Then, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
 
 \subsection{2D-3D Matching as an Object Detector} 
-Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
+We created ensemble of NZ-WHO templates using 9 CAD models and measured the Average Precision (AP) of object detection task and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11}. MPPE is the average of viewpoint accuracy.  
+
+Our ensemble of NZ-WHO templates are generated from rendering image with no calibration but shows strong performance on object detection. The method we are comparing against are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Each method requires complex 3D modeling and viewpoint annotated natural images.
+\begin{figure}[h]
+    \begin{center}
+    \setlength\tabcolsep{0pt}
+\begin{tabular}{cc}
+  \includegraphics[width=0.45\linewidth]{car_3dobject/7.png} &   
+  \includegraphics[width=0.45\linewidth]{car_3dobject/8.png}\\ [-15pt]
+%   (a) & (b) \\[0pt]
+  \includegraphics[width=0.45\linewidth]{car_3dobject/11.png} &   
+  \includegraphics[width=0.45\linewidth]{car_3dobject/12.png}\\ [-5pt]
+%  (c) & (d) \\[0pt]
+\end{tabular}
+\end{center}
+\caption{Detection results on 3D-Object dataset \cite{Savarese07}. Original image (left) and detection result overlaid on top with a bounding box and corresponding confidence score(right)}
+  \label{fig:3dobject}
+\end{figure}
+
+% Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
 \begin{table}[!htbp]
   \begin{center}
     \begin{tabular}{|c|c|c|c|}
@@ -455,22 +474,6 @@ Instance-level 2D-3D matching (registration) is a difficult problem since we nee
   \caption{Average Precision(AP) and Average Viewpoint Accuracy(AVA) on 3DObject dataset. Though we do not need any training images and made templates in few minues, it performs on par with state of the art detectors yet it gives high quality 2D-3D matching.}
   \label{tab:3dobject}
 \end{table}
-
-\begin{figure}[h]
-    \begin{center}
-    \setlength\tabcolsep{0pt}
-\begin{tabular}{cc}
-  \includegraphics[width=0.45\linewidth]{car_3dobject/7.png} &   
-  \includegraphics[width=0.45\linewidth]{car_3dobject/8.png}\\ [-15pt]
-%   (a) & (b) \\[0pt]
-  \includegraphics[width=0.45\linewidth]{car_3dobject/11.png} &   
-  \includegraphics[width=0.45\linewidth]{car_3dobject/12.png}\\ [-5pt]
-%  (c) & (d) \\[0pt]
-\end{tabular}
-\end{center}
-\caption{Detection results on 3D-Object dataset \cite{Savarese07}, each of four images have (top left) original image, (top right) top detection rendering overlaid, (bottom right) false positives, (bottom left) true positives. Each with confidence score and colored bounding box}
-  \label{fig:3dobject}
-\end{figure}
 
 
 % Also, we evaluated our method on PASCAL 2007 dataset.
