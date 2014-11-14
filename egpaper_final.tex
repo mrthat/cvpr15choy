@@ -71,22 +71,26 @@ First line of institution2 address\\
 \input{intro}
 
 \section{Related Works}
-\subsection{Whitened Histograms of Orientations(WHO)}
+\subsection{Whitened Histograms of Orientations (WHO)}
 % History of Whitening and how whitening works
-Whitening a signal has been a popular method in various signal processing communities as a preprocessing stage \cite{Martinsson05, Belouchrani00}. Whitening a signal makes its autocorrelation narrower which results in more delta-function like spike for true positives and zero elsewhere. More formally, suppose that we have a $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By whitening the signal, i.e., $\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X])$, we remove 2nd order correlation between all features. So, all elements in the random variable $\tilde{X} = \left[\tilde{X}_1, \tilde{X}_2, \dots, \tilde{X}_k\right]$, become more independent. Since they become less dependent, convolving the whitened template with random signal will produce Gaussian noise on background signal but will produce delta-function like response on the match. Recently, \cite{Hariharan12} used whitening on HOG feature and named the whitened HOG as Whitened Histograms of Orientations (WHO).
+Recently, Hariharan \emph{et al.} introduced Whitened Histograms of Orientations (WHO) \cite{Hariharan12}, which used statistics from natural images to whiten HOG templates, making them more discriminative. Whitening is a common signal processing operation for decorrelating a set of random variables \cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By whitening the signal, i.e., $\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X])$, we remove 2nd order correlation between all features. So, all elements in the random variable $\tilde{X} = \left[\tilde{X}_1, \tilde{X}_2, \dots, \tilde{X}_k\right]$, become more independent. In the context of HOG features, a whitened HOG template will produce Gaussian noise when convolved with a random natural image, but a delta-like response on an image matching the template. WHO templates are more discriminative than standard HOG templates because they only capture the gradients that differentiate the object from random images.
+
+\textcolor{red}{Should we mention how our method improves on this (ie by using CG)?}
 
 % Using HOG
 % In this paper, we also used Histograms of Orientations feature \cite{Dalal05} but in general, we could use any dense features. 
 
-\subsection{More than a Bounding Box}
+\subsection{Pose Detection}
 
-High performance object detectors generalize very well \cite{Felzenszwalb10, Girshick14}. They can handle intraclass variability, change in viewpoint and truncation. However due this generalization, they lose fine-grained information such as accurate pose and object sub-category. 
+Modern object detectors generalize very well, handling intraclass variability, occlusion, truncation and viewpoint changes \cite{Felzenszwalb10, Girshick14}. However, this generalization comes at the cost of fine-grained information, including accurate 3D pose and object sub-category recognition. Such methods typically produce bounding box detection hypotheses, will little further information.
 
-To give more than just a rectangular bounding box, \cite{Pepik12, Xiang12, Fidler12, Xiang14, Hejrati14, Aubry14, Lim14} various methods exist to jointly detect and estimate the pose of an object. \cite{Xiang12, Hejrati14, Fidler12} used 3D representations that deform as viewpoint changes and \cite{Pepik12} uses geometric constraints to regularize 2D appearance models. 
+Many methods have attempted to move object detection towards richer outputs, especially by jointly performing detection and pose estimation \cite{Pepik12, Xiang12, Fidler12, Xiang14, Hejrati14, Aubry14, Lim14}. To achieve this, \cite{Xiang12, Hejrati14, Fidler12} use 3D representations that deform as viewpoint changes and \cite{Pepik12} uses geometric constraints to regularize 2D appearance models.
 
-On fine-grained pose estimation, \cite{Zia13} uses a 3D deformable wireframe model with parts to accurately predict pose and align the model. 
+The methods above perform discrete pose estimation, quantizing the viewing sphere into a number of poses and selecting the best one during inference. Fine-grained pose estimators, in contrast, can infer continuous (or arbitrarily fine-grained) poses. One such method from \cite{Zia13} aligns a 3D deformable part-based wireframe model with input images to accurately predict object poses.
 
-More recently, \cite{Aubry14, Lim14} showed a success in joint instance-level object detection and pose estimation. To estimate pose, they rely on synthetic renderings of CAD models and learn discriminative mid-level patches. \cite{Aubry14} finds discriminative mid-level patches and calibrates them on a small set of real images. Similarly, \cite{Lim14} finds and learns relative discriminativeness of the shared mid-level patches.
+More recently, \cite{Aubry14, Lim14} made progress in joint instance-level object detection and pose estimation. To estimate pose they use synthetic renderings of CAD models to learn discriminative mid-level patches. \cite{Aubry14} calibrates these patches on a small set of real images, while \cite{Lim14} present a method for learning the relative discriminativeness of the patches.
+
+\textcolor{red}{Again, should we highlight the differences between these methods and ours?}
 
  
 % specialized in giving such accurate information, can be applied on any generic object detectors to give high quality metadata.
