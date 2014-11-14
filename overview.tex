@@ -41,69 +41,110 @@
 
 % \begin{comment}
 
-Our method has two modes of operations. (i) complement strong object detectors
-with rich annotations. (ii) object detector with high-quality metadata. Each
-mode uses the common path that goes from initializtion to fine
-tuning~\ref{fig:front}.  
+Our method has two modes of operation.
 
-For both modes, they require pose initialization by an ensemble of NZ-WHO templates. We will explain the NZ-WHO generation pipeline in Sect.~\ref{sec:approach}. First stage of pipeline starts from rendering an viewpoint specific template in Sect.~\ref{sec:rendering}. Then we will go over our novel combination of rendering with Conjugate Gradient method to produce a discriminative NZ-WHO template quickly in subsequent sections from Sect.~\ref{sec:who} to Sect.~\ref{sec:fastwhiten}. 
+{\em (i)} it can be run in isolation, as a sliding window object
+detector, similar in spirit to exemplar SVM~\cite{Malisiewicz11}. In
+that case, it can not only provide a detection bounding box but also
+meta-data such as viewpoint or 3D CAD model exemplar.
+As we show in our experiments, our method in isolation delivers
+performance that is on par with state-of-the-art for the task of
+object class detection and viewpoint estimation while at the same time
+being much faster to train (Sect.~\ref{sec:exp_iso}).
 
-Once we make an ensemble of NZ-WHO templates, we use it as a initialization for subsequent fine tuning stage where our model further tunes the 2D-3D matching (Sect.~\ref{sec:fine}).
+{\em (ii)} it can be used to enrich the detections of another object
+class detector that proposes candidate regions that can then be
+refined by our method. This second mode of operation constitutes the
+strength of our method, as we will show in our experiments
+(Sect.~\ref{sec:experiments}).
 
-For mode (i), we start from detection bounding boxes that has little to no metadata and run initialization stage and tuning stage.
-
-For mode (ii), we start directly from initialization by applying our ensemble of NZ-WHO templates as an ensemble of exemplar detectors.
-
-To validate our approache, in Sect.~\ref{sec:experiments}, we (a) compare the performance of NZ-WHO with other variants of WHO, (b) run the mode (i) on PASCAL 3D dataset~\cite{Xiang14} and (c) run the mode (ii) on 3D Object dataset~\cite{Savarese07}.
-
-
-
-
-
+Both modes of operation rely on the succession of two steps:
+on-the-fly generation of exemplar templates, based on a novel whitened
+feature representation termed NZ-WHO (Sect.~\ref{sec:approach}), and
+pose fine-tuning using MCMC (Sect.~\ref{sec:fine}).
 
 
-% Might use the following in introduction
-\scream{More like an intro than an overview:
-Our method is in line with \cite{Aubry14, Lim14} in the sense that we
-use only renderings, not real images. However, rather than using fixed
-sized mid-level patches, 
 
-\scream{The following part is too harsh}
-we use whole objects to make root
-templates. By using root templates, there is no need to learn a
-discriminative patch dictionary \cite{Aubry13, Aubry14, Lim14}, calibrate the patches \cite{Aubry14, Lim14}
-nor add inference stage that uses spatial configuration \cite{Aubry14, Lim14}. 
 
-However, whitening the whole template is prohibitive for several reasons. All templates have
-different aspect ratios making it difficult to generate the covariance
-matrix $\Sigma$. Since the root templates are larger than mid-level
-patches, a very large auto-covariance $\Gamma$ is required. Lastly,
-time complexity of decorrelating a template with $n$ cells increases
-as $O(n^3)$, resulting in slow template generation and large residuals
-due to numerical errors accumulated while decomposing the covariance
-matrix $\Sigma$.
+% with rich annotations. 
+% mode uses the common path that goes from initializtion to fine
+% tuning~\ref{fig:front}.  
 
-To overcome these difficulties, we propose the Non-Zero Whitened
-Histograms of Orientations (NZ-WHO) with iterative Conjugate Gradient to
-generate templates in real time and enrich rectangular boxes with high
-quality 2D-3D matching. The 2D-3D matching provides a CAD model,
-sub-category, rendering, depth, viewpoint and focal length.
+% For both modes, they require pose initialization by an ensemble of
+% NZ-WHO templates. We will explain the NZ-WHO generation pipeline in
+% Sect.~\ref{sec:approach}. First stage of pipeline starts from
+% rendering an viewpoint specific template in
+% Sect.~\ref{sec:rendering}. Then we will go over our novel combination
+% of rendering with Conjugate Gradient method to produce a
+% discriminative NZ-WHO template quickly in subsequent sections from
+% Sect.~\ref{sec:who} to Sect.~\ref{sec:fastwhiten}.
 
-Our method can work as a standalone 2D-3D matching algorithm, or even
-as a standalone ensemble of exemplar-based object detectors (Figure
-\ref{fig:front}) but its real power comes from combining generic
-object detectors and complement rectangular bounding boxes. Our method
-is simple in design; is several orders of magnitude faster than
-traditional method; requires only CAD models; does not need neither images nor
-calibration, yet is powerful in giving high-quality metadata. These
-properties make our method ideal for complementing object detections. 
+% Once we make an ensemble of NZ-WHO templates, we use it as a
+% initialization for subsequent fine tuning stage where our model
+% further tunes the 2D-3D matching (Sect.~\ref{sec:fine}).
 
-To complement detection bounding boxes, we first search possible 2D-3D
-matching by running cached discrete viewpoint templates to initialize MCMC
-continuous fine tuning stage. Then it refines continuous pose, focal length and
-discrete CAD model index, scale translation. Since it requires iterations of
-proposal and validation, we
-present real time analysis of NZ-WHO template generation to show that
-this can be done on-the-fly. The fine tuning stage process jointly
-optimizes translation, yaw, roll, pitch, scale, and focal length
-continuously and also searches for different CAD models.}
+% For mode (i), we start from detection bounding boxes that has little
+% to no metadata and run initialization stage and tuning stage.
+
+
+% For mode (ii), we start directly from initialization by applying our
+% ensemble of NZ-WHO templates as an ensemble of exemplar detectors.
+
+% To validate our approache, in Sect.~\ref{sec:experiments}, we (a)
+% compare the performance of NZ-WHO with other variants of WHO, (b) run
+% the mode (i) on PASCAL 3D dataset~\cite{Xiang14} and (c) run the mode
+% (ii) on 3D Object dataset~\cite{Savarese07}.
+
+
+
+
+
+
+
+
+
+% % Might use the following in introduction
+% \scream{More like an intro than an overview:
+% Our method is in line with \cite{Aubry14, Lim14} in the sense that we
+% use only renderings, not real images. However, rather than using fixed
+% sized mid-level patches, 
+
+% \scream{The following part is too harsh}
+% we use whole objects to make root
+% templates. By using root templates, there is no need to learn a
+% discriminative patch dictionary \cite{Aubry13, Aubry14, Lim14}, calibrate the patches \cite{Aubry14, Lim14}
+% nor add inference stage that uses spatial configuration \cite{Aubry14, Lim14}. 
+
+% However, whitening the whole template is prohibitive for several reasons. All templates have
+% different aspect ratios making it difficult to generate the covariance
+% matrix $\Sigma$. Since the root templates are larger than mid-level
+% patches, a very large auto-covariance $\Gamma$ is required. Lastly,
+% time complexity of decorrelating a template with $n$ cells increases
+% as $O(n^3)$, resulting in slow template generation and large residuals
+% due to numerical errors accumulated while decomposing the covariance
+% matrix $\Sigma$.
+
+% To overcome these difficulties, we propose the Non-Zero Whitened
+% Histograms of Orientations (NZ-WHO) with iterative Conjugate Gradient to
+% generate templates in real time and enrich rectangular boxes with high
+% quality 2D-3D matching. The 2D-3D matching provides a CAD model,
+% sub-category, rendering, depth, viewpoint and focal length.
+
+% Our method can work as a standalone 2D-3D matching algorithm, or even
+% as a standalone ensemble of exemplar-based object detectors (Figure
+% \ref{fig:front}) but its real power comes from combining generic
+% object detectors and complement rectangular bounding boxes. Our method
+% is simple in design; is several orders of magnitude faster than
+% traditional method; requires only CAD models; does not need neither images nor
+% calibration, yet is powerful in giving high-quality metadata. These
+% properties make our method ideal for complementing object detections. 
+
+% To complement detection bounding boxes, we first search possible 2D-3D
+% matching by running cached discrete viewpoint templates to initialize MCMC
+% continuous fine tuning stage. Then it refines continuous pose, focal length and
+% discrete CAD model index, scale translation. Since it requires iterations of
+% proposal and validation, we
+% present real time analysis of NZ-WHO template generation to show that
+% this can be done on-the-fly. The fine tuning stage process jointly
+% optimizes translation, yaw, roll, pitch, scale, and focal length
+% continuously and also searches for different CAD models.}
