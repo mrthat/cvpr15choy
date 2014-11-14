@@ -40,20 +40,27 @@
 % \end{comment}
 
 % \begin{comment}
+To give better pose estimation, our method consists of a sequence of stages each with specific task (see Fig.~\ref{fig:front}). (Our objective is to complement strong object detectors that give little to no metadata such as Neural Nework based detectors~\cite{Girshick14, Overfeat} and deformable models~\cite{gu10eccv,Xiang12,Pepik12,Fidler12,Hejrati14} 
+
+\scream{More like an intro than an overview:
 Our method is in line with \cite{Aubry14, Lim14} in the sense that we
 use only renderings, not real images. However, rather than using fixed
-sized mid-level patches, we use whole objects and make root
+sized mid-level patches, 
+
+\scream{The following part is too harsh}
+we use whole objects to make root
 templates. By using root templates, there is no need to learn a
-discriminative patch dictionary or to calibrate the patches and an
-additional inference stage is not required. However, whitening the
-whole template is prohibitive for several reasons. All templates have
+discriminative patch dictionary \cite{Aubry13, Aubry14, Lim14}, calibrate the patches \cite{Aubry14, Lim14}
+nor add inference stage that uses spatial configuration \cite{Aubry14, Lim14}. 
+
+However, whitening the whole template is prohibitive for several reasons. All templates have
 different aspect ratios making it difficult to generate the covariance
 matrix $\Sigma$. Since the root templates are larger than mid-level
 patches, a very large auto-covariance $\Gamma$ is required. Lastly,
 time complexity of decorrelating a template with $n$ cells increases
 as $O(n^3)$, resulting in slow template generation and large residuals
 due to numerical errors accumulated while decomposing the covariance
-matrix $\Sigma$. 
+matrix $\Sigma$.
 
 To overcome these difficulties, we propose the Non-Zero Whitened
 Histograms of Orientations (NZ-WHO) with iterative Conjugate Gradient to
@@ -71,10 +78,11 @@ calibration, yet is powerful in giving high-quality metadata. These
 properties make our method ideal for complementing object detections. 
 
 To complement detection bounding boxes, we first search possible 2D-3D
-matching by running cached discrete viewpoint templates. Then, for the
-most probable match, we refine the initial matching using single component Metropolis
-Hastings\cite{mcmc}. Since it requires iterations of proposal and validation, we
+matching by running cached discrete viewpoint templates to initialize MCMC
+continuous fine tuning stage. Then it refines continuous pose, focal length and
+discrete CAD model index, scale translation. Since it requires iterations of
+proposal and validation, we
 present real time analysis of NZ-WHO template generation to show that
 this can be done on-the-fly. The fine tuning stage process jointly
 optimizes translation, yaw, roll, pitch, scale, and focal length
-continuously and also searches for different CAD models.
+continuously and also searches for different CAD models.}

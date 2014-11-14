@@ -6,6 +6,11 @@ M.~Aubry, D.~Maturana, A.~Efros, B.~Russell, and J.~Sivic.
   dataset of cad models.
 \newblock In {\em CVPR}, 2014.
 
+\bibitem{Aubry13}
+M.~Aubry, B.~Russell, and J.~Sivic.
+\newblock Painting-to-{3D} model alignment via discriminative visual elements.
+\newblock {\em ACM Transactions on Graphics}, 2013.
+
 \bibitem{Belouchrani00}
 A.~Belouchrani and A.~Cichocki.
 \newblock Robust whitening procedure in blind source separation context.
@@ -75,6 +80,13 @@ A.~K. J.~Lim and A.~Torralba.
 \newblock Fpm: Fine pose parts-based model with 3d cad models.
 \newblock In {\em ECCV}, 2014.
 
+\bibitem{Krizhevsky12}
+A.~Krizhevsky, I.~Sutskever, and G.~E. Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock In F.~Pereira, C.~Burges, L.~Bottou, and K.~Weinberger, editors, {\em
+  Advances in Neural Information Processing Systems 25}, pages 1097--1105.
+  Curran Associates, Inc., 2012.
+
 \bibitem{Lopez-Sastre11}
 R.~Lopez-Sastre, T.~Tuytelaars, and S.~Savarese.
 \newblock Deformable part models revisited: A performance evaluation for object
@@ -122,6 +134,12 @@ S.~Savarese and L.~Fei-Fei.
 \newblock Computer vision, 2007. iccv 2007. ieee 11th international conference
   on.
 \newblock pages 1--8, Oct 2007.
+
+\bibitem{Overfeat}
+P.~Sermanet, D.~Eigen, X.~Zhang, M.~Mathieu, R.~Fergus, and Y.~LeCun.
+\newblock Overfeat: Integrated recognition, localization and detection using
+  convolutional networks.
+\newblock {\em CoRR}, abs/1312.6229, 2013.
 
 \bibitem{stark10bmvc}
 M.~Stark, M.~Goesele, and B.~Schiele.
