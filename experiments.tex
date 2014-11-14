@@ -36,6 +36,54 @@ from rendered 3D CAD model images.
 % continuous viewpoint estimation, a CAD model (rendering, depth) and
 % fine-grained category.  
 
+\subsection{Variations of WHO}
+\label{sec:variations}
+To validate our approach, we run an ensemble of NZ-WHO templates as a bank of exemplar detectors and compare its performance with other WHO variants. Since WHO variants uses HOG features, they are slower than HOG templates but WHO variants in general performs better than WHO by significant margin. However, WHO using Cholesky decomposition with Gaussian Elemination takes the most time yet performs worse than NZ-WHO which is two order of magnitude faster to generate. 
+
+We also calibrated the various methods
+
+In the experiment, we compared the performance of HOG, WHO, WHO-CG, WHO-CG-Z and NZ-WHO. The WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}
+
+The experiment results is on Tab.~\ref{tab:who_initializations}
+We found out that without calibration, NZ-WHO performs the best on object
+detection on 3DObject car dataset \cite{Savarese07}. See Table
+\ref{tab:who_initializations} for detail. In essence, if we use calibration, we
+could achieve better performance but since our goal is to do 2D-3D matching and
+continuous viewpoint estimation using on-the-fly template generation, we did not
+calibrated our templates.
+
+
+We empirically found out that NZ-WHO performs reasonably well without time
+consuming calibration stage compare to other variational method to generate
+templates. We used 1 CAD model with viewpoints covering 24 azimuths and 4
+elevations. Each template takes approximately 80 milliseconds to generate a
+NZ-WHO template. We also calibrated templates using the method presented in
+\cite{Aubry14}. The calibration learns affine transformation of the detection
+confidence.% Note that in Section \ref{experiments}, we provide the same
+% experiment with 9 CAD models.
+
+
+\begin{table*}[!htbp]
+    \footnotesize
+    \begin{center}
+\begin{tabular}{|c|c|r|c|r|}
+\hline
+Methods (AP/MPPE) & before calibration  & time & after calibration \cite{Aubry14} & time \\
+\hline\hline
+HOG\cite{Dalal05}     & 72.3 / 65.0           &  31ms  & 60.4 / 50.2                 & 8.7 sec \\ 
+WHO\cite{Hariharan12} & 82.1 / 85.4           &  3811ms& 84.4 / 83.0                 & 12.4 sec  \\
+WHO-CG                & 81.7 / \textbf{84.9}  &  104ms & 83.7 / 87.3                 & 8.3 sec \\
+WHO-CG-Z              & 54.4 / 65.1           &  103ms & \textbf{92.8} / 86.7        & 8.7 sec  \\
+% NZC-WHO-Z    & 89.10/\textbf{78.64} &    & 91.15/74.79                  &     \\
+NZ-WHO-CG             & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}        & 8.5 sec   \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11} variations of WHO on 3DObject Car dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}.}
+\label{tab:who_initializations}
+\end{table*}
+
+
 
 \subsection{2D-3D Matching as an Object Detector} 
 \label{sec:exp_iso}
