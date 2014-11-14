@@ -184,7 +184,7 @@ decomposition with Gaussian Elemination, which requires $O(n^3)$ time \scream{Ci
 The Conjugate Gradient method is an iterative algorithm for solving symmetric
 positive definite systems which runs in $O(n^2\kappa)$ time, where $\kappa$ is
 the condition number of the matrix. \scream{Citation for complexity}.
-
+%
 This makes Conjugate Gradient faster than decomposition for matrices with small condition
 numbers relative to their size.
 
@@ -196,20 +196,24 @@ to $50$, much smaller than the dimension of the matrix (7000).
 
 As a result, a GPU implementation of conjugate gradient converges in 50
 ms when using 250 HOG cells, two orders of magnitude faster than the using
-Cholesky factorization with Gaussian Elemination. We report the real time
-analysis of whitening using decomposition and conjugate gradient methods in
-Fig.~\ref{fig:whotime}.
-
-We compare the speed of each of template generation methods in
-Fig.~\cite{fig:covariancetime_crop} Using naive Cholesky decomposition,
-WHO template takes several seconds. But, if we use iterative Conjugate Gradient method, it only
-takes 100ms. If we use NZ-WHO, we can gain extra speed up since we only whitens non-zero cells.
+Cholesky factorization with Gaussian Elemination.
 
 
-Also, since the iterative Conjugate Gradient method directly tries to reduce the residual (the norm of $y-Ax$ for $Ax = y$),
-it is more numerically stable than Cholesky decomposition with Gaussian Elemination. We vary the number of cells in a template
-and show that the residual of NZ-WHO is smaller than WHO Fig.~\ref{fig:whoresidual}.
+We report the real time analysis of whitening using decomposition and
+conjugate gradient methods in Fig.~\ref{fig:whotime}. (a) compares the
+absolute runtime of the different methods while (b) gives the obtained
+speedup. We see that % We compare the speed of each of template generation methods in
+% Fig.~\cite{fig:covariancetime_crop} Using naive Cholesky decomposition,
+WHO template takes several seconds for realistic template sizes of
+several hundred cells, while using the iterative Conjugate Gradient
+method, it only takes 100ms. If we use NZ-WHO, we can gain extra speed
+up since we only whitens non-zero cells.
 
+In addition, since the iterative Conjugate Gradient method directly
+tries to reduce the residual (the norm of $y-Ax$ for $Ax = y$), it is
+more numerically stable than Cholesky decomposition with Gaussian
+Elemination. We vary the number of cells in a template and show that
+the residual of NZ-WHO is smaller than WHO Fig.~\ref{fig:whoresidual}.
 % Also, the residual from the Conjugate Gradient method (the norm of $y-Ax$ for $Ax = y$) is smaller than 
 % that of Cholesky decomposition. 
 
@@ -243,5 +247,5 @@ much slower since computation time scales linearly with the number of HOG
 cells in the template. To overcome and speed up the convolution, we used FFT
 based GPU convolution \cite{Podlozhnyuk} which scales. Briefly, for length $n$ signal and
 length $m$ filter, naive convolution takes $O(nm)$ time whereas FFT-based
-convolution takes $O\left( (n + m)\log (n+m) \right)$ time. For large $m$, high
-resolution template, we can gain computational advantage.
+convolution takes $O\left( (n + m)\log (n+m) \right)$ time. For large
+$m$ (high resolution templates), we can gain computational advantage.
