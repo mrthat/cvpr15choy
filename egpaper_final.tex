@@ -27,7 +27,7 @@
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
 % custom commands
-\newcommand{\scream}[1]{{\bf *** #1! ***}}
+\newcommand{\scream}[1]{{\color{red} \bf *** #1! ***}}
 
 % Pages are numbered in submission mode, and unnumbered in camera-ready
 %\ifcvprfinal\pagestyle{empty}\fi
@@ -120,13 +120,15 @@ More recently, \cite{Aubry14, Lim14} made progress in joint instance-level objec
 \section{2D-3D Matching using Non-Zero Whitened Histograms of Orientations(NZ-WHO)}
 \label{sec:nz-who}
 
-We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), an improvement over WHO, that are both more discriminative than WHO, and can be generated two orders of magnitude faster. This speedup means we can generate templates on the fly, allowing our approach to evaluate arbitrary viewpoint hypotheses. 
+We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), an improvement over WHO, that are both more discriminative than WHO, and can be generated in 70ms (compared to several seconds for WHO). This speed up means we can generate templates on the fly, allowing our approach to evaluate arbitrary viewpoint hypotheses. 
 
-The first innovation comes from using an iterative Conjugate Gradient method. To whiten a HOG template, one solves a system of linear equations $\Sigma w = (x - \mu)$ often by decomposing the matrix (LU decomposition or Cholesky decomposition). Since the covariance matrix of HOG have nice spectral properties, we can adopt the iterative Conjugate Gradient method to quickly solve the system of linear equations several orders of magnitude faster than decomposition methods.
+The computational efficiency of our approach comes from using the iterative conjugate gradient method to whiten the HOG template. Whitening a feature vector $x$ requires a system of linear equations $\Sigma w = (x - \mu)$ to be solved, usually by decomposing the covariance matrix $\Sigma$ (with LU or Cholesky decomposition). Since the covariance matrices of HOG templates have nice spectral properties, we can use the conjugate gradient method to solve the system of linear equations several orders of magnitude faster than decomposition methods.
 
-The second innovation is 'Non-Zero' whitening. Unlike natural images, rendering produces textureless background such as Figure \ref{fig:rendering}. If we use random natural images as a background to make texture, the gradients in the background patch become part of the discriminative patch. On the other hand, if we treat the image as a natural image and whiten all region, it creates several artifacts: 1. while centering the template (subtracting the mean $\mu$), it introduces strong negative gradients on textureless region (Figure \ref{fig:whocomparison}); 2. when decorrelating the centered feature, $\Sigma^{-1}(x - \mu)$, it tries to remove correlation where there is none; 3. by including background regions, the size of the signal $x$ gets larger. 
+Our second innovation is 'Non-Zero' whitening. When synthesizing detection templates from rendered images, a common problem is how to handle the background. Some methods \scream{which?} render the model over a natural image background, but this results in gradients in the background being incorporated into the discriminative template. Alternatively, we could leave the background textureless \scream{did Hariharan do this?} (see Fig.~\ref{fig:rendering}), but whitening the resulting HOG template produces in undesirable background artifacts. These are created when centering the template (by subtracting the mean $\mu$), where strong negative weights are introduced in the textureless region (as seen in Fig.~\ref{fig:whocomparison}). This could result in positive matches being suppressed due to spurious background gradients.
 
-To get rid of such artifacts, we select cells with non-zero gradients, whiten regions, and restore the template afterward. We call the feature from the pipeline as Non-Zero Whitened Histograms of Orientations. More detailed analysis of WHO and NZ-WHO is on Table \ref{tab:who_initializations}
+To remove such artifacts, we construct $x$ using only cells with non-zero gradients. After whitening we restore the full template, with the zero-gradient cells left unchanged. This approach has the added benefit of reducing the size of the linear system we need to solve, further speeding up our method.
+
+Table \ref{tab:who_initializations} provides a detailed comparison of WHO and NZ-WHO templates, illustrating that our method is faster and more discriminative than Whitened Histograms of Orientations. \scream{Does the table show this?}
 
 % We compare the performance of WHO and NZ-WHO on 3D Object dataset \cite{Savarese07} and report performance on Table \ref{tab:who_initializations}. 
 
@@ -178,10 +180,23 @@ To get rid of such artifacts, we select cells with non-zero gradients, whiten re
 
 % \subsection{Whitening and Textureless Background}
 
-\subsection{Feature Statistics and Covariance Synthesis}
+\subsection{Constructing the Covariance Matrix}
 \label{sec:feature_statistics}
 % Whats used in our work and using Autocovariance matrix
-We first collected the first and second order statistics (mean and autocovariance of HOG feature) of HOG feature from arbitrary natural images. Following the practice of \cite{Hariharan12}, which assumes Wide-Sense Stationarity (WSS) of HOG features, we can easily synthesize covariance of arbitrary size template from autocovariance $\Gamma$. To further simplify $\Gamma$, we assumed horizontal and vertical symmetry.
+We first collected the first and second order statistics (mean and autocovariance) of HOG features from arbitrary natural images. Following \cite{Hariharan12}, we assume Wide-Sense Stationarity (WSS) of HOG features generated from natural images. That is, we assume the mean of a HOG cell is independent of its place in the image, and the autocovariance of patches depends only on their relative location.
+
+In one dimension, let $x(u)$ be the feature at location $u$. Then WSS states that $\mathbb{E}\left[x(u)\right] = \mu_x$ for all $u$, and
+\begin{equation}
+\textrm{cov}_x(u,v) = \textrm{cov}_x(0, v-u) = \Gamma(v-u),
+\end{equation} where $\Gamma$ is the autocovariance. For simplicity, we show the 1D case but this can be easily extended to 2D spatial autocovariance.
+
+Therefore, assuming WSS allows us to synthesize the covariance matrix for templates \emph{of any size} from the autocovariance. This hugely reduces the memory required because to build the covariance matrix of a template of $w \times h$ HOG cells (with 31 elements each), we only need a $w \times h \times 31$ autocovariance matrix. In comparison, the covariance matrix itself is $(w \times h \times 31) \times (w \times h \times 31)$. Furthermore, by using the autocovariance we can avoid storing the covariance matrix for every different aspect ratio used during detection.
+
+To further simplify $\Gamma$, we assumed horizontal and vertical symmetry. In our implementation, we compute a $40 \times 40 \times 31$ autocovariance matrix, meaning we can synthesize covariance matrices for HOG grids of as big as $40 \times 40$.
+
+Synthesizing the covariance matrix is memory copy operations so we used GPU to speed up the process (Figure \ref{fig:covariancetime}).
+
+
 
 % Since the statistics have been computed for a generic HOG feature, we can use the same statistics for all templates and images. In practice, since it is expensive to whiten all the sliding patches in the image, we followed \cite{Hariharan12} and defined the templates to be $w = \Sigma^{-1}(X-E[X])$\begin{comment}which is a good approximation of $\Sigma^{-\frac{T}{2}} \Sigma^{-\frac{1}{2}}(X-E[X])$\end{comment} 
 
@@ -197,11 +212,9 @@ We first collected the first and second order statistics (mean and autocovarianc
 
 % To whiten a HOG features, we first have to synthesize the covariance matrix. Following the method of \cite{Hariharan12}, which assumes spatial Wide-Sense Stationarity (WSS) of a feature, covariance matrix can be synthesized using spatial autocovariance $\Gamma$. This assumes the \begin{comment} and features such as HOG are gradients in a small patch whose statistics does not change (an object can be in anywhere in an image)\end{comment}. 
 
-More formally, let $x(u)$ be the HOG feature on location $u$ then, by WSS, $\mathbb{E}\left[x(u)\right] = \mathbb{E}(x(u+v)) = \mu_x$ and $\mathbb{E}\left[(x(u)-\mu_x)(x(v)-\mu_x)\right]  =\mathbb{E}\left[(x(0)-\mu_x)(x(v-u)-\mu_x)\right] = \Gamma(0,v-u)$. So, one can synthesize covariance matrix from autocovariance $\Gamma$. For simplicity, we used 1D case but this can be easily extended to 2D spatial autocovariance.
+%However, unlike small fixed-sized mid-level patches, the root templates have different aspect ratios, different gradient patterns and large number of HOG cells which results in large covariance $\Sigma \in \mathcal{R}^{7000 \times 7000}$ that is difficult to cache. Thus, to generate a NZ-WHO template, we have to synthesize a covariance matrix and solve the system of linear equations. 
 
-However, unlike small fixed-sized mid-level patches, the root templates have different aspect ratios, different gradient patterns and large number of HOG cells which results in large covariance $\Sigma \in \mathcal{R}^{7000 \times 7000}$ that is difficult to cache. Thus, to generate a NZ-WHO template, we have to synthesize a covariance matrix and solve the system of linear equations. 
 
-Synthesizing the covariance matrix is memory copy operations so we used GPU to speed up the process (Figure \ref{fig:covariancetime}).
 
 % Thus, every time we whiten a root template, we have to generate a covariance matrix using autocovariance $\Gamma$. 
 

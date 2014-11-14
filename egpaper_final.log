@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2014.11.13)  13 NOV 2014 16:17
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2014.11.13)  13 NOV 2014 20:04
 entering extended mode
  %&-line parsing enabled.
 **egpaper_final
@@ -283,8 +283,8 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.16 \DeclareMathOperator
-                         {\Tr}{Tr}
+l.18 
+     
 ? 
 (/usr/share/texmf-texlive/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2009/10/09 v6.79a Hypertext links for LaTeX
@@ -461,121 +461,108 @@ Underfull \hbox (badness 1484) in paragraph at lines 261--269
 []\OT1/ptm/m/n/10 To com-ple-ment de-tec-tion bound-ing boxes, we first
  []
 
-) <figures/hog_crop.png, id=101, 849.1725pt x 512.91624pt>
+)
+Underfull \hbox (badness 1275) in paragraph at lines 125--126
+\OT1/ptm/m/n/10 from us-ing the it-er-a-tive con-ju-gate gra-di-ent method to
+ []
+
+[3] <figures/hog_crop.png, id=118, 849.1725pt x 512.91624pt>
 File: figures/hog_crop.png Graphic file (type png)
 
 <use figures/hog_crop.png>
-<figures/whiten_all_crop.png, id=102, 434.62375pt x 262.9825pt>
+<figures/whiten_all_crop.png, id=119, 434.62375pt x 262.9825pt>
 File: figures/whiten_all_crop.png Graphic file (type png)
 
 <use figures/whiten_all_crop.png>
-<figures/whiten_non_zero_crop.png, id=104, 437.635pt x 261.97874pt>
+<figures/whiten_non_zero_crop.png, id=121, 437.635pt x 261.97874pt>
 File: figures/whiten_non_zero_crop.png Graphic file (type png)
 
 <use figures/whiten_non_zero_crop.png>
-<figures/hog_neg_crop.png, id=105, 854.19125pt x 519.9425pt>
+<figures/hog_neg_crop.png, id=122, 854.19125pt x 519.9425pt>
 File: figures/hog_neg_crop.png Graphic file (type png)
 
 <use figures/hog_neg_crop.png>
-<figures/whiten_all_neg_crop.png, id=106, 434.62375pt x 260.975pt>
+<figures/whiten_all_neg_crop.png, id=123, 434.62375pt x 260.975pt>
 File: figures/whiten_all_neg_crop.png Graphic file (type png)
 
 <use figures/whiten_all_neg_crop.png>
-<figures/whiten_non_zero_neg.png, id=107, 436.63126pt x 264.99pt>
+<figures/whiten_non_zero_neg.png, id=124, 436.63126pt x 264.99pt>
 File: figures/whiten_non_zero_neg.png Graphic file (type png)
 
 <use figures/whiten_non_zero_neg.png>
-<figures/ihog_hog200_crop.png, id=108, 809.0225pt x 521.95pt>
+<figures/ihog_hog200_crop.png, id=125, 809.0225pt x 521.95pt>
 File: figures/ihog_hog200_crop.png Graphic file (type png)
 
 <use figures/ihog_hog200_crop.png>
-<figures/ihog_whiten_all200_crop.png, id=109, 447.3513pt x 285.82785pt>
+<figures/ihog_whiten_all200_crop.png, id=126, 447.3513pt x 285.82785pt>
 File: figures/ihog_whiten_all200_crop.png Graphic file (type png)
 
 <use figures/ihog_whiten_all200_crop.png>
-<figures/ihog_whiten_non_zero200_crop.png, id=110, 448.074pt x 286.1892pt>
+<figures/ihog_whiten_non_zero200_crop.png, id=127, 448.074pt x 286.1892pt>
 File: figures/ihog_whiten_non_zero200_crop.png Graphic file (type png)
 
-<use figures/ihog_whiten_non_zero200_crop.png> [3]
-Underfull \hbox (badness 10000) in paragraph at lines 201--202
-[]\OT1/ptm/m/n/10 More for-mally, let $\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 (\OML/
-cmm/m/it/10 u\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 be the HOG fea-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 201--202
-\OT1/ptm/m/n/10 ture on lo-ca-tion $\OML/cmm/m/it/10 u$ \OT1/ptm/m/n/10 then, b
-y WSS, $\U/msb/m/n/10 E [] \OT1/cmr/m/n/10 =
- []
-
+<use figures/ihog_whiten_non_zero200_crop.png>
 
 LaTeX Warning: Reference `fig:covariancetime' on page 4 undefined on input line
- 205.
+ 197.
 
-<figures/covariancetime.png, id=132, 887.315pt x 342.078pt>
+<figures/covariancetime.png, id=131, 887.315pt x 342.078pt>
 File: figures/covariancetime.png Graphic file (type png)
 
 <use figures/covariancetime.png>
-<figures/whiten_orig_depth.png, id=133, 524.96124pt x 182.6825pt>
+<figures/whiten_orig_depth.png, id=132, 524.96124pt x 182.6825pt>
 File: figures/whiten_orig_depth.png Graphic file (type png)
 
 <use figures/whiten_orig_depth.png>
 
-LaTeX Warning: Reference `fig:spectral' on page 4 undefined on input line 262.
+LaTeX Warning: Reference `fig:spectral' on page 4 undefined on input line 274.
 
-<figures/whotime.png, id=137, 578.16pt x 433.62pt>
-File: figures/whotime.png Graphic file (type png)
- <use figures/whotime.png>
-<figures/speedup.png, id=138, 578.16pt x 433.62pt>
-File: figures/speedup.png Graphic file (type png)
- <use figures/speedup.png>
-Overfull \hbox (23.99998pt too wide) in paragraph at lines 266--271
- [] 
- []
-
-<figures/residual.png, id=139, 578.16pt x 433.62pt>
-File: figures/residual.png Graphic file (type png)
- <use figures/residual.png>
 [4 <./figures/hog_crop.png (PNG copy)> <./figures/whiten_all_crop.png> <./figur
 es/whiten_non_zero_crop.png> <./figures/hog_neg_crop.png (PNG copy)> <./figures
 /whiten_all_neg_crop.png> <./figures/whiten_non_zero_neg.png> <./figures/ihog_h
 og200_crop.png (PNG copy)> <./figures/ihog_whiten_all200_crop.png> <./figures/i
 hog_whiten_non_zero200_crop.png> <./figures/covariancetime.png (PNG copy)> <./f
 igures/whiten_orig_depth.png>]
-Underfull \hbox (badness 1902) in paragraph at lines 387--388
+<figures/whotime.png, id=155, 578.16pt x 433.62pt>
+File: figures/whotime.png Graphic file (type png)
+ <use figures/whotime.png>
+<figures/speedup.png, id=156, 578.16pt x 433.62pt>
+File: figures/speedup.png Graphic file (type png)
+ <use figures/speedup.png>
+Overfull \hbox (23.99998pt too wide) in paragraph at lines 278--283
+ [] 
+ []
+
+<figures/residual.png, id=157, 578.16pt x 433.62pt>
+File: figures/residual.png Graphic file (type png)
+ <use figures/residual.png>
+Underfull \hbox (badness 1902) in paragraph at lines 399--400
 []\OT1/ptm/m/n/10 Where $\OMS/cmsy/m/n/10 ^^C$ \OT1/ptm/m/n/10 is the cir-cu-la
 r con-vo-lu-tion and $\OMS/cmsy/m/n/10 ^^N$ \OT1/ptm/m/n/10 is the
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [5 <./figures/whotime.png (PNG copy)> <./figures/speedup.png (PNG copy)> <./fi
-gures/residual.png (PNG copy)>] <figures/tuning2.png, id=184, 882.29625pt x 718
-.685pt>
+<figures/tuning2.png, id=171, 882.29625pt x 718.685pt>
 File: figures/tuning2.png Graphic file (type png)
 
 <use figures/tuning2.png>
-<figures/tuning.png, id=185, 976.64874pt x 263.98625pt>
+<figures/tuning.png, id=172, 976.64874pt x 263.98625pt>
 File: figures/tuning.png Graphic file (type png)
 
-<use figures/tuning.png>
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-<figures/car_3dobject/7.png, id=190, 420.57124pt x 315.1775pt>
+<use figures/tuning.png> [5 <./figures/whotime.png (PNG copy)> <./figures/speed
+up.png (PNG copy)> <./figures/residual.png (PNG copy)>]
+<figures/car_3dobject/7.png, id=191, 420.57124pt x 315.1775pt>
 File: figures/car_3dobject/7.png Graphic file (type png)
 
 <use figures/car_3dobject/7.png>
-<figures/car_3dobject/8.png, id=191, 419.5675pt x 316.18124pt>
+<figures/car_3dobject/8.png, id=192, 419.5675pt x 316.18124pt>
 File: figures/car_3dobject/8.png Graphic file (type png)
 
 <use figures/car_3dobject/8.png>
-<figures/car_3dobject/11.png, id=192, 420.57124pt x 316.18124pt>
+<figures/car_3dobject/11.png, id=193, 420.57124pt x 316.18124pt>
 File: figures/car_3dobject/11.png Graphic file (type png)
 
 <use figures/car_3dobject/11.png>
-<figures/car_3dobject/12.png, id=193, 420.57124pt x 317.185pt>
+<figures/car_3dobject/12.png, id=194, 420.57124pt x 317.185pt>
 File: figures/car_3dobject/12.png Graphic file (type png)
 
 <use figures/car_3dobject/12.png> [6 <./figures/tuning2.png (PNG copy)> <./figu
@@ -583,7 +570,7 @@ res/tuning.png (PNG copy)> <./figures/car_3dobject/7.png (PNG copy)> <./figures
 /car_3dobject/8.png (PNG copy)> <./figures/car_3dobject/11.png (PNG copy)> <./f
 igures/car_3dobject/12.png (PNG copy)>]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 487.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 499.
 
 <figures/car_pascal/1.png, id=217, 937.5025pt x 707.64375pt>
 File: figures/car_pascal/1.png Graphic file (type png)
@@ -600,20 +587,26 @@ File: figures/car_pascal/3.png Graphic file (type png)
 <figures/car_pascal/4.png, id=220, 936.49875pt x 705.63625pt>
 File: figures/car_pascal/4.png Graphic file (type png)
 
-<use figures/car_pascal/4.png> (./egpaper_final.bbl
-Underfull \vbox (badness 10000) has occurred while \output is active []
+<use figures/car_pascal/4.png>
 
+LaTeX Warning: `h' float specifier changed to `ht'.
 
+(./egpaper_final.bbl
 Overfull \hbox (2.57323pt too wide) in paragraph at lines 32--37
 \OT1/ptm/m/n/9 network.org/challenges/VOC/voc2012/workshop/index.html. 
  []
 
-Missing character: There is no ¿ in font ptmr7t!
+
+Underfull \vbox (badness 1253) has occurred while \output is active []
+
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 99.
-[7 <./figures/car_pascal/1.png (PNG copy)> <./figures/car_pascal/2.png (PNG cop
-y)> <./figures/car_pascal/3.png (PNG copy)> <./figures/car_pascal/4.png (PNG co
-py)>]) [8
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 84.
+ [7 <./figures/car_pascal/1.png (PNG copy)> <./figures/car_pascal/2.png (PNG co
+py)> <./figures/car_pascal/3.png (PNG copy)> <./figures/car_pascal/4.png (PNG c
+opy)>]
+Missing character: There is no ¿ in font ptmr7t!
+)
+[8
 
 ] (./egpaper_final.aux)
 
@@ -624,13 +617,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 7665 strings out of 493848
- 111153 string characters out of 1152822
- 227649 words of memory out of 3000000
+ 7666 strings out of 493848
+ 111186 string characters out of 1152822
+ 227634 words of memory out of 3000000
  10736 multiletter control sequences out of 15000+50000
- 35689 words of font info for 76 fonts, out of 3000000 for 9000
+ 36703 words of font info for 78 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 36i,12n,39p,1098b,434s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 40i,12n,39p,1098b,436s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-texli
 ve/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-texlive/fonts/ty
 pe1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts/type1/public/
@@ -644,9 +637,9 @@ vetic/uhvb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/helvetic/uhvr8a.pfb>
 </usr/share/texmf-texlive/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-te
 xlive/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-texlive/fonts/type1/ur
 w/times/utmri8a.pfb>
-Output written on egpaper_final.pdf (8 pages, 9154191 bytes).
+Output written on egpaper_final.pdf (8 pages, 9155722 bytes).
 PDF statistics:
- 297 PDF objects out of 1000 (max. 8388607)
- 66 named destinations out of 1000 (max. 500000)
+ 298 PDF objects out of 1000 (max. 8388607)
+ 67 named destinations out of 1000 (max. 500000)
  126 words of extra memory for PDF output out of 10000 (max. 10000000)
 
