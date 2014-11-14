@@ -176,7 +176,7 @@ feature vector $x'$ means a solving the system of linear equations, $\Sigma' w' 
 \mu')$. In
 \cite{Hariharan12}, the authors make use of the fact that covariance matrices
 are symmetric and positive semidefinite to solve the system via the Cholesky
-decomposition with Gaussian Elemination, which requires $O(n^3)$ time \scream{Citation for complexity}.
+decomposition with Gaussian Elimination, which requires $O(n^3)$ time \scream{Citation for complexity}.
 
 The Conjugate Gradient method is an iterative algorithm for solving symmetric
 positive definite systems which runs in $O(n^2\kappa)$ time, where $\kappa$ is
@@ -193,7 +193,7 @@ to $50$, much smaller than the dimension of the matrix (7000).
 
 As a result, a GPU implementation of conjugate gradient converges in 50
 ms when using 250 HOG cells, two orders of magnitude faster than the using
-Cholesky factorization with Gaussian Elemination.
+Cholesky factorization with Gaussian Elimination.
 
 
 We report the real time analysis of whitening using decomposition and
@@ -209,7 +209,7 @@ up since we only whitens non-zero cells.
 In addition, since the iterative Conjugate Gradient method directly
 tries to reduce the residual (the norm of $y-Ax$ for $Ax = y$), it is
 more numerically stable than Cholesky decomposition with Gaussian
-Elemination. We vary the number of cells in a template and show that
+Elimination. We vary the number of cells in a template and show that
 the residual of NZ-WHO is smaller than WHO Fig.~\ref{fig:whoresidual}.
 % Also, the residual from the Conjugate Gradient method (the norm of $y-Ax$ for $Ax = y$) is smaller than 
 % that of Cholesky decomposition. 
