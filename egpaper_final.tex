@@ -27,7 +27,7 @@
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
 % custom commands
-\newcommand{\scream}[1]{{\color{red} \bf *** #1! ***}}
+\newcommand{\scream}[1]{{\color{red} \bf *** #1 ***}}
 
 % Pages are numbered in submission mode, and unnumbered in camera-ready
 %\ifcvprfinal\pagestyle{empty}\fi
@@ -120,9 +120,9 @@ More recently, \cite{Aubry14, Lim14} made progress in joint instance-level objec
 \section{2D-3D Matching using Non-Zero Whitened Histograms of Orientations(NZ-WHO)}
 \label{sec:nz-who}
 
-We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), an improvement over WHO, that are both more discriminative than WHO, and can be generated in 70ms (compared to several seconds for WHO). This speed up means we can generate templates on the fly, allowing our approach to evaluate arbitrary viewpoint hypotheses. 
+We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both more discriminative than WHO, and can be generated in 70ms (compared to several seconds for WHO). This speed up means we can generate templates on the fly, allowing our approach to evaluate arbitrary viewpoint hypotheses. 
 
-The computational efficiency of our approach comes from using the iterative conjugate gradient method to whiten the HOG template. Whitening a feature vector $x$ requires a system of linear equations $\Sigma w = (x - \mu)$ to be solved, usually by decomposing the covariance matrix $\Sigma$ (with LU or Cholesky decomposition). Since the covariance matrices of HOG templates have nice spectral properties, we can use the conjugate gradient method to solve the system of linear equations several orders of magnitude faster than decomposition methods.
+The computational efficiency of our approach comes from using the iterative conjugate gradient method to whiten the HOG template. Whitening a feature vector $x$ requires a system of linear equations $\Sigma w = (x - \mu)$ to be solved, usually by decomposing the covariance matrix $\Sigma$ (with LU or Cholesky decomposition). Since the covariance matrices of HOG templates have nice spectral properties (see Section \ref{sec:fast_whitening}), the conjugate gradient method will converge to the solution several orders of magnitude faster than decomposition methods.
 
 Our second innovation is 'Non-Zero' whitening. When synthesizing detection templates from rendered images, a common problem is how to handle the background. Some methods \scream{which?} render the model over a natural image background, but this results in gradients in the background being incorporated into the discriminative template. Alternatively, we could leave the background textureless \scream{did Hariharan do this?} (see Fig.~\ref{fig:rendering}), but whitening the resulting HOG template produces in undesirable background artifacts. These are created when centering the template (by subtracting the mean $\mu$), where strong negative weights are introduced in the textureless region (as seen in Fig.~\ref{fig:whocomparison}). This could result in positive matches being suppressed due to spurious background gradients.
 
@@ -248,7 +248,7 @@ Synthesizing the covariance matrix is memory copy operations so we used GPU to s
 % \end{comment}
 
 \subsection{Fast Whitening and Non-Zero Selection}
-
+\label{sec:fast_whitening}
 \begin{figure}[t]
   \begin{center}
      \includegraphics[width=0.9\linewidth]{whiten_orig_depth} 
@@ -257,9 +257,7 @@ Synthesizing the covariance matrix is memory copy operations so we used GPU to s
   \label{fig:rendering}
   \end{figure}
  
-To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$ which takes $O(n^3)$ time. In \cite{Hariharan12}, the authors make use of Positive Semi-Definite and Hermitian properties of a covariance matrix to use Cholesky decomposition and Gaussian elimination which is twice faster than LU decomposition.
-
-However, if we make use of a spectral property of the covariance matrix, we can further speed up the whitening stage.
+To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$ which takes $O(n^3)$ time. In \cite{Hariharan12}, the authors make use of positive semidefinite and Hermitian properties of a covariance matrix to use Cholesky decomposition and Gaussian elimination which is twice as fast a the LU decomposition. However, if we make use of a spectral property of the covariance matrix, we can further speed up the whitening stage.
   
   If we use a high resolution template such as \ref{fig:rendering}
 
@@ -284,7 +282,6 @@ We also used iterative Conjugate Gradient to make use of low rank property of th
   \caption{Comparison of HOG variants generation time and final }
   \label{fig:whotime}
 \end{figure}
-
 [Figure spectral analysis]
 
 \begin{figure}[t]
@@ -296,7 +293,8 @@ We also used iterative Conjugate Gradient to make use of low rank property of th
 
 \subsection{Variations of WHO}
 
-We empirically found out that NZ-WHO performs reasonably well without time consuming calibration stage compare to other variational methods to generate templates. We used 1 CAD model with viewpoints covering 24 azimuths and 4 elevations with 250 cells per each template. Each template takes approximately 70 milliseconds to generate a NZ-WHO template. We also calibrated templates using the method presented in \cite{Aubry14}. Briefly, the calibration learns affine transformation of the detection confidence using a set of natural images.% Note that in Section \ref{experiments}, we provide the same experiment with 9 CAD models.
+We empirically found out that NZ-WHO performs reasonably well without time consuming calibration stage compare to other variational method to generate templates. We used 1 CAD model with viewpoints covering 24 azimuths and 4 elevations. Each template takes approximately 80 milliseconds to generate a NZ-WHO template. We also calibrated templates using the method presented in \cite{Aubry14}. The calibration learns affine transformation of the detection confidence.% Note that in Section \ref{experiments}, we provide the same experiment with 9 CAD models.
+
 
 \begin{table*}[!htbp]
     \begin{center}
@@ -312,7 +310,6 @@ WHO-CG-Z              & 54.4 / 65.1  &  103ms & \textbf{92.8} / 86.7 &   8.7 sec
 NZ-WHO-CG        & \textbf{90.0} / 82.8 & 79ms & 90.3 / \textbf{86.8}                   &  8.5 sec   \\
 \hline
 \end{tabular}
-\\\textcolor{red}{TABLE REQUIRES MODIFICATION}
 \end{center}
 \caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11} variations of WHO on 3DObject Car dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}.}
 \label{tab:who_initializations}
@@ -408,7 +405,6 @@ We implemented the convolution using FFT on GPU and got 10x speed up.
 %------------------------------------------------------------------------
 
 \section{Continuous Viewpoint and Focal Length Estimation for Fine Tuning}
-\label{sec:fine}
 
 % Estimating viewpoint continuously to fine tune a initial matching 
 Since creating a template and validating the template become computationally inexpensive, making a proposal and validating the proposal to fine tune a 2D-3D matching became affordable. We used Metropolis-Hastings algorithm to generate a proposal pose and focal length and validate the proposal using the convolution and returning maximum response as a return.
@@ -418,7 +414,6 @@ We modeled the distribution of the convolution as an exponential distribution an
 We run experiments on PASCAL 2007 car category images with at least one car (num images) and got x percent improvement after fine tuning.
 
 % there are several advantages that was not possible such as \textbf{on-the-fly} template generation and making large number of templates  
-
 
 \begin{figure}[t]
 \centering
@@ -445,17 +440,20 @@ We run experiments on PASCAL 2007 car category images with at least one car (num
  \caption{Effect of fine tuning. (left) original image, (middle) initial detection, (right) continuous fine tuning}
  \label{fig:tuning}
 \end{figure}
- 
+
+
+
 \section{Experiments}
 
-In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as an ensemble of weak classifiers and show that our method can work as a standalone detector for simple task. This validates that our ensemble of NZ-WHO templates, though each of templates takes 70ms to generate from a rendering image, can robustly perform 2D-3D matching on real images. 
+In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as ensembles of weak detectors and show that the rendering image can be We want to see how robust the NZ-WHO to real images a
 
 Second, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
 
 \subsection{2D-3D Matching as an Object Detector} 
 
 We created ensemble of NZ-WHO templates using 9 CAD models and measured the Average Precision (AP) of object detection task and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11}. MPPE is the average of viewpoint accuracy.  
-
+\subsection{Object Detection} 
+Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
 Our ensemble of NZ-WHO templates is generated from rendering image with no calibration but shows strong performance on object detection. The baseline method are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Note that the baseline methods require complex 3D modeling and viewpoint annotated natural images.
 
 The detection result is on Table \ref{tab:3dobject} and example output from our method is on Figure \ref{fig:3dobject}. 
