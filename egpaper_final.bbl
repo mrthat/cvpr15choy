@@ -6,11 +6,6 @@ M.~Aubry, D.~Maturana, A.~Efros, B.~Russell, and J.~Sivic.
   dataset of cad models.
 \newblock In {\em CVPR}, 2014.
 
-\bibitem{Aubry13}
-M.~Aubry, B.~Russell, and J.~Sivic.
-\newblock Painting-to-{3D} model alignment via discriminative visual elements.
-\newblock {\em ACM Transactions on Graphics}, 2013.
-
 \bibitem{Belouchrani00}
 A.~Belouchrani and A.~Cichocki.
 \newblock Robust whitening procedure in blind source separation context.
