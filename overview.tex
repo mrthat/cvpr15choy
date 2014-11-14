@@ -40,8 +40,29 @@
 % \end{comment}
 
 % \begin{comment}
-To give better pose estimation, our method consists of a sequence of stages each with specific task (see Fig.~\ref{fig:front}). (Our objective is to complement strong object detectors that give little to no metadata such as Neural Nework based detectors~\cite{Girshick14, Overfeat} and deformable models~\cite{gu10eccv,Xiang12,Pepik12,Fidler12,Hejrati14} 
 
+Our method has two modes of operations. (i) complement strong object detectors
+with rich annotations. (ii) object detector with high-quality metadata. Each
+mode uses the common path that goes from initializtion to fine
+tuning~\ref{fig:front}.  
+
+For both modes, they require pose initialization by an ensemble of NZ-WHO templates. We will explain the NZ-WHO generation pipeline in Sect.~\ref{sec:approach}. First stage of pipeline starts from rendering an viewpoint specific template in Sect.~\ref{sec:rendering}. Then we will go over our novel combination of rendering with Conjugate Gradient method to produce a discriminative NZ-WHO template quickly in subsequent sections from Sect.~\ref{sec:who} to Sect.~\ref{sec:fastwhiten}. 
+
+Once we make an ensemble of NZ-WHO templates, we use it as a initialization for subsequent fine tuning stage where our model further tunes the 2D-3D matching (Sect.~\ref{sec:fine}).
+
+For mode (i), we start from detection bounding boxes that has little to no metadata and run initialization stage and tuning stage.
+
+For mode (ii), we start directly from initialization by applying our ensemble of NZ-WHO templates as an ensemble of exemplar detectors.
+
+To validate our approache, in Sect.~\ref{sec:experiments}, we (a) compare the performance of NZ-WHO with other variants of WHO, (b) run the mode (i) on PASCAL 3D dataset~\cite{Xiang14} and (c) run the mode (ii) on 3D Object dataset~\cite{Savarese07}.
+
+
+
+
+
+
+
+% Might use the following in introduction
 \scream{More like an intro than an overview:
 Our method is in line with \cite{Aubry14, Lim14} in the sense that we
 use only renderings, not real images. However, rather than using fixed
