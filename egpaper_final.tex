@@ -190,11 +190,11 @@ In one dimension, let $x(u)$ be the feature at location $u$. Then WSS states tha
 \textrm{cov}_x(u,v) = \textrm{cov}_x(0, v-u) = \Gamma(v-u),
 \end{equation} where $\Gamma$ is the autocovariance. For simplicity, we show the 1D case but this can be easily extended to 2D spatial autocovariance.
 
-Therefore, assuming WSS allows us to synthesize the covariance matrix for templates \emph{of any size} from the autocovariance. This hugely reduces the memory required because to build the covariance matrix of a template of $w \times h$ HOG cells (with 31 elements each), we only need a $w \times h \times 31$ autocovariance matrix. In comparison, the covariance matrix itself is $(w \times h \times 31) \times (w \times h \times 31)$. Furthermore, by using the autocovariance we can avoid storing the covariance matrix for every different aspect ratio used during detection.
+Therefore, assuming WSS allows us to synthesize the covariance matrix for templates \emph{of any size} from the autocovariance matrix. This hugely reduces the memory required because to build the covariance matrix of a template of $w \times h$ HOG cells (with 31 elements per cell), we only need a $w \times h \times 31$ autocovariance matrix. In comparison, the covariance matrix itself is $(w \times h \times 31) \times (w \times h \times 31)$. Furthermore, by using the autocovariance we can avoid storing the covariance matrix for every different aspect ratio used during detection.
 
-To further simplify $\Gamma$, we assumed horizontal and vertical symmetry. In our implementation, we compute a $40 \times 40 \times 31$ autocovariance matrix, meaning we can synthesize covariance matrices for HOG grids of as big as $40 \times 40$.
+To further simplify $\Gamma$, we assumed horizontal and vertical symmetry. In our implementation, we compute a $40 \times 40 \times 31$ autocovariance matrix, meaning we can synthesize covariance matrices for HOG grids as big as $40 \times 40$. In practice we limit the number of cells per template to 250.
 
-Synthesizing the covariance matrix is memory copy operations so we used GPU to speed up the process (Figure \ref{fig:covariancetime}).
+We use the GPU to parallelize the lookup of the correct autocovariance cells during covariance matrix syntheses, which is \scream{x} times faster than using the CPU (Figure \ref{fig:covariancetime}).
 
 
 
@@ -257,9 +257,9 @@ Synthesizing the covariance matrix is memory copy operations so we used GPU to s
   \label{fig:rendering}
   \end{figure}
  
-To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$ which takes $O(n^3)$ time. In \cite{Hariharan12}, the authors make use of positive semidefinite and Hermitian properties of a covariance matrix to use Cholesky decomposition and Gaussian elimination which is twice as fast a the LU decomposition. However, if we make use of a spectral property of the covariance matrix, we can further speed up the whitening stage.
+To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$ which takes $O(n^3)$ time. In \cite{Hariharan12}, the authors make use of the fact that covariance matrices are Hermitian and positive semidefinite to solve the system via the Cholesky decomposition, which is twice as fast as the LU decomposition. However, by considering the properties of the covariance matrix of the HOG template, we show that the conjugate gradient method can further speed up the whitening stage.
   
-  If we use a high resolution template such as \ref{fig:rendering}
+%  If we use a high resolution template such as \ref{fig:rendering}
 
 % where $w$ is the weight we want to find and $x$ is the HOG feature from the rendering and $\lambda$ is the regularization constant (see section \ref{sec:regularization}). For $w\in \mathcal{R}^n$, it takes $O(n^3)$ time to solve the linear equation. If we use a high resolution template to capture small geometric properties we can get high accuracy matchings but the solving the linear equation becomes computationally burdensome. 
 
@@ -267,9 +267,11 @@ To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$ which takes $O(n^3
 
 % decomposition methods such as LU or Cholesky Decomposition not only take long time but they also accumulate numerical error. 
 
-In our setting, we used high resolution template which has more than 250 HOG cells. This result in $\Sigma \in \mathcal{R}^{7500 \times 7500}$. It takes about 9 seconds if we use LU decomposition and 5 seconds if we use Cholesky decomposition.  % The default way of solving the linear equation in many linear algebra library is decomposing the matrix using LU Decomposition (in MATLAB the default method of backslash operator) which takes $O(\frac{2}{3}n^3)$ flops for $n\times n$ matrix. Since the matrix, $\Sigma + \lambda I$ is Hermitian and Positive Semi Definite. We can speed up using Cholesky Decomposition. 
+%In our setting, we used high resolution template which has more than 250 HOG cells. This result in $\Sigma \in \mathcal{R}^{7500 \times 7500}$. It takes about 9 seconds if we use LU decomposition and 5 seconds if we use Cholesky decomposition.  % The default way of solving the linear equation in many linear algebra library is decomposing the matrix using LU Decomposition (in MATLAB the default method of backslash operator) which takes $O(\frac{2}{3}n^3)$ flops for $n\times n$ matrix. Since the matrix, $\Sigma + \lambda I$ is Hermitian and Positive Semi Definite. We can speed up using Cholesky Decomposition. 
 
-We also used iterative Conjugate Gradient to make use of low rank property of the covariance \cite{Gharbi12}. After adding small regularization, the regularized covariance matrix has nice spectral property (Figure \ref{fig:spectral}. The singular values are clustered in small region and most of the energies are concentrated on the first (number) singular values. Thus, the conjugate gradients stage doesn't go upto the size of the matrix to converge.
+Figure \ref{fig:spectral} shows the singular values of a template covariance matrix with a small regularization constant added to the diagonal. The singular values are clustered in small region and most of the energies are concentrated on the first \scream{x} singular values. Therefore, conjugate gradient will converge in $O(n^2\kappa)$ time, faster 
+
+We also used iterative Conjugate Gradient to make use of low rank property of the covariance \cite{Gharbi12}. After adding small regularization, the regularized covariance matrix has nice spectral property (Figure \ref{fig:spectral}). The singular values are clustered in small region and most of the energies are concentrated on the first (number) singular values. Thus, the conjugate gradients stage doesn't go upto the size of the matrix to converge.
 
 \begin{figure}[t]
   \begin{center}
@@ -446,13 +448,6 @@ Instance-level 2D-3D matching (registration) is a difficult problem since we nee
   \label{tab:3dobject}
 \end{table}
 
-%Commented out because of git conflict
-%Then, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
-
-%\subsection{2D-3D Matching as an Object Detector} 
-%We created ensemble of NZ-WHO templates using 9 CAD models and measured the Average Precision (AP) of object detection task and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11}. MPPE is the average of viewpoint accuracy.  
-
-Our ensemble of NZ-WHO templates are generated from rendering image with no calibration but shows strong performance on object detection. The method we are comparing against are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Each method requires complex 3D modeling and viewpoint annotated natural images.
 \begin{figure}[h]
     \begin{center}
     \setlength\tabcolsep{0pt}
@@ -465,25 +460,9 @@ Our ensemble of NZ-WHO templates are generated from rendering image with no cali
 %  (c) & (d) \\[0pt]
 \end{tabular}
 \end{center}
-\caption{Detection results on 3D-Object dataset \cite{Savarese07}. Original image (left) and detection result overlaid on top with a bounding box and corresponding confidence score(right)}
+\caption{Detection results on 3D-Object dataset \cite{Savarese07}, each of four images have (top left) original image, (top right) top detection rendering overlaid, (bottom right) false positives, (bottom left) true positives. Each with confidence score and colored bounding box}
   \label{fig:3dobject}
 \end{figure}
-
-% Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
-\begin{table}[!htbp]
-  \begin{center}
-    \begin{tabular}{|c|c|c|c|}
-    \hline
-     AP/MPPE& Ours & ALM\cite{Xiang12} & VOCDPM\cite{Pepik12} \\
-    \hline\hline
-    car & \textbf{99.8}/91.7 &  98.4/93.4 & \textbf{99.8}/\textbf{97.5} \\ 
-    bicycle & 93.0/87.4 & 93.0/91.4 & \textbf{98.8}/\textbf{97.5} \\
-    \hline
-    \end{tabular}
-  \end{center}
-  \caption{Average Precision(AP) and Average Viewpoint Accuracy(AVA) on 3DObject dataset. Though we do not need any training images and made templates in few minues, it performs on par with state of the art detectors yet it gives high quality 2D-3D matching.}
-  \label{tab:3dobject}
-\end{table}
 
 
 % Also, we evaluated our method on PASCAL 2007 dataset.
