@@ -45,9 +45,9 @@ distribution over model changes for (iii). For scale and translation, we
 implicitly compute all possible translation and scale by convolving $w(q)$ to
 HOG pyramid.
 \begin{align}
-    g(p \rightarrow p + v_i') & \sim \mathcal{N}(\mu = 0,\sigma = \sigma_v) \quad i \in \{1,2,3\}\\
-    g(p \rightarrow p + f') & \sim \mathcal{N}(\mu = 0,\sigma = \sigma_f)\\
-    g(p \rightarrow p + m') & \sim c \delta(m) + (1-c) Unif(1,M),
+    g(p \rightarrow p + v_i') & \sim \mathcal{N}(\mu = p_{v_i},\sigma = \sigma_v) \quad i \in \{1,2,3\}\\
+    g(p \rightarrow p + f') & \sim \mathcal{N}(\mu = p_{f},\sigma = \sigma_f)\\
+    g(p \rightarrow p + m') & \sim c \delta(p_m) + (1-c) Unif(1,M),
 \end{align}
 where $g$ is the proposal distribution. % and $P$ is the distribution of which we
 %defined using Gaussian distribution around previous state. $A$ is the
