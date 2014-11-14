@@ -350,7 +350,7 @@ meaning we can synthesize covariance matrices for HOG grids as big as $40 \times
 40$. In practice we limit the number of cells per template to 250.
 
 We use the GPU to parallelize the lookup of the correct autocovariance cells
-during covariance matrix syntheses, which is \scream{x} times faster than using
+during covariance matrix syntheses, which is an order of magnitude times faster than using
 the CPU (Figure \ref{fig:covariancetime}).
 
 
@@ -459,7 +459,7 @@ numbers relative to their size.
 
 Figure \ref{fig:spectral} shows the singular values of a covariance matrix for
 one HOG template after a small regularization constant is added to the diagonal.
-The condition number of of the matrix is \scream{x}, much smaller than the size
+The condition number of of the matrix is , much smaller than the size
 of the matrix (7500). As a result, conjugate gradient converges in \scream{x
 ms}, two orders of magnitude faster than the system can be solved using the
 Cholesky factorization (\scream{5 s}).
@@ -470,7 +470,6 @@ would be prohibitively slow for the high resolution templates we're using, so we
 implemented the convolution via Fast Fourier Transform on the GPU. This allows
 template evaluation to run in \scream{x ms}, compared to \scream{x ms} for the
 naive CPU implementation.
-
   
 %  If we use a high resolution template such as \ref{fig:rendering}
 
@@ -499,7 +498,6 @@ naive CPU implementation.
 %default method of backslash operator) which takes $O(\frac{2}{3}n^3)$ flops for
 %$n\times n$ matrix. Since the matrix, $\Sigma + \lambda I$ is Hermitian and
 %Positive Semi Definite. We can speed up using Cholesky Decomposition. 
-
 
 
 %We also used iterative Conjugate Gradient to make use of low rank property of
@@ -558,7 +556,15 @@ NZ-WHO-CG             & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}   
 \hline
 \end{tabular}
 \end{center}
-\caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11} variations of WHO on 3DObject Car dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}.}
+\caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE)
+\cite{Lopez-Sastre11} variations of WHO on 3DObject Car
+dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented
+in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to
+generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless
+region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using
+iterative Conjugate Gradient method. The time column indicates the time to
+generate one template. We followed calibration procedure presented in
+\cite{Aubry14}.}
 \label{tab:who_initializations}
 \end{table*}
 
@@ -637,13 +643,23 @@ Number of non-zero cells & 84.734 & N/A\\
 \end{table}
 \end{comment}
 
-\begin{comment}
 \subsection{High Resolution Templates and FFT based Convolution}
 \label{sec:fft} 
-We generate high resolution templates with more than 250 HOG cells to capture details of an object to give accurate 2D-3D matching. These large templates cause computational burden when computing convolution. Though good for detecting accurate model and pose, convolution of high-resolution templates are much more slower since computation time scales linearly with the number of HOG cells in the template. To overcome and speed up the convolution, we propose FFT based GPU convolution which scales. Suppose there are length $n$ signal and length $m$ filter, naive convolution takes $O(nm)$ time where as FFT-based convolution takes $O\left( (n + m)\log (n+m) \right)$ time. For large $m$, high resolution template, we can gain computational advantage.
+We generate high resolution templates with more than 250 HOG cells to capture
+details of an object to give accurate 2D-3D matching. Though good for detecting
+accurate model and pose, convolution of high-resolution templates are much more
+slower since computation time scales linearly with the number of HOG cells in
+the template. To overcome and speed up the convolution, we propose FFT based
+GPU convolution which scales. Suppose there are length $n$ signal and length
+$m$ filter, naive convolution takes $O(nm)$ time where as FFT-based convolution
+takes $O\left( (n + m)\log (n+m) \right)$ time. For large $m$, high resolution
+template, we can gain computational advantage.
 
-
-we pad zero to the 2D image features by the largest kernel size. And we transform the kernel to match the padded image feature. To compute convolution, we compute element-wise product with the transformed kernel and sum all the features. Unlike \cite{Podlozhnyuk}, we do not need to shift the data nor kernel if we use simple mathematical trick. 
+We pad zero to the 2D image features by the largest kernel size. And we
+transform the kernel to match the padded image feature. To compute convolution,
+we compute element-wise product with the transformed kernel and sum all the
+features. Unlike \cite{Podlozhnyuk}, we do not need to shift the data nor
+kernel if we use simple mathematical trick. 
   
 \begin{align}
     x_{pad} & = \mathcal{P}_{n+m}(x)\\
@@ -651,25 +667,26 @@ we pad zero to the 2D image features by the largest kernel size. And we transfor
     x_{pad} \ast y_{pad} & = \mathcal{F}^{-1}(\mathcal{F}(x_{pad}) \circ \mathcal{F}(y_{pad}))
 \end{align}
 
-  Where $\ast$ is the circular convolution and $\circ$ is the Hadamard Product and $\mathcal{F}$ is the Fourier Transformation and $\mathcal{P}_n$ is the padding operation that append zeros to make vector of size $n$.
+Where $\ast$ is the circular convolution and $\circ$ is the Hadamard Product
+and $\mathcal{F}$ is the Fourier Transformation and $\mathcal{P}_n$ is the
+padding operation that append zeros to make vector of size $n$.
 
-For each dimension of features, we transform kernel and image feature into frequency domain using Fast Fourier Transformation. We transform the image into frequency domain once and use the transformed image for all templates.
+For each dimension of features, we transform kernel and image feature into
+frequency domain using Fast Fourier Transformation. We transform the image into
+frequency domain once and use the transformed image for all templates.
 
 We implemented the convolution using FFT on GPU and got 10x speed up.
 
-[Figure for convolution time for different template resolution, CPU, GPU, naive convolution]
-\end{comment}
+% [Figure for convolution time for different template resolution, CPU, GPU, naive convolution]
 %------------------------------------------------------------------------
 
-\section{Estimating Parameters using MCMC}
+\section{Continuous Viewpoint Estimation using MCMC}
 \label{sec:fine}
 % Estimating viewpoint continuously to fine tune a initial matching
 The NZ-WHO template matching method we have presented makes template generation
 and evaluation computationally inexpensive. This means we can efficiently
 explore the parameter space to find the best object pose, scale, model type and
 camera focal length.
-
-
 
 Since creating a template and validating the template become computationally
 inexpensive, making a proposal and validating the proposal to fine tune a 2D-3D
