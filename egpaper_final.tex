@@ -82,13 +82,13 @@ Recently, Hariharan \etal. introduced Whitened Histograms of Orientations (WHO) 
 
 \subsection{Object Detection and Viewpoint Estimation}
 
-Modern object detectors generalize very well, handling intraclass variability, occlusion, truncation and viewpoint changes \cite{Felzenszwalb10, Girshick14}. However, this generalization comes at the cost of fine-grained information, including accurate 3D pose and object sub-category recognition. Such methods typically produce bounding box detection hypotheses, will little further information.
+Modern object detectors generalize very well, handling intraclass variability, occlusion, truncation and viewpoint changes \cite{Felzenszwalb10, Girshick14}. However, this generalization comes at the cost of fine-grained information, including accurate 3D pose and object sub-category recognition. Such methods typically produce bounding box detection hypotheses, with little further information.
 
 Many methods have attempted to move object detection towards richer outputs, especially by jointly performing detection and pose estimation \cite{Pepik12, Xiang12, Fidler12, Xiang14, Hejrati14, Aubry14, Lim14}. To achieve this, \cite{Xiang12, Hejrati14, Fidler12} use 3D representations that deform as viewpoint changes and \cite{Pepik12} uses geometric constraints to regularize 2D appearance models.
 
 The methods above perform discrete pose estimation, quantizing the viewing sphere into a number of poses and selecting the best one during inference. Fine-grained pose estimators, in contrast, can infer continuous (or arbitrarily fine-grained) poses. One such method from \cite{Zia13} aligns a 3D deformable part-based wireframe model with input images to accurately predict object poses.
 
-More recently, \cite{Aubry14, Lim14} made progress in joint instance-level object detection and pose estimation. To estimate pose they use synthetic renderings of CAD models to learn discriminative mid-level patches. \cite{Aubry14} calibrates these patches on a small set of real images, while \cite{Lim14} present a method for learning the relative discriminativeness of the patches.
+More recently, \cite{Aubry14, Lim14} made progress in joint instance-level object detection and pose estimation. To estimate pose they use synthetic renderings of CAD models to learn discriminative mid-level patches. \cite{Aubry14} calibrates these patches on a small set of real images, while \cite{Lim14} presents a method for learning the relative discriminativeness of the patches.
 
 \textcolor{red}{Again, should we highlight the differences between these methods and ours?}
 
@@ -305,8 +305,8 @@ We empirically found out that NZ-WHO performs reasonably well without time consu
 Methods (AP/MPPE) & before calibration  & time & after Calibration \cite{Aubry14} & time \\
 \hline\hline
 HOG\cite{Dalal05}     & 72.3 / 65.0  &  31ms  & 60.4 / 50.2                 &   8.7 sec \\ 
-WHO\cite{Hariharan12} &              &  3811ms&                             &   12.4 sec  \\
-WHO-CG                & 81.7 / \texbf{84.9}  &  104ms &     83.7 / 87.3             &   8.3 sec \\
+WHO\cite{Hariharan12} & 82.1 / 85.4  &  3811ms&                             &   12.4 sec  \\
+WHO-CG                & 81.7 / \textbf{84.9}  &  104ms &     83.7 / 87.3             &   8.3 sec \\
 WHO-CG-Z              & 54.4 / 65.1  &  103ms & \textbf{92.8} / 86.7 &   8.7 sec  \\
 % NZC-WHO-Z    & 89.10/\textbf{78.64} &    & 91.15/74.79                  &     \\
 NZ-WHO-CG        & \textbf{90.0} / 82.8 & 79ms & 90.3 / \textbf{86.8}                   &  8.5 sec   \\
@@ -450,12 +450,16 @@ We run experiments on PASCAL 2007 car category images with at least one car (num
 
 In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as an ensemble of weak classifiers and show that our method can work as a standalone detector for simple task. This validates that our ensemble of NZ-WHO templates, though each of templates takes 70ms to generate from a rendering image, can robustly perform 2D-3D matching on real images. 
 
-Then, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
+Second, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
 
 \subsection{2D-3D Matching as an Object Detector} 
+
 We created ensemble of NZ-WHO templates using 9 CAD models and measured the Average Precision (AP) of object detection task and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11}. MPPE is the average of viewpoint accuracy.  
 
-Our ensemble of NZ-WHO templates are generated from rendering image with no calibration but shows strong performance on object detection. The method we are comparing against are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Each method requires complex 3D modeling and viewpoint annotated natural images.
+Our ensemble of NZ-WHO templates is generated from rendering image with no calibration but shows strong performance on object detection. The baseline method are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Note that the baseline methods require complex 3D modeling and viewpoint annotated natural images.
+
+The detection result is on Table \ref{tab:3dobject} and example output from our method is on Figure \ref{fig:3dobject}. 
+
 \begin{figure}[h]
     \begin{center}
     \setlength\tabcolsep{0pt}
@@ -484,7 +488,7 @@ Our ensemble of NZ-WHO templates are generated from rendering image with no cali
     \hline
     \end{tabular}
   \end{center}
-  \caption{Average Precision(AP) and Average Viewpoint Accuracy(AVA) on 3DObject dataset. Though we do not need any training images and made templates in few minues, it performs on par with state of the art detectors yet it gives high quality 2D-3D matching.}
+  \caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) on 3DObject dataset car category. Our method produces high quality 2D-3D matching yet performs on par with state-of-the art detectors.}
   \label{tab:3dobject}
 \end{table}
 
@@ -511,6 +515,13 @@ Our ensemble of NZ-WHO templates are generated from rendering image with no cali
 High performance object detectors usually generalizes very well. It can handle various intraclass variability, viewpoint change and occlusion. However due to this high generalization, sometimes it is very difficult to get accurate pose, category or 2D-3D matching. Our method, specialized in giving such accurate information, can be applied on any generic object detectors to give high quality metadata.
 
 To show such ability, we evaluated our method on PASCAL 3D dataset \cite{Xiang14}. The dataset augments PASCAL 2012 images with high quality viewpoint annotations thus is ideal to measure pose estimation. The dataset proposes new metric called Average Viewpoint Precision (AVP) where it measures the area under viewpoint precision and detection recall curve. The viewpoints is measured by azimuth similarity. If the distance between predicted azimuth and ground truth azimuth is below a certain threshold, the viewpoint is correct. Note that the baseline methods (V-DPM, VOC-DPM) reported on the PASCAL 3D dataset are variants of DPM where each component of DPM account for various azimuths. Thus V-DPM and VOC-DPM provide discrete azimuth only whereas our method provides 3D viewpoint (yaw, pitch, roll), CAD instance (model index, rendering, depth) and focal length.
+
+We used detection bounding boxes and augment it using our method to give viewpoint estimation. We used detection bounding boxes from two different methods: VOC-DPM \cite{Pepik12} and R-CNN \cite{Girshick14}. VOC-DPM is a variation of DPM that can estimate viewpoint and is the state-of-the-art performance in viewpoint estimation \cite{Xiang14}. The result is on Table \ref{tab:pascal12} and precision recall curves for car using R-CNN + Ours are on Figure \ref{fig:car_cnn_ap}. 
+
+We got significant improvement on viewpoint estimation by using our method on top of general purpose detectors. Note that our method estimates azimuth, elevation, in-plane rotation, focal length estimation, fine-grained categorization whereas V-DPM, VOC-DPM only estimate discrete viewpoints.
+
+Example outputs are on Figure \ref{fig:pascal12cnn}.
+
 
 \begin{figure*}[h]
 \setlength\tabcolsep{1pt}
@@ -554,7 +565,7 @@ To show such ability, we evaluated our method on PASCAL 3D dataset \cite{Xiang14
   CNN Proposals & \multicolumn{3}{|c|}{Our matching results on proposal bounding boxes} \\
   \hline
 \end{tabular}
-\caption{Example enriched bounding boxex. Given R-CNN\cite{Girshick14} detection bounding boxes, our method predicted 2D-3D matching reasonably. On the first column, R-CNN detection bounding boxes overlaid. From the second to the last columns, output of our method given a R-CNN box. Blue boxes are R-CNN output and purle boxes are the tightest bounding box enclosing predicted CAD model}
+\caption{Example enriched bounding boxes. Given R-CNN\cite{Girshick14} detection bounding boxes, our method predicted 2D-3D matching reasonably. On the first column, R-CNN detection bounding boxes overlaid. From the second to the last columns, output of our method given a R-CNN box. Blue boxes are R-CNN output and purple boxes are the tightest bounding box enclosing predicted CAD model}
   \label{fig:pascal12cnn}
 \end{figure*}
 
@@ -564,7 +575,7 @@ To show such ability, we evaluated our method on PASCAL 3D dataset \cite{Xiang14
   \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-AP/AVP              & VDPM \cite{Xiang14} & VOC-DPM \cite{Pepik12}  & \cite{Pepik12} + Ours (discrete) & \cite{Pepik12} + Ours (full) & R-CNN + Ours (discrete) & R-CNN + Ours (full)\\
+AP/AVP              & V-DPM \cite{Xiang14} & VOC-DPM \cite{Pepik12}  & \cite{Pepik12} + Ours (discrete) & \cite{Pepik12} + Ours (full) & R-CNN + Ours (discrete) & R-CNN + Ours (full)\\
 \hline\hline
 car-4v              & 37.2 / 20.2         & 45.6 / 36.9             & 47.6 / 42.7       & 47.6 / \textbf{42.7}        & 49.6 / 41.5         & 49.6 / 41.5\\ \hline
 car-8v              & 37.3 / 23.5         & 47.6 / 36.6             & 47.6 / \textbf{39.8}       & 47.6 / 39.5        & 49.6 / 38.0         & 49.6 / 39.0\\ \hline
@@ -581,11 +592,31 @@ bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.
 \label{tab:pascal12}
 \end{table*}
 
+\begin{figure}[h]
+\setlength\tabcolsep{1pt}
+\centering
+\begin{tabular}{cc}
+  \hline
+  \includegraphics[width=0.49\linewidth]{car_cnn4_crop.png} &   
+  \includegraphics[width=0.49\linewidth]{car_cnn8_crop.png} \\   
+  \includegraphics[width=0.49\linewidth]{car_cnn16_crop.png} &   
+  \includegraphics[width=0.49\linewidth]{car_cnn24_crop.png} \\   
+  \hline
+\end{tabular}
+\caption{Average Precision (AP) and Average Viewpoint Precision (AVP) and viewpoint confusion table on PASCAL 12 car validation set using R-CNN + Ours. From the top left, 4 views, 8 views, 16 views and 24 views. Since our method only augment the object detection, the AP remains the same for all cases. As we increase the viewpoint estimation, the AVP decreases. Note that since we estimate null viewpoint if our method fails to find match, there are more 0 viewpoint predictions (top row of confusion matrices) }
+  \label{fig:car_cnn_ap}
+\end{figure}
+
+
 \subsection{Stability of Our Method for Irregular Bounding Boxes}
 
-Generic object detectors sometimes give overlapping detection bounding boxes of the same object with different aspect ratio or truncation. For instance, R-CNN \cite{Girshick14} usually gives very irregular bounding boxes since the proposals bounding boxes comes from various methods.
+% Generic object detectors give overlapping detection bounding boxes of the same object which can be handled by non maximal suppression. For these overlapping detections, 
 
-To handle such irregular shape and truncation, we added small context around the bounding boxes and run our method. We consider all possible truncation which can be efficiently computed using FFT-based convolution (refer Section. \ref{sec:fft}). We put examples of such conditions in Figure \ref{fig:stability}. Although the input bounding boxex are drastically different and have sever truncations. Our method reliably generated reasonable prediction of pose and model.
+R-CNN detection bounding boxes are irregular in shape since they come from other region proposal methods and sometimes they truncate objects. To handle such irregular shape and truncation, we added small context around the bounding boxes and run our method. 
+
+We assumed that object can be arbitrarily truncated by the bounding box and search all plausible scales and translations. This can be efficiently computed using FFT-based convolution (refer Section. \ref{sec:fft}). We put examples of such conditions in Figure \ref{fig:stability}. Although the input bounding boxes are irregular and truncate objects, our method reliably generated a reasonable prediction of pose, translation, scale and CAD model.
+
+% R-CNN \cite{Girshick14} gives very irregular bounding boxes since the proposals bounding boxes come from various methods.
 
 \begin{figure}[h]
 \setlength\tabcolsep{5pt}
@@ -598,7 +629,6 @@ To handle such irregular shape and truncation, we added small context around the
 \caption{Stability of our method for overlapping R-CNN detection \cite{Girshick14}. Blue box is the R-CNN detection that is feed into the system as initial detection. Purple box and overlaid rendering is the final output of the system. Note that for various overlapping bounding boxes, our system accurately estimated the reasonable result}
   \label{fig:stability}
 \end{figure}
-
 
 % For qualitative examples, we put hand-picked results from our method Fig. \ref{fig:car} and Fig. \ref{fig:bicycle}.
 

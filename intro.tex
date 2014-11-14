@@ -113,7 +113,7 @@ calibration, and greatly enhances the scalability of E-LDA. As a
 result, we can render novel views and train corresponding exemplar
 models {\em on the fly}, without the need for offline processing. As a
 by-product, we can formulate the alignment problem as a parameter
-search in a continuos pose space, consisting of yaw, pitch and roll, resulting in truely continuous pose estimates, which
+search in a continuous pose space, consisting of yaw, pitch and roll, resulting in truely continuous pose estimates, which
 we implement using MCMC sampling.
 %  require a large number of rendering and 2D
 % templates for each of the CAD model with specific viewpoint. Since
@@ -137,7 +137,7 @@ First, we present a novel method for training exemplar models from
 rendered 3D CAD data {\em on the fly}, enabled by a novel variant of
 E-LDA, and making efficient use of the specific characteristics of
 rendered images. To our knowledge, our method constitutes the first
-attempt to simultanously render and train exemplar detectors on the
+attempt to simultaneously render and train exemplar detectors on the
 fly.
 % In our paper, we present Non-Zero Whiten Histograms of Orientations
 % (NZ-WHO) to dramatically speed up the template generation and get rid
@@ -155,7 +155,7 @@ detector, such as the DPM~\cite{Felzenszwalb10} or the
 R-CNN~\cite{Girshick14} with additional 3D information, applying our
 method to candidate detections provided by the respective detector. As
 a result, we can refine the original detections with additional
-estimates of 3D continuos pose and a 3D CAD model exemplar.
+estimates of 3D continuous pose and a 3D CAD model exemplar.
 
 And third, we give an in-depth experimental study that demonstrates
 the effectiveness of our approach on a standard benchmark for
@@ -179,7 +179,7 @@ rendering, we decided to analyze WHO feature
 Our pipeline is simple, fast only requires CAD models and no
 validation images for calibration. This can be used for post
 processing stage of generic object detection. Our pipeline requires
-only several minutes to make templates for rough viewpoints and 
+only few minutes to make templates for rough viewpoints and 
 
 
 We propose a simple method to register the most similar CAD model to
@@ -205,8 +205,8 @@ Finally, we show several applications using our method. Since we have
 metadata such as CAD model and geometry, we reconstruct the object
 using 2D-3D matching. Also, since we do not need training image, we
 show that our 2D-3D matching performs better than standard detectors
-in categories where training data lacks. We then use our method for
-image query to pull out closest CAD model in a bank of CAD models.
+in categories where training data is insufficient. We then use our method for
+image query to pull out the closest CAD model in a bank of CAD models.
 
 
 Finally, unlike several CAD model alignment methods that uses  WHO
@@ -215,7 +215,7 @@ not require calibration which is infeasible in continuous viewpoint
 estimation. We propose a simple add-on stage that can enrich object
 detections with high-quality 2D-3D alignment. The pipeline is simple
 and light weight so this can be easily adapted to be used for any
-generic object detectors. Also to facilitate the future work, all our
+generic object detectors. Also to facilitate future work, all our
 alignment result on PASCAL12 and code are publicly available online.
 
 
@@ -228,8 +228,8 @@ alignment result on PASCAL12 and code are publicly available online.
 
 \subsection{Approach Overview}
 Our method is in line with \cite{Aubry14, Lim14} in the sense that we
-use only renderings not real images. However, rather than using fixed
-sized mid-level patches, we use whole object and make root
+use only renderings, not real images. However, rather than using fixed
+sized mid-level patches, we use whole objects and make root
 templates. By using root templates, there is no need to learn a
 discriminative patch dictionary or to calibrate the patches and an
 additional inference stage is not required. However, whitening the
@@ -243,17 +243,17 @@ due to numerical errors accumulated while decomposing the covariance
 matrix $\Sigma$. 
 
 To overcome these difficulties, we propose the Non-Zero Whitened
-Histograms of Orientations with iterative Conjugate Gradient to
+Histograms of Orientations (NZ-WHO) with iterative Conjugate Gradient to
 generate templates in real time and enrich rectangular boxes with high
 quality 2D-3D matching. The 2D-3D matching provides a CAD model,
 sub-category, rendering, depth, viewpoint and focal length.
 
 Our method can work as a standalone 2D-3D matching algorithm, or even
 as a standalone ensemble of exemplar-based object detectors (Figure
-\ref{fig:front}) but the real power comes from combining generic
+\ref{fig:front}) but its real power comes from combining generic
 object detectors and complement rectangular bounding boxes. Our method
 is simple in design; is several orders of magnitude faster than
-traditional method; requires only CAD models; doesn't need images nor
+traditional method; requires only CAD models; does not need neither images nor
 calibration, yet is powerful in giving high-quality metadata. These
 properties make our method ideal for complementing object detections. 
 
