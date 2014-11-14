@@ -95,7 +95,6 @@ More recently, \cite{Aubry14, Lim14} made progress in joint instance-level objec
 
 \textcolor{red}{Again, should we highlight the differences between these methods and ours?}
 
- 
 % specialized in giving such accurate information, can be applied on any generic object detectors to give high quality metadata.
 % Many 
 % Since the WHO does not require extensive training such as \cite{Felzenszwalb10, Malisiewicz11, Girshick14}, WHO is gaining momentum in 2D-3D matching. \cite{Aubry13, Aubry14, Lim14} combined WHO with synthetic rendering to jointly detect and estimate pose by making mid-level patches using WHO. Using this
@@ -124,6 +123,7 @@ More recently, \cite{Aubry14, Lim14} made progress in joint instance-level objec
 \label{sec:nz-who}
 
 We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both more discriminative than WHO, and can be generated in 70ms (compared to several seconds for WHO). This speed up means we can generate templates on the fly, allowing our approach to evaluate arbitrary viewpoint hypotheses. 
+\scream{chris:We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), an improvement over WHO which is both more discriminative than WHO and can be computed many orders of magnitude faster than WHO (70ms as opposed to to several seconds for WHO). This speedup allows us to generate NZ-WHO templates on the fly, allowing us to quickly evaluate arbitrary viewpoint hypotheses.}
 
 The computational efficiency of our approach comes from using the iterative conjugate gradient method to whiten the HOG template. Whitening a feature vector $x$ requires a system of linear equations $\Sigma w = (x - \mu)$ to be solved, usually by decomposing the covariance matrix $\Sigma$ (with LU or Cholesky decomposition). Since the covariance matrices of HOG templates have nice spectral properties (see Section \ref{sec:fast_whitening}), the conjugate gradient method will converge to the solution several orders of magnitude faster than decomposition methods.
 
@@ -310,12 +310,12 @@ We empirically found out that NZ-WHO performs reasonably well without time consu
 \hline
 Methods (AP/MPPE) & before calibration  & time & after Calibration \cite{Aubry14} & time \\
 \hline\hline
-HOG\cite{Dalal05}     & 72.3 / 65.0  &  31ms  & 60.4 / 50.2                 &   8.7 sec \\ 
-WHO\cite{Hariharan12} & 82.1 / 85.4  &  3811ms&                             &   12.4 sec  \\
-WHO-CG                & 81.7 / \textbf{84.9}  &  104ms &     83.7 / 87.3             &   8.3 sec \\
-WHO-CG-Z              & 54.4 / 65.1  &  103ms & \textbf{92.8} / 86.7 &   8.7 sec  \\
+HOG\cite{Dalal05}     & 72.3 / 65.0           &  31ms  & 60.4 / 50.2                 & 8.7 sec \\ 
+WHO\cite{Hariharan12} & 82.1 / 85.4           &  3811ms& 84.4 / 83.0                 & 12.4 sec  \\
+WHO-CG                & 81.7 / \textbf{84.9}  &  104ms & 83.7 / 87.3                 & 8.3 sec \\
+WHO-CG-Z              & 54.4 / 65.1           &  103ms & \textbf{92.8} / 86.7        & 8.7 sec  \\
 % NZC-WHO-Z    & 89.10/\textbf{78.64} &    & 91.15/74.79                  &     \\
-NZ-WHO-CG        & \textbf{90.0} / 82.8 & 79ms & 90.3 / \textbf{86.8}                   &  8.5 sec   \\
+NZ-WHO-CG             & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}        & 8.5 sec   \\
 \hline
 \end{tabular}
 \end{center}

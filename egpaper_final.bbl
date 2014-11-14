@@ -47,11 +47,6 @@ S.~Fidler, S.~Dickinson, and R.~Urtasun.
   cuboid model.
 \newblock In {\em NIPS}, 2012.
 
-\bibitem{Gharbi12}
-M.~Gharbi, T.~Malisiewicz, S.~Paris, and F.~Durand.
-\newblock A gaussian approximation of feature space for fast image similarity.
-\newblock Technical report, MIT CSAIL, 2012.
-
 \bibitem{Girshick14}
 R.~Girshick, J.~Donahue, T.~Darrell, and J.~Malik.
 \newblock Rich feature hierarchies for accurate object detection and semantic
@@ -87,11 +82,6 @@ D.~G. Lowe.
 \newblock Three-dimensional object recognition from single two-dimensional
   images.
 \newblock {\em Artificial Intelligence}, pages 355--395, 1987.
-
-\bibitem{Malisiewicz11}
-T.~Malisiewicz, A.~Gupta, and A.~A. Efros.
-\newblock Ensemble of exemplar-svms for object detection and beyond.
-\newblock In {\em ICCV}, 2011.
 
 \bibitem{Martinsson05}
 P.~Martinsson, V.~Rokhlin, and M.~Tygert.
