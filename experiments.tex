@@ -1,14 +1,19 @@
 %
 In this section, we give an experimental evaluation of our approach,
-highlighting two different aspects.
+highlighting three different aspects.
 
-First, we demonstrate that our method can be used for multi-view
+First, we verify that our NZ-WHO method delivers performance that is
+at least on par with the original WHO formulation~\cite{Hariharan12} in terms of
+accuracy, while at the same time resulting in large computational
+savings (Sect.~\ref{sec:variations}).
+
+Second, we demonstrate that our method can be used for multi-view
 object class detection in isolation. It can be applied in a sliding
 window fashion and deliver 2D bounding box as well as viewpoint
 information. Our method compares on par to state-of-the-art in this
 case (Sect.~\ref{sec:exp_iso}).
 
-Second, we show that our method can be used to complement the
+And third, we show that our method can be used to complement the
 detections provided by an existing object class detector, such
 as DPM~\cite{Felzenszwalb10} or RCNN~\cite{Girshick14}. In this case,
 we show a considerable performance improvement compared to previous
@@ -36,7 +41,7 @@ from rendered 3D CAD model images.
 % continuous viewpoint estimation, a CAD model (rendering, depth) and
 % fine-grained category.  
 
-\subsection{Variations of WHO}
+\subsection{WHO Variants}
 \label{sec:variations}
 To validate our approach, we run an ensemble of NZ-WHO templates as a bank of exemplar detectors and compare its performance with other WHO variants. Since WHO variants uses HOG features, they are slower than HOG templates but WHO variants in general performs better than WHO by significant margin. However, WHO using Cholesky decomposition with Gaussian Elemination takes the most time yet performs worse than NZ-WHO which is two order of magnitude faster to generate. 
 
@@ -63,12 +68,13 @@ confidence.% Note that in Section \ref{experiments}, we provide the same
 % experiment with 9 CAD models.
 
 
-\begin{table*}[!htbp]
+\begin{table}[!htbp]
     \footnotesize
-    \begin{center}
+    \setlength{\tabcolsep}{1pt}
+    \centering
 \begin{tabular}{|c|c|r|c|r|}
 \hline
-Methods (AP/MPPE) & before calibration  & time & after calibration \cite{Aubry14} & time \\
+Methods (AP/MPPE) & before calib.  & time & after calib.~\cite{Aubry14} & time \\
 \hline\hline
 HOG\cite{Dalal05}     & 72.3 / 65.0           &  31ms  & 60.4 / 50.2                 & 8.7 sec \\ 
 WHO\cite{Hariharan12} & 82.1 / 85.4           &  3811ms& 84.4 / 83.0                 & 12.4 sec  \\
@@ -78,10 +84,9 @@ WHO-CG-Z              & 54.4 / 65.1           &  103ms & \textbf{92.8} / 86.7   
 NZ-WHO-CG             & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}        & 8.5 sec   \\
 \hline
 \end{tabular}
-\end{center}
 \caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11} variations of WHO on 3DObject Car dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}.}
 \label{tab:who_initializations}
-\end{table*}
+\end{table}
 
 
 
