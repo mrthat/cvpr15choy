@@ -157,7 +157,7 @@ renderings of CAD models to learn discriminative mid-level patches.
 \cite{Lim14} present a method for learning the relative discriminativeness of
 the patches.
 
-\textcolor{red}{Again, should we highlight the differences between these methods and ours? I prefer to do but wouldn't it sounds bad?}
+\textcolor{red}{Again, should we highlight the differences between these methods and ours?}
 
 % specialized in giving such accurate information, can be applied on any generic
 % object detectors to give high quality metadata.  Many Since the WHO does not
@@ -234,7 +234,6 @@ state-of-the-art object detectors \cite{Felzenszwalb10,Girshick14} before
 executing the two steps above. In this scenario, our approach provides a means
 to augment standard bounding box detectors with more interesting 3D
 information.
-
 \begin{comment}
 Our method is in line with \cite{Aubry14, Lim14} in the sense that we
 use only renderings, not real images. However, rather than using fixed
@@ -321,7 +320,7 @@ faster (in 70ms compared to several seconds for WHO). This speed up means we
 can generate templates on the fly, allowing our approach to evaluate arbitrary
 viewpoint hypotheses.
 
-\subsubsection{Non-Zero Covariance}
+
 In \cite{Hariharan12}, the authors compute the mean and covariance matrix by assuming Wide-Sense Stationarity (WSS) of HOG features
 generated from natural images. That is, they assume the mean of a HOG cell is
 independent of its place in the image, and the autocovariance of cells depends
@@ -361,34 +360,30 @@ We can therefore capture the whitening of the query image features in $w$.
 
 %\scream{chris:We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), an improvement over WHO which is both more discriminative than WHO and can be computed many orders of magnitude faster than WHO (70ms as opposed to to several seconds for WHO). This speedup allows us to generate NZ-WHO templates on the fly, allowing us to quickly evaluate arbitrary viewpoint hypotheses.}
 
-\subsubsection{Fast Whitening}
+\subsubsection{Fast Whitening using Conjugate Gradient}
 
-vector $x$ requires a system of linear equations $\Sigma w = (x - \mu)$ to be
-solved, usually by decomposing the covariance matrix $\Sigma$ (with LU or
-Cholesky decomposition). Since the covariance matrices of HOG templates have
-nice spectral properties (see Section \ref{sec:fast_whitening}), the conjugate
-gradient method will converge to the solution several orders of magnitude
-faster than decomposition methods.
+The computational efficiency of our approach comes from using the iterative conjugate gradient method to whiten the HOG template. Whitening the non-zero feature vector $x'$ requires a system of linear equations $\Sigma' w' = (x' - \mu')$ to be solved. In
+\cite{Hariharan12}, the authors make use of the fact that covariance matrices
+are symmetric and positive semidefinite to solve the system via the Cholesky
+decomposition, which requires $O(n^3)$ time.
 
-Table \ref{tab:who_initializations} provides a detailed comparison of WHO and NZ-WHO templates, illustrating that our method is faster and more discriminative than Whitened Histograms of Orientations. \scream{Does the table show this?}
+The conjugate gradient method is an iterative algorithm for solving symmetric positive definite systems which runs in $O(n^2\kappa)$ time, where $\kappa$ is the condition number of the matrix.
+This makes conjugate gradient faster than decomposition for matrices with small condition
+numbers relative to their size.
+
+The covariance matrix for HOG templates is typically ill-conditioned, but we can add a regularization constant to the diagonal to reduce its condition number to the point where the conjugate gradient method will converge quickly. We use a constant of $0.15$, which reduces the condition number from $10^{20}$ to $50$, much smaller than the dimension of the matrix (7000).
+
+As a result, a GPU implementation of conjugate gradient converges in \scream{x
+ms}, two orders of magnitude faster than the system can be solved using the
+Cholesky factorization (\scream{5 s}).
+
+\subsubsection{Fast Convolution using the FFT}
 
 
-in the background will be incorporated into the discriminative template.
-Alternatively, we could leave the background textureless \scream{did Hariharan
-do this?} (see Fig.~\ref{fig:rendering}), but whitening the resulting HOG
-template produces in undesirable background artifacts. These are created when
-centering the template (by subtracting the mean $\mu$), where strong negative
-weights are introduced in the textureless region (as seen in
-Fig.~\ref{fig:whocomparison}). This could result in positive matches being
-suppressed due to spurious background gradients.
 
-gradients. After whitening we restore the full template, with the zero-gradient
-cells left unchanged. This approach has the added benefit of reducing the size
-of the linear system we need to solve, further speeding up our method.
 
-NZ-WHO templates, illustrating that our method is faster and more
-discriminative than Whitened Histograms of Orientations. \scream{Does the table
-show this? should we do more than AP and realtime analysis?}
+
+
 % We compare the performance of WHO and NZ-WHO on 3D Object dataset \cite{Savarese07} and report performance on Table \ref{tab:who_initializations}. 
 
 % To deal with the problems, we propose Non-Zero Whitened Histograms of Orientations.
@@ -477,8 +472,7 @@ meaning we can synthesize covariance matrices for HOG grids as big as $40 \times
 40$. In practice we limit the number of cells per template to 250.
 
 We use the GPU to parallelize the lookup of the correct autocovariance cells
-during covariance matrix syntheses, which is an order of magnitude times faster than using
-the CPU (Figure \ref{fig:covariancetime}).
+during covariance matrix syntheses. The real time analysis for various number of cells is on Figure \ref{fig:covariancetime}).
 
 \end{comment}
 
@@ -565,40 +559,15 @@ the CPU (Figure \ref{fig:covariancetime}).
 % \end{algorithm}
 % \end{comment}
 
-\subsection{Fast Whitening and Convolution}
-\label{sec:fast_whitening}
-\begin{figure}[t]
-  \begin{center}
-     \includegraphics[width=0.9\linewidth]{whiten_orig_depth} 
-  \end{center}
-  \caption{Realistic rendering and depth}
-  \label{fig:rendering}
-  \end{figure}
- 
-To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$. In
-\cite{Hariharan12}, the authors make use of the fact that covariance matrices
-are Hermitian and positive semidefinite to solve the system via the Cholesky
-decomposition, which is twice as fast as the LU decomposition. These
-decompositions require $O(n^3)$ time, whereas the conjugate gradient method
-takes $O(n^2\kappa)$ time, where $\kappa$ is the condition number of the matrix.
-This makes conjugate gradient a faster option for matrices with small condition
-numbers relative to their size.
 
-% Figure \ref{fig:spectral} shows the singular values of a covariance matrix for
-% one HOG template after a small regularization constant is added to the diagonal.
-% The condition number of of the matrix is , much smaller than the size
-% of the matrix (7500). As a result, conjugate gradient converges in 50
-% ms, two orders of magnitude faster than the system can be solved using the
-% Cholesky factorization (5 sec).
 
-% The final challenge in on-the-fly template evaluation is performing the
-% convolution between the template and the target image. Standard convolution
-% would be prohibitively slow for the high resolution templates we're using, so we
-% implemented the convolution via Fast Fourier Transform on the GPU. 
-% 
-% This allows
-% template evaluation to run in \scream{x ms}, compared to \scream{x ms} for the
-% naive CPU implementation.
+The final challenge in on-the-fly template evaluation is performing the
+convolution between the template and the target image. Standard convolution
+would be prohibitively slow for the high resolution templates we're using, so we
+implemented the convolution via Fast Fourier Transform on the GPU. This allows
+template evaluation to run in \scream{x ms}, compared to \scream{x ms} for the
+naive CPU implementation.
+
   
 %  If we use a high resolution template such as \ref{fig:rendering}
 
@@ -627,6 +596,7 @@ numbers relative to their size.
 %default method of backslash operator) which takes $O(\frac{2}{3}n^3)$ flops for
 %$n\times n$ matrix. Since the matrix, $\Sigma + \lambda I$ is Hermitian and
 %Positive Semi Definite. We can speed up using Cholesky Decomposition. 
+
 
 
 %We also used iterative Conjugate Gradient to make use of low rank property of
@@ -658,7 +628,7 @@ numbers relative to their size.
 \end{figure}
 
 \subsection{Variations of WHO}
-
+\scream{sam thinks this should be moved to the experiments section}
 We empirically found out that NZ-WHO performs reasonably well without time
 consuming calibration stage compare to other variational method to generate
 templates. We used 1 CAD model with viewpoints covering 24 azimuths and 4
@@ -685,15 +655,7 @@ NZ-WHO-CG             & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}   
 \hline
 \end{tabular}
 \end{center}
-\caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE)
-\cite{Lopez-Sastre11} variations of WHO on 3DObject Car
-dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented
-in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to
-generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless
-region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using
-iterative Conjugate Gradient method. The time column indicates the time to
-generate one template. We followed calibration procedure presented in
-\cite{Aubry14}.}
+\caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11} variations of WHO on 3DObject Car dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}.}
 \label{tab:who_initializations}
 \end{table*}
 
@@ -772,46 +734,38 @@ Number of non-zero cells & 84.734 & N/A\\
 \end{table}
 \end{comment}
 
+\begin{comment}
 \subsection{High Resolution Templates and FFT based Convolution}
 \label{sec:fft} 
-We generate high resolution templates with more than 250 HOG cells to capture
-details of an object to give accurate 2D-3D matching. Since naive convolution takes
-$O(nm)$ time where $n$ is the size of the signal and $m$ is the size of the template.
-Whereas, FFT-based convolution takes $O\left( (n + m)\log (n+m) \right)$ time. 
-For large $m$, high resolution template, we can gain computational advantage.
+We generate high resolution templates with more than 250 HOG cells to capture details of an object to give accurate 2D-3D matching. These large templates cause computational burden when computing convolution. Though good for detecting accurate model and pose, convolution of high-resolution templates are much more slower since computation time scales linearly with the number of HOG cells in the template. To overcome and speed up the convolution, we propose FFT based GPU convolution which scales. Suppose there are length $n$ signal and length $m$ filter, naive convolution takes $O(nm)$ time where as FFT-based convolution takes $O\left( (n + m)\log (n+m) \right)$ time. For large $m$, high resolution template, we can gain computational advantage.
 
-% We pad zero to the 2D image features by the largest kernel size. And we
-% transform the kernel to match the padded image feature. To compute convolution,
-% we compute element-wise product with the transformed kernel and sum all the
-% features. Unlike \cite{Podlozhnyuk}, we do not need to shift the data nor
-% kernel if we use simple mathematical trick. 
-%   
-% \begin{align}
-%     x_{pad} & = \mathcal{P}_{n+m}(x)\\
-%     y_{pad} & = \mathcal{P}_{n+m}(y)\\
-%     x_{pad} \ast y_{pad} & = \mathcal{F}^{-1}(\mathcal{F}(x_{pad}) \circ \mathcal{F}(y_{pad}))
-% \end{align}
-% 
-% Where $\ast$ is the circular convolution and $\circ$ is the Hadamard Product
-% and $\mathcal{F}$ is the Fourier Transformation and $\mathcal{P}_n$ is the
-% padding operation that append zeros to make vector of size $n$.
-% 
-% For each dimension of features, we transform kernel and image feature into
-% frequency domain using Fast Fourier Transformation. We transform the image into
-% frequency domain once and use the transformed image for all templates.
-% 
-% We implemented the convolution using FFT on GPU and got 10x speed up.
 
-% [Figure for convolution time for different template resolution, CPU, GPU, naive convolution]
+we pad zero to the 2D image features by the largest kernel size. And we transform the kernel to match the padded image feature. To compute convolution, we compute element-wise product with the transformed kernel and sum all the features. Unlike \cite{Podlozhnyuk}, we do not need to shift the data nor kernel if we use simple mathematical trick. 
+  
+\begin{align}
+    x_{pad} & = \mathcal{P}_{n+m}(x)\\
+    y_{pad} & = \mathcal{P}_{n+m}(y)\\
+    x_{pad} \ast y_{pad} & = \mathcal{F}^{-1}(\mathcal{F}(x_{pad}) \circ \mathcal{F}(y_{pad}))
+\end{align}
+
+  Where $\ast$ is the circular convolution and $\circ$ is the Hadamard Product and $\mathcal{F}$ is the Fourier Transformation and $\mathcal{P}_n$ is the padding operation that append zeros to make vector of size $n$.
+
+For each dimension of features, we transform kernel and image feature into frequency domain using Fast Fourier Transformation. We transform the image into frequency domain once and use the transformed image for all templates.
+
+We implemented the convolution using FFT on GPU and got 10x speed up.
+
+[Figure for convolution time for different template resolution, CPU, GPU, naive convolution]
+\end{comment}
 %------------------------------------------------------------------------
 
-\section{Continuous Viewpoint Estimation using MCMC}
+\section{Estimating Parameters using MCMC}
 \label{sec:fine}
 % Estimating viewpoint continuously to fine tune a initial matching
 The NZ-WHO template matching method we have presented makes template generation
 and evaluation computationally inexpensive. This means we can efficiently
 explore the parameter space to find the best object pose, scale, model type and
 camera focal length.
+
 
 Since creating a template and validating the template become computationally
 inexpensive, making a proposal and validating the proposal to fine tune a 2D-3D
@@ -862,7 +816,6 @@ We found out that it requires good initialization to converge to local minima.
 We represented the probability using exponential family. 
 
 So our model favors large convolution score $\max_{s} w(x) \ast T(\mathcal{I})$. 
-
 % there are several advantages that was not possible such as \textbf{on-the-fly} template generation and making large number of templates  
 \begin{figure}[t]
 \centering
