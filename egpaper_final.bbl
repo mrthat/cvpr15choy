@@ -48,6 +48,11 @@ R.~Girshick, J.~Donahue, T.~Darrell, and J.~Malik.
   segmentation.
 \newblock In {\em Computer Vision and Pattern Recognition}, 2014.
 
+\bibitem{mcmc}
+H.~Haario, E.~Saksman, and J.~Tamminen.
+\newblock Componentwise adaptation for high dimensional mcmc.
+\newblock {\em Computational Statistics}, 20(2):265--273, 2005.
+
 \bibitem{Hariharan12}
 B.~Hariharan, J.~Malik, and D.~Ramanan.
 \newblock Discriminative decorrelation for clustering and classification.
