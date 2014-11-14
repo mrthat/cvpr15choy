@@ -18,7 +18,7 @@
   %  %   \end{tabular}
   % \end{tabular}\\
   % (b)
-  \caption{Using a bank of CAD models, we generate NZ-WHO templates which can be used to either detecting objects directly or initializing pose of an object in the bounding box from other detectors. Once the initialization is given, we use NZ-WHO to propose and validate plausible pose on-the-fly and further tune the translation, 3D viewpoint and focal length continuously.}
+  \caption{Using a bank of CAD models, we generate NZ-WHO templates which can be used to either detect objects directly or initialize pose of an object in the bounding box from other detectors. Once initialization is given, we use NZ-WHO to propose and validate plausible pose on-the-fly and further tune the translation, 3D viewpoint and focal length continuously.}
   % \vspace{-1em}
   \label{fig:front}
 \end{figure}
@@ -45,7 +45,7 @@ Recently, an even higher level of geometric detail was reached in the
 form of aligning
 3D CAD model instances to real world test images~\cite{Aubry14,
   Lim14,Kholgade14, Chen13, Kostas14}. Interestingly, the problem of matching 3D models to 2D
-images has been targeted since the early days of computer
+images has been explored since the early days of computer
 vision~\cite{Lowe87}, but had largely been neglected in recent years
 in favor of 2D detectors based on robust local features and
 statistical learning techniques. Now, this problem is being revisited
@@ -113,7 +113,8 @@ calibration, and greatly enhances the scalability of E-LDA. As a
 result, we can render novel views and train corresponding exemplar
 models {\em on the fly}, without the need for offline processing. As a
 by-product, we can formulate the alignment problem as a parameter
-search in a continuos pose space, consisting of yaw, pitch and roll, resulting in truely continuous pose estimates, which
+search in a continuos pose space, consisting of azimuth, elevation,
+and ~\scream{}, resulting in truely continuous pose estimates, which
 we implement using MCMC sampling.
 %  require a large number of rendering and 2D
 % templates for each of the CAD model with specific viewpoint. Since
@@ -161,7 +162,7 @@ And third, we give an in-depth experimental study that demonstrates
 the effectiveness of our approach on a standard benchmark for
 object detection and viewpoint estimation~\cite{Xiang14}. 
 
-
+\scream{Are we keeping the paragraphs from here...}
 
 outperforming previous results on this dataset by considerable
 margins.
@@ -224,6 +225,8 @@ alignment result on PASCAL12 and code are publicly available online.
 % Recently, matching a 3D CAD model to an image, 2D-3D matching (registration), is gaining great momentum in various fields of study. 2D-3D matching using Structure from Motion \cite{Sattler11} uses existing 3D model to match the model to a query image. Also image manipulation using 3D CAD models has proven its potential. Kholgade \etal \cite{Kholgade14} and Chen \etal \cite{Chen13} require human input to match 3D models to an image to created realistic morphing or manipulation of the registered object. However, all these application requies human input. In this paper, we propose a novel on-the-fly template generation algorithm that can generate template quickly and validate 2D-3D pose and focal length continuously.
 
 % Our code has been made publicly online \cite{Choy14} so that our algorithm can be used as a pipeline for 2D-3D registration after general purpose object detectors.
+
+\scream{... to here?}
 
 
 \subsection{Approach Overview}
