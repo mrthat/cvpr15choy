@@ -738,12 +738,49 @@ matching became affordable. We used Metropolis-Hastings algorithm to generate a
 proposal pose and focal length and validate the proposal using the convolution
 and returning maximum response as a return.
 
-We modeled the distribution of the convolution as an exponential distribution
-and used Gaussian as our proposal distribution.  
+To fine-tune continuous pose and location of object, we require strong
+initialization. The initialization is a rough bounding box with small context
+and viewpoint. Since most of the standard detectors does not provide viewpoint
+of an object, we first run an ensemble of NZ-WHO templates to get rough
+viewpoints. Once we get rough viewpoint, we initialize the proposal $x_0$ and
+start sampling proposals.
 
-We run experiments on PASCAL 2007 car category images with at least one car
-(num images) and got x percent improvement after fine tuning.
+We modeled the distribution of object location and pose as an exponential distribution. 
+For proposal distribution, we used Gaussian distribution to propose next viewpoint and for viewpoint proposals
+and uniform distribution for model change proposals.  
 
+More formally, suppose that $x = [p, m, f]$ where $p$ is the 3D rotation of the CAD model and
+$m$ is the CAD model index and $f$ is the focal length. We use Metropolis Hastings
+to optimize $x$.
+
+\begin{align}
+    A(x \rightarrow x') & =  min\left( 1,  \frac{P(x' g(x') \rightarrow x)}{P(x) g(x \rightarrow x')}\right) \\
+    g(x \rightarrow x + p_i') & \sim \mathcal{N}(\mu = 0,\sigma = c_1) \quad i \in \{1,2,3\}\\
+    g(x \rightarrow x + f') & \sim \mathcal{N}(\mu = 0,\sigma = c_2)\\
+    g(x \rightarrow x + m') & \sim c_3 \delta(m) + (1-c_3) Unif(1,M)
+\end{align}
+
+
+Where $g$ is the proposal distribution and $P$ is the distribution of which we
+defined using Gaussian distribution around previous state. $A$ is the
+acceptance probability where we accept new proposal with $A(x \rightarrow x')$.
+
+\begin{align}
+    P(x) & \sim e^{ c_4 \max_{s} w(x) \ast \mathcal{T}_s(\mathcal{I}) }
+\end{align}
+
+$P$ is the distribution of the pose and location of an object on image
+$\mathcal{I}$. One can also think of the image as an image cropped by detection
+bounding box. We synthesize covariance matrix and create NZ-WHO template $w(x)$ for particular viewpoint, focal length and CAD model.
+
+We initialize the $x$ using the result from the previous stage where we run our ensemble or NZ-WHO templates to get rough estimate.
+
+In sum, for new proposal $x'$, we make a NZ-WHO template on the fly 
+We found out that it requires good initialization to converge to local minima. 
+
+We represented the probability using exponential family. 
+
+So our model favors large convolution score $\max_{s} w(x) \ast T(\mathcal{I})$. 
 % there are several advantages that was not possible such as \textbf{on-the-fly} template generation and making large number of templates  
 \begin{figure}[t]
 \centering
