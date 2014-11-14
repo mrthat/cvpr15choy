@@ -127,10 +127,10 @@ isolation, for the task of object class detection and viewpoint
 estimation, on the 3D Object Classes datset~\cite{Savarese07}, for the
 categories {\em car} and {\em bicycle}.
 
-To that end, we create an ensemble of NZ-WHO templates (Sect.~\ref{})
-using $9$ different CAD models and a total of \scream{} different
-viewpoints, using $X$ different evelation angles, $X$ azimuth angles,
-and $X$ focal lengths. We run the entire ensemble exhaustively over
+To that end, we create an ensemble of NZ-WHO templates (Sect.~\ref{sec:approach})
+using $9$ different CAD models and a total of 192 different
+viewpoints, using 4 different evelation angles, 24 azimuth angles,
+and 2 focal lengths. We run the entire ensemble exhaustively over
 each test image, in a sliding window fashion.
 
  Performance is measured in Average Precision
@@ -285,8 +285,8 @@ method falls below a threshold. For R-CNN, we fall back to a default
 viewpoint prediction ($0$ angles).
 
 For both cases, we compare the performance of a discrete incarnation
-of our method (Sect.~\ref{}) and our full model, including the
-fine-tuning based on MCMC~\cite{Sect.~\ref{}}
+of our method (Sect.~\ref{sec:approach}) and our full model, including the
+fine-tuning based on MCMC~\cite{Sect.~\ref{sec:tuning}}
 
 Quantitative results are given in Tab.~\ref{tab:pascal12} in terms of
 AP and AVP and in Fig.~\ref{fig:car_cnn_ap} in terms of
@@ -295,9 +295,8 @@ outputs of our method applied to candidate object detections are given
 in Fig.~\ref{fig:pascal12cnn}, and the effect of fine-tuning is
 visualized in Fig.~\ref{fig:tuning}.
 
-
  More qualitative results are part of
-supplemental material~\scream{}
+supplemental material
 
 \paragraph{Results.}
 %
@@ -328,8 +327,8 @@ fine-tuned visually comes closer to the true 3D pose.
 \begin{figure*}[t]
 \setlength\tabcolsep{1pt}
 \centering
-\begin{tabular}{|c|c|c|c|c|}
-%   \hline
+\begin{tabular}{|ccccc|}
+   \hline
   \includegraphics[width=0.24\textwidth]{car_cnn/1a.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1b.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1c.png} &   
@@ -365,9 +364,9 @@ fine-tuned visually comes closer to the true 3D pose.
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4b.png} &   
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4c.png} &   
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4d.png}  \\
-%  \hline
+  \hline
   CNN Proposals & \multicolumn{3}{|c|}{Our matching results on proposal bounding boxes} \\
-%  \hline
+  \hline
 \end{tabular}
 \caption{Example enriched bounding boxes. Given R-CNN\cite{Girshick14}
   detection bounding boxes, our method predicted 2D-3D matching
