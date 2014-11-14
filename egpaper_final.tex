@@ -446,6 +446,13 @@ Instance-level 2D-3D matching (registration) is a difficult problem since we nee
   \label{tab:3dobject}
 \end{table}
 
+%Commented out because of git conflict
+%Then, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
+
+%\subsection{2D-3D Matching as an Object Detector} 
+%We created ensemble of NZ-WHO templates using 9 CAD models and measured the Average Precision (AP) of object detection task and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11}. MPPE is the average of viewpoint accuracy.  
+
+Our ensemble of NZ-WHO templates are generated from rendering image with no calibration but shows strong performance on object detection. The method we are comparing against are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Each method requires complex 3D modeling and viewpoint annotated natural images.
 \begin{figure}[h]
     \begin{center}
     \setlength\tabcolsep{0pt}
@@ -458,9 +465,25 @@ Instance-level 2D-3D matching (registration) is a difficult problem since we nee
 %  (c) & (d) \\[0pt]
 \end{tabular}
 \end{center}
-\caption{Detection results on 3D-Object dataset \cite{Savarese07}, each of four images have (top left) original image, (top right) top detection rendering overlaid, (bottom right) false positives, (bottom left) true positives. Each with confidence score and colored bounding box}
+\caption{Detection results on 3D-Object dataset \cite{Savarese07}. Original image (left) and detection result overlaid on top with a bounding box and corresponding confidence score(right)}
   \label{fig:3dobject}
 \end{figure}
+
+% Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
+\begin{table}[!htbp]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+     AP/MPPE& Ours & ALM\cite{Xiang12} & VOCDPM\cite{Pepik12} \\
+    \hline\hline
+    car & \textbf{99.8}/91.7 &  98.4/93.4 & \textbf{99.8}/\textbf{97.5} \\ 
+    bicycle & 93.0/87.4 & 93.0/91.4 & \textbf{98.8}/\textbf{97.5} \\
+    \hline
+    \end{tabular}
+  \end{center}
+  \caption{Average Precision(AP) and Average Viewpoint Accuracy(AVA) on 3DObject dataset. Though we do not need any training images and made templates in few minues, it performs on par with state of the art detectors yet it gives high quality 2D-3D matching.}
+  \label{tab:3dobject}
+\end{table}
 
 
 % Also, we evaluated our method on PASCAL 2007 dataset.
