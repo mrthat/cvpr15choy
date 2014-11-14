@@ -156,8 +156,8 @@ estimation. The dataset proposes new metric called Average Viewpoint
 Precision (AVP) where it measures the area under viewpoint precision
 and detection recall curve. The viewpoints is measured by azimuth
 similarity. If the distance between predicted azimuth and ground truth
-azimuth is below a certain threshold, the viewpoint is correct. Note
-that the baseline methods (V-DPM~\cite{Xiang14},
+azimuth is below a certain threshold, the viewpoint is correct.
+The baseline methods V-DPM~\cite{Xiang14} and
 DPM-VOC+VP~\cite{Pepik12}) reported on the PASCAL3D+ dataset are
 variants of DPM~\cite{Felzenszwalb10} where each component of DPM
 account for various azimuths. Thus V-DPM and VOC-DPM provide discrete
@@ -165,23 +165,58 @@ azimuth only whereas our method provides 3D viewpoint (yaw, pitch,
 roll), CAD instance (model index, rendering, depth) and focal length.
 
 \paragraph{Setup.}
-We used detection bounding boxes and augment it using our method to
-give viewpoint estimation. We used detection bounding boxes from two
-different methods: VOC-DPM \cite{Pepik12} and R-CNN
-\cite{Girshick14}. VOC-DPM is a variation of DPM that can estimate
-viewpoint and is the state-of-the-art performance in viewpoint
-estimation \cite{Xiang14}. The result is on Table \ref{tab:pascal12}
-and precision recall curves for car using R-CNN + Ours are on Figure
-\ref{fig:car_cnn_ap}.
+We use detection bounding boxes provided by both object detectors and
+augment it using our method to give viewpoint estimation. We use
+detection bounding boxes from two different methods:
+DPM-VOC+VP\cite{Pepik12} and R-CNN~\cite{Girshick14}, both in their
+variants trained on 8 viewpoint categories, since these perform best
+in terms of AP. For both methods,
+we use the original score for plotting precision-recall curves
+(meaning that we can not improve over their AP), but
+enrich the detections with additional viewpoint information provided
+by our method. For DPM-VOC+VP, we fall back to the viewpoint
+estimation provided by this method in case the confidence of our
+method falls below a threshold. For R-CNN, we fall back to a default
+viewpoint prediction ($0$ angles).
 
-We got significant improvement on viewpoint estimation by using our
-method on top of general purpose detectors. Note that our method
-estimates azimuth, elevation, in-plane rotation, focal length
-estimation, fine-grained categorization whereas V-DPM, VOC-DPM only
-estimate discrete viewpoints.
+For both cases, we compare the performance of a discrete incarnation
+of our method (Sect.~\ref{}) and our full model, including the
+fine-tuning based on MCMC~\cite{Sect.~\ref{}}
+
+Quantitative results are given in Tab.~\ref{tab:pascal12} in terms of
+AP and AVP and in Fig.~\ref{fig:car_cnn_ap} in terms of
+precision-recall plots and viewpoint confusion matrices. Example
+outputs of our method applied to candidate object detections are given
+in Fig.~\ref{fig:pascal12cnn}, and the effect of fine-tuning is
+visualized in Fig.~\ref{}.
 
 
-Example outputs are on Figure \ref{fig:pascal12cnn}.
+ More qualitative results are part of
+supplemental material~\scream{}
+
+\paragraph{Results.}
+%
+In Tab.~\ref{tab:pascal12}, we make mainly two observation. First, we
+see that adding our method to DPM-VOC+VP consistently improves
+performance in terms of AVP, for both car and bicycle, and across all
+viewpoint bins. This is already the case for our discrete method: the
+improvement ranges from $0.3$ for bicycle-8v to $5.8$ for car-4v. 
+%
+Using the R-CNN as the base detector increases AVP even more, in
+particular for the bicycle class: for bicycle-4v, our discrete method
+improves over the corresponding DPM-VOC+VP result by $12.6$.
+
+The second observation is that the fine-tuning based on MCMC can
+indeed improve pose estimation performance slightly, e.g., by $1.1$
+for bicycle-16v and using the DPM-VOC+VP as the base detector, or by
+$1.1$ for bicycle-16v when using the R-CNN as the base detector.
+
+% We got significant improvement on viewpoint estimation by using our
+% method on top of general purpose detectors. Note that our method
+% estimates azimuth, elevation, in-plane rotation, focal length
+% estimation, fine-grained categorization whereas V-DPM, VOC-DPM only
+% estimate discrete viewpoints.
+
 
 
 \begin{figure*}[h]
@@ -232,7 +267,7 @@ Example outputs are on Figure \ref{fig:pascal12cnn}.
 \begin{table*}[!htbp]
     \footnotesize
   \begin{center}
-\begin{tabular}{|c|c|c|c|c|c|c|}
+\begin{tabular}{|c||c||c||c|c||c|c|}
 \hline
 AP/AVP              & V-DPM \cite{Xiang14} & DPM-VOC+VP \cite{Pepik12}  & \cite{Pepik12} + Ours (discrete) & \cite{Pepik12} + Ours (full) & R-CNN + Ours (discrete) & R-CNN + Ours (full)\\
 \hline\hline
@@ -243,8 +278,8 @@ car-24v             & 36.3 / 13.7         & 42.1 / 24.6             & 47.6 / 27.
 \hline
 bicycle-4v          & 45.2 / 41.7         & 46.9 / 43.9             & 48.1 / 47.6       & 48.1 / 46.6        & 61.7 / 56.5         & 61.7 / \textbf{56.7}\\ \hline
 bicycle-8v          & 47.3 / 36.7         & 48.1 / 40.3             & 48.1 / 40.6       & 48.1 / 40.6        & 61.7 / 48.9         & 61.7 / \textbf{49.2}\\ \hline
-bicycle-16v         & 46.5 / 18.4         & 45.6 / 22.9             & 48.1 / 26.2       & 40.1 / 27.3        & 61.7 / 34.7         & 61.7 / \textbf{35.8}\\ \hline
-bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.5       & 40.1 / 20.9        & 61.7 / \textbf{27.0}         & 61.7 / 23.9\\ \hline
+bicycle-16v         & 46.5 / 18.4         & 45.6 / 22.9             & 48.1 / 26.2       & 48.1 / 27.3        & 61.7 / 34.7         & 61.7 / \textbf{35.8}\\ \hline
+bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.5       & 48.1 / 20.9        & 61.7 / \textbf{27.0}         & 61.7 / 23.9\\ \hline
 \end{tabular}
 \end{center}
 \caption{Average Precision(AP) and Average Viewpoint Precision(AVP) on PASCAL3D+~\cite{Xiang14}. For combined method (* + Ours), we use bounding boxes from * and augment viewpoint using our method. R-CNN and run our method to produce 2D-3D matching. If our method fails to give viewpoint, it predicts the viewpoint to be 0. Note that our method gives high quality metadata such as continuous 3D viewpoint, CAD model (rendering depth) and fine-grained category, whereas base-line methods gives 1D discrete azimuths. Our R-CNN was not an optimized version so the detection AP is lower than the state-of-the-art R-CNN performance}
@@ -262,7 +297,9 @@ bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.
   \includegraphics[width=0.49\linewidth]{car_cnn24_crop.png} \\   
   \hline
 \end{tabular}
-\caption{Average Precision (AP) and Average Viewpoint Precision (AVP) and viewpoint confusion table on PASCAL 12 car validation set using R-CNN + Ours. From the top left, 4 views, 8 views, 16 views and 24 views. Since our method only augment the object detection, the AP remains the same for all cases. As we increase the viewpoint estimation, the AVP decreases. Note that since we estimate null viewpoint if our method fails to find match, there are more 0 viewpoint predictions (top row of confusion matrices) }
+\caption{Average Precision (AP) and Average Viewpoint Precision (AVP)
+  and viewpoint confusion table on PASCAL 12 car validation set using
+  R-CNN + Ours (full). From the top left, 4 views, 8 views, 16 views and 24 views. Since our method only augment the object detection, the AP remains the same for all cases. As we increase the viewpoint estimation, the AVP decreases. Note that since we estimate null viewpoint if our method fails to find match, there are more 0 viewpoint predictions (top row of confusion matrices) }
   \label{fig:car_cnn_ap}
 \end{figure}
 
