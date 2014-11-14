@@ -52,12 +52,12 @@ WHO. WHO-CG-Z whitens the whole template, but zeros out textureless
 region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using
 iterative Conjugate Gradients  (our method).
 
-Tab.~\ref{tab:who_initializations} gives the correponding results for
+Tab.~\ref{tab:who_initializations} gives the corresponding results for
 the various methods on a subset of the 3D Object Classes car
 dataset~\cite{Savarese07} (all images corresponding to one particular
 car instance, seen from different viewpoints), reporting 3 quantities:
 detection performance in average precision (AP), pose estimation in mean
-precision in pose estimtation (MPPE), and the respective runtime.
+precision in pose estimation (MPPE), and the respective runtime.
 %
 For all methods, the table gives the results with and without
 calibration, using the calibration method of~\cite{Aubry14}. This
@@ -75,8 +75,8 @@ In Tab.~\ref{tab:who_initializations}, we observe that, on average,
 calibration indeed improves performance in terms of AP, sometimes
 drastically (e.g., from $54.4$ to $92.8$ for WHO-CG-Z), as observed in
 prior work~\cite{Aubry14}. At the same time, calibration is
-computationally expensiv, resulting in runtimes that are two orders of
-magnitudes larger than without calibration. Strikinly, our method
+computationally expensive, resulting in runtimes that are two orders of
+magnitudes larger than without calibration. Strikingly, our method
 NZ-WHO-CG achieves the second best AP of $90.0$ while completing in 79
 ms vs. 8.7 s when using calibration.
 
@@ -124,12 +124,12 @@ ms vs. 8.7 s when using calibration.
 \label{sec:exp_iso}
 In this section, we evaluate the performance of our method in
 isolation, for the task of object class detection and viewpoint
-estimation, on the 3D Object Classes datset~\cite{Savarese07}, for the
+estimation, on the 3D Object Classes dataset~\cite{Savarese07}, for the
 categories {\em car} and {\em bicycle}.
 
 To that end, we create an ensemble of NZ-WHO templates (Sect.~\ref{})
 using $9$ different CAD models and a total of \scream{} different
-viewpoints, using $X$ different evelation angles, $X$ azimuth angles,
+viewpoints, using $X$ different elevation angles, $X$ azimuth angles,
 and $X$ focal lengths. We run the entire ensemble exhaustively over
 each test image, in a sliding window fashion.
 
@@ -235,7 +235,7 @@ in the form a 3D pose, focal length, and 3D CAD model exemplar shape.
 % method, specialized in giving such accurate information, can be
 % applied on any generic object detectors to give high quality metadata.
 
-To show such ability, we evaluat our method on the PASCAL3D+
+To show such ability, we evaluate our method on the PASCAL3D+
 dataset~\cite{Xiang14}. This dataset augments PASCAL 2012 images with
 high quality viewpoint annotations thus is ideal to measure pose
 estimation. The dataset proposes new metric called Average Viewpoint
@@ -442,7 +442,7 @@ portions that they contain, which provides a major challenge to any
 method that uses these detections as an input for further processing,
 such as ours.
 %
-In order to accomodate this variability, we add a considerable context
+In order to accommodate this variability, we add a considerable context
 region around the proposed bounding boxes before running our method.
 We assume that the object can be arbitrarily truncated by the bounding
 box and search all plausible scales and translations. This can be
