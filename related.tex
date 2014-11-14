@@ -1,0 +1,63 @@
+\subsection{Object Detection and Viewpoint Estimation}
+%
+Modern object detectors generalize very well, handling intraclass variability,
+occlusion, truncation and viewpoint changes \cite{Felzenszwalb10, Girshick14}.
+However, this generalization comes at the cost of fine-grained information,
+including accurate 3D pose and object sub-category recognition. Such methods
+typically produce bounding box detection hypotheses, with little further
+information.
+
+Many methods have attempted to move object detection towards richer outputs,
+especially by jointly performing detection and pose estimation \cite{Pepik12,
+Xiang12, Fidler12, Xiang14, Hejrati14, Aubry14, Lim14}. To achieve this,
+\cite{Xiang12, Hejrati14, Fidler12} use 3D representations that deform as
+viewpoint changes and \cite{Pepik12} uses geometric constraints to regularize 2D
+appearance models.
+
+The methods above perform discrete pose estimation, quantizing the viewing
+sphere into a number of poses and selecting the best one during inference.
+Fine-grained pose estimators, in contrast, can infer continuous (or arbitrarily
+fine-grained) poses. One such method from \cite{Zia13} aligns a 3D deformable
+part-based wireframe model with input images to accurately predict object poses.
+
+More recently, \cite{Aubry14, Lim14} made progress in joint instance-level
+object detection and pose estimation. To estimate pose they use synthetic
+renderings of CAD models to learn discriminative mid-level patches.
+\cite{Aubry14} calibrates these patches on a small set of real images, while
+\cite{Lim14} present a method for learning the relative discriminativeness of
+the patches.
+
+\textcolor{red}{Again, should we highlight the differences between these methods and ours?}
+
+% specialized in giving such accurate information, can be applied on any generic
+% object detectors to give high quality metadata.  Many Since the WHO does not
+% require extensive training such as \cite{Felzenszwalb10, Malisiewicz11,
+% Girshick14}, WHO is gaining momentum in 2D-3D matching. \cite{Aubry13,
+% Aubry14, Lim14} combined WHO with synthetic rendering to jointly detect and
+% estimate pose by making mid-level patches using WHO. Using this WSuch approach
+% has an advantage over generic detections. First, it is easy to trace the
+% detection to specific template. The template also has The rendering has
+% corresponding CAD model and viewpoint thus enabling joint detection and
+% viewpoint estimation.  To deal with textureless background \cite{Aubry13}
+% whitens HOG feature and then zero out the WHO feature where there is no
+% texture. But centering a HOG feature where there is no edge creates strong
+% negative edges. We found out that centering only non-zero cells help detection
+% but whitening all cell makes features to leak out to texture-less regions.
+% With increasing popularity of rendering image, whitening, traditional signal
+% processing technique, as a preprocessing stage has been widely used also in
+% computer vision community.  Many object detectors \cite{Felzenszwalb10,
+% Malisiewicz11} \subsection{Mid-level Patches for 2D-3D matching} FPM
+% introduction : per instance matching  Seeing 3D chair : mid-level patches
+  
+%\begin{comment}
+%  \subsection{Contributions}
+ % \begin{enumerate} \itemsep1pt \parskip0pt \parsep0pt
+  %  \item Introduces Non-Zero Whitened Histograms of Orientations (NZ-WHO) for real-time template generation
+   % \item Continuous viewpoint and focal length tuning using on-the-fly template generation
+%    \item Jointly optimizes translation, 3D viewpoint, CAD models and focal length
+%     \begin{comment}
+%       \item HOG Whitening procedure that do not require calibration stage
+%     \end{comment}
+%  \end{enumerate}
+% \end{comment}
+% All the code and CAD models is publicly available online \cite{Choy14} (currently not disclosed for anonymous review, visualizations are available in the supplementary material).
