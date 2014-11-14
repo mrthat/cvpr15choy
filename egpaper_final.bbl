@@ -48,6 +48,11 @@ R.~Girshick, J.~Donahue, T.~Darrell, and J.~Malik.
   segmentation.
 \newblock In {\em Computer Vision and Pattern Recognition}, 2014.
 
+\bibitem{gu10eccv}
+C.~Gu and X.~Ren.
+\newblock Discriminative mixture-of-templates for viewpoint classification.
+\newblock In {\em ECCV'10}.
+
 \bibitem{mcmc}
 H.~Haario, E.~Saksman, and J.~Tamminen.
 \newblock Componentwise adaptation for high dimensional mcmc.
@@ -117,6 +122,17 @@ S.~Savarese and L.~Fei-Fei.
 \newblock Computer vision, 2007. iccv 2007. ieee 11th international conference
   on.
 \newblock pages 1--8, Oct 2007.
+
+\bibitem{stark10bmvc}
+M.~Stark, M.~Goesele, and B.~Schiele.
+\newblock Back to the future: Learning shape models from {3D} {CAD} data.
+\newblock In {\em BMVC'10}.
+
+\bibitem{sun10eccv}
+M.~Sun, B.~Xu, G.~Bradski, and S.~Savarese.
+\newblock Depth-encoded hough voting for joint object detection and shape
+  recovery.
+\newblock In {\em ECCV'10}.
 
 \bibitem{vondrick2013}
 C.~Vondrick, A.~Khosla, T.~Malisiewicz, and A.~Torralba.
