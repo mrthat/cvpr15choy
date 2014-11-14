@@ -199,20 +199,21 @@ the patches.
 Our method attempts to match CAD models to 2D images, determining the best
 model within a class, its pose and scale, and the focal length of the camera
 used to produce the image. These parameters are first coarsely estimated using
-a discrete bank of detectors trained offline, before they are refined using
+an ensemble of templates generated offline, before they are refined using
 MCMC by generating new detectors on the fly.
 
-The basic detection method underlying our approach is HOG template matching.
-However, we propose a new HOG variant called Non-Zero Whitened Histograms of
-Orientations (NZ-WHO), where the HOG templates are whitened using statistics
-found from a random collection of natural images, producing a more
-discriminative template.
+% The basic detection method underlying our approach is WHO template matching.
+% However, we propose a new WHO variant called Non-Zero Whitened Histograms of
+% Orientations (NZ-WHO), where the variant of WHO templates are made from 
+% synthetic rendering to with 
 
-In addition to the library of CAD models that will be matched to the query
-images, our method requires a collection of random natural images. Offline, we
-compute HOG features of these images and record their mean and spatial
-autocovariance. The images are not used during testing, only the statistics
-generated from them.
+Our method In addition to the library of CAD models that will be matched to the query
+images, our method requires a feature statistics which can be collected once and for all.
+
+% images, our method requires a collection of random natural images. Offline, we
+% compute HOG features of these images and record their mean and spatial
+% autocovariance. The images are not used during testing, only the statistics
+% generated from them.
 
 Notably, we do not require any labelled training images of the objects to be
 detected. Our templates are generated exclusively by rendering CAD models from
@@ -227,7 +228,8 @@ and object models. This provides a rough estimate of these parameters. Second,
 we refine these parameters using MCMC, where each candidate is evaluated by
 rendering a new whitened template on the fly. 
 
-Optionally, our algorithm can be initialized using proposal bounding boxes from
+Our ensemble of NZ-WHO templates can work as a detector but our algorithm 
+can be initialized using proposal bounding boxes from
 state-of-the-art object detectors \cite{Felzenszwalb10,Girshick14} before
 executing the two steps above. In this scenario, our approach provides a means
 to augment standard bounding box detectors with more interesting 3D
@@ -276,6 +278,11 @@ continuously and also searches for different CAD models.
 \end{comment}
 \subsection{Rendering Pipeline}
 
+We used a collection of CAD models to make exemplar renderings of CAD models and for viewpoints. The
+CAD models are cached so that when we fine-tune 2D-3D matching, so it can be rendered instantaneously.
+We made the renderings to change focal length and yaw, pitch, roll so that we can fine tune the matching
+continuously.
+
 \subsection{Non-Zero Whitened Histograms of Orientations (NZ-WHO)}
 
 Recently, Hariharan \etal. introduced Whitened Histograms of Orientations (WHO)
@@ -297,19 +304,24 @@ natural image, but a delta-like response on an image matching the template. WHO
 templates are more discriminative than standard HOG templates because they only
 capture the gradients that differentiate the object from random images.
 
-Hariharan \etal. interpreted the
+Hariharan \etal. explained the
 whitening as Linear Discriminant Analysis (LDA) where all classes have different
-means but have the same covariance. The whitening and LDA have the same
-formulation when we make a decision boundary $w = \Sigma^{-1}(\mu_+ - \mu_0)$
-where $\mu_+$ is the features from a class (LDA) or a signal to whiten
-(whitening), $\mu_0$ is the negative class center (LDA) or the signal mean
-(whitening) and $\Sigma$ is the covariance matrix of classes (LDA) or
-the correlation within signal (whitening).
+means but have the same covariance. 
 
-We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both more discriminative than WHO, and can be generated several orders of magnitude faster (in 70ms compared to several seconds for WHO). This speed up means we can generate templates on the fly, allowing our approach to evaluate arbitrary viewpoint hypotheses.
+% The whitening and LDA have the same
+% formulation when we make a decision boundary $w = \Sigma^{-1}(\mu_+ - \mu_0)$
+% where $\mu_+$ is the features from a class (LDA) or a signal to whiten
+% (whitening), $\mu_0$ is the negative class center (LDA) or the signal mean
+% (whitening) and $\Sigma$ is the covariance matrix of classes (LDA) or
+% the correlation within signal (whitening).
 
-\subsubsection{Generating $\Sigma$ and $\mu$}
-\scream{this section seems important to understand the following section but it's also just a re-writing of the Hariharan method}
+We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both
+more discriminative than WHO, and can be generated several orders of magnitude
+faster (in 70ms compared to several seconds for WHO). This speed up means we
+can generate templates on the fly, allowing our approach to evaluate arbitrary
+viewpoint hypotheses.
+
+\subsubsection{Non-Zero Covariance}
 In \cite{Hariharan12}, the authors compute the mean and covariance matrix by assuming Wide-Sense Stationarity (WSS) of HOG features
 generated from natural images. That is, they assume the mean of a HOG cell is
 independent of its place in the image, and the autocovariance of cells depends
@@ -321,7 +333,10 @@ that $\mathbb{E}\left[x(u)\right] = \mu$ for all $u$, and
 \textrm{cov}_x(u,v) = \textrm{cov}_x(0, v-u) = \Gamma(v-u),
 \end{equation} where $\Gamma$ is the autocovariance. For simplicity, we describe the 1D case but this can be easily extended to 2D spatial autocovariance.
 
-Therefore, assuming WSS allows the covariance matrix of templates \emph{of any size} to be synthesized from the autocovariance matrix using a simple lookup.
+Therefore, assuming WSS allows the covariance matrix of templates \emph{of any
+size} to be synthesized from the autocovariance matrix using a simple lookup.
+
+Our method requires generating a covariance matrix of non-zero cells 
 
 \subsubsection{Whitening Synthesized Templates}
 Our first innovation is `Non-Zero' whitening. When synthesizing detection templates from rendered images, a common problem is how to handle the background. If the model is rendered over a natural image background, gradients in the background will be incorporated into the discriminative template, potentially causing false-positives if background elements exist in the query image.
