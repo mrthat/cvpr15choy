@@ -1,18 +1,91 @@
 %
-In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as ensembles of weak detectors and show that the rendering image can be We want to see how robust the NZ-WHO to real images a
+In this section, we give an experimental evaluation of our approach,
+highlighting two different aspects.
 
-Second, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
+First, we demonstrate that our method can be used for multi-view
+object class detection in isolation. It can be applied in a sliding
+window fashion and deliver 2D bounding box as well as viewpoint
+information. Our method compares on par to state-of-the-art in this
+case (Sect.~\ref{sec:exp_iso}).
+
+Second, we show that our method can be used to complement the
+detections provided by an existing object class detector, such
+as DPM~\cite{Felzenszwalb10} or RCNN~\cite{Girshick14}. In this case,
+we show a considerable performance improvement compared to previous
+work in the task of joint object class detection and viewpoint
+estimation (Sect.~\ref{sec:exp_enrich}).
+
+\paragraph{Setup.}
+We use established benchmark datasets to validate our approach, namely
+the 3D Object Classes dataset~\cite{Savarese07}, and
+PASCAL3D+~\cite{Xiang14}, a recently proposed extension of Pascal
+VOC'12~\cite{pascal12} that provides additional annotations in the
+form of aligned 3D CAD models. In both cases, we use the test data
+provided by the respective datasets, but train our models entirely
+from rendered 3D CAD model images.
+
+% In this section, we validate our proposed NZ-WHO templates in two
+% different ways. First, we make a set of NZ-WHO templates for a set of
+% CAD models from various viewpoints. Then we run the bank of NZ-WHO
+% templates as ensembles of weak detectors and show that the rendering
+% image can be We want to see how robust the NZ-WHO to real images a
+%
+% Second, we show that our method can complement the detection bounding
+% boxes coming out of standard object detectors. This process will
+% enrich object detection bounding boxes with 2D-3D matching which gives
+% continuous viewpoint estimation, a CAD model (rendering, depth) and
+% fine-grained category.  
+
 
 \subsection{2D-3D Matching as an Object Detector} 
+\label{sec:exp_iso}
+In this section, we evaluate the performance of our method in
+isolation, for the task of object class detection and viewpoint
+estimation, on the 3D Object Classes datset~\cite{Savarese07}, for the
+categories {\em car} and {\em bicycle}.
 
-We created ensemble of NZ-WHO templates using 9 CAD models and measured the Average Precision (AP) of object detection task and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11}. MPPE is the average of viewpoint accuracy.  
+To that end, we create an ensemble of NZ-WHO templates (Sect.~\ref{})
+using $9$ different CAD models and a total of \scream{} different
+viewpoints, using $X$ different evelation angles, $X$ azimuth angles,
+and $X$ focal lengths. We run the entire ensemble exhaustively over
+each test image, in a sliding window fashion.
 
-% Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
+ Performance is measured in Average Precision
+(AP) for object detection and Mean Precision in Pose Estimation
+(MPPE)~\cite{Lopez-Sastre11}. Pose estimation is here understood as a
+discrete problem in which the predicted azimuth angle is binned into a
+set of $8$ discrete viewpoint classes.
+% Instance-level 2D-3D matching (registration) is a difficult problem
+% since we need a CAD model that looks similar to the object in the
+% image. Especially, due to extreme intraclass variability of chair
+% \cite{Aubry14} used a very large collection of CAD models to cover
+% variety of chairs. Similarly, \cite{Lim14}
 
-Our ensemble of NZ-WHO templates is generated from rendering images within few minutes but shows reasonable performance on object detection task. The baseline method are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Note that the baseline methods require complex 3D modeling and viewpoint annotated natural images.
+\paragraph{Results.}
+Tab.~\ref{tab:3dobject} gives the corresponding results, comparing our
+method to two recent state-of-the-art baselines, the aspect layout
+model (ALM~\cite{Xiang12}), and the
+DPM-VOC+VP~\cite{Pepik12}. Fig.~\ref{fig:3dobject} gives corresponding
+qualitative results.
 
-The detection result is on Table \ref{tab:3dobject} and example output from our method is on Figure \ref{fig:3dobject}. 
+We observe that our model performs on par with the state-of-the-art
+methods in terms of AP ($99.8$) for cars. It performs slightly worse
+on bicycles than DPM-VOC+VP ($93.0$ vs. $98.8$), but on par with the
+ALM ($93.0$). In viewpoint estimation, our model performs slightly
+worse than both methods ($91.7$ vs. $93.4$ and $97.5$ for cars, and
+$87.4$ vs. $91.4$ and $97.5$ for bicycles, respectively).
 
+This result is encouraging, since our approach reaches a level of
+performance that is on par to current state-of-the-art while at the
+same time being much faster to train. It takes merely a few minutes to
+train, while both ALM~\cite{Xiang12} and DPM-VOC+VP~\cite{Pepik12} are
+complex models that optimize non-convex objective functions during
+training, which is only made tractable by resorting to delayed
+constraint generation in the form of hard negative mining, and can
+easily take a day on a single machine. In addition, our approach uses
+only rendered images, avoiding the need for real-world training data
+with costly bounding box and viewpoint annotations.
+%
 \begin{table}[!htbp]
     \footnotesize
   \begin{center}
@@ -41,7 +114,7 @@ The detection result is on Table \ref{tab:3dobject} and example output from our 
 %  (c) & (d) \\[0pt]
 \end{tabular}
 \end{center}
-\caption{Detection results on 3D-Object dataset \cite{Savarese07}. Original image (left) and detection result overlaid on top with a bounding box and corresponding confidence score(right)}
+\caption{Detection results on 3D Object Classes~\cite{Savarese07}. Original image (left) and detection result overlaid on top with a bounding box and corresponding confidence score(right)}
   \label{fig:3dobject}
 \end{figure}
 
@@ -63,8 +136,9 @@ The detection result is on Table \ref{tab:3dobject} and example output from our 
 %   \label{tab:pascal07}
 % \end{table}
 
-\subsection{Fine-Tuning and Viewpoint Estimation}
-
+\subsection{Enriching Existing Detections}
+%\subsection{Fine-Tuning and Viewpoint Estimation}
+\label{sec:exp_enrich}
 High performance object detectors usually generalizes very well. It can handle various intraclass variability, viewpoint change and occlusion. However due to this high generalization, sometimes it is very difficult to get accurate pose, category or 2D-3D matching. Our method, specialized in giving such accurate information, can be applied on any generic object detectors to give high quality metadata.
 
 To show such ability, we evaluated our method on PASCAL 3D dataset \cite{Xiang14}. The dataset augments PASCAL 2012 images with high quality viewpoint annotations thus is ideal to measure pose estimation. The dataset proposes new metric called Average Viewpoint Precision (AVP) where it measures the area under viewpoint precision and detection recall curve. The viewpoints is measured by azimuth similarity. If the distance between predicted azimuth and ground truth azimuth is below a certain threshold, the viewpoint is correct. Note that the baseline methods (V-DPM, VOC-DPM) reported on the PASCAL 3D dataset are variants of DPM where each component of DPM account for various azimuths. Thus V-DPM and VOC-DPM provide discrete azimuth only whereas our method provides 3D viewpoint (yaw, pitch, roll), CAD instance (model index, rendering, depth) and focal length.
