@@ -274,6 +274,7 @@ optimizes translation, yaw, roll, pitch, scale, and focal length
 continuously and also searches for different CAD models.
 
 \end{comment}
+\subsection{Rendering Pipeline}
 
 \subsection{Non-Zero Whitened Histograms of Orientations (NZ-WHO)}
 
@@ -283,7 +284,11 @@ templates, making them more discriminative. Whitening is a common signal
 processing operation for decorrelating a set of random variables
 \cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a
 $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By
-whitening the signal, i.e., $\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X])$, we
+whitening the signal,
+\begin{equation}
+\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X]) \label{eq:whitening}
+\end{equation}
+, we
 remove 2nd order correlation between all features. So, all elements in the
 random variable $\tilde{X} = \left[\tilde{X}_1, \tilde{X}_2, \dots,
 \tilde{X}_k\right]$, become more independent. In the context of HOG features, a
@@ -301,15 +306,48 @@ where $\mu_+$ is the features from a class (LDA) or a signal to whiten
 (whitening) and $\Sigma$ is the covariance matrix of classes (LDA) or
 the correlation within signal (whitening).
 
-We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both
-more discriminative than WHO, and can be generated several orders of magnitude
-faster (in 70ms compared to several seconds for WHO). This speed up means we
-can generate templates on the fly, allowing our approach to evaluate arbitrary
-viewpoint hypotheses. 
+We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both more discriminative than WHO, and can be generated several orders of magnitude faster (in 70ms compared to several seconds for WHO). This speed up means we can generate templates on the fly, allowing our approach to evaluate arbitrary viewpoint hypotheses.
+
+\subsubsection{Generating $\Sigma$ and $\mu$}
+\scream{this section seems important to understand the following section but it's also just a re-writing of the Hariharan method}
+In \cite{Hariharan12}, the authors compute the mean and covariance matrix by assuming Wide-Sense Stationarity (WSS) of HOG features
+generated from natural images. That is, they assume the mean of a HOG cell is
+independent of its place in the image, and the autocovariance of cells depends
+only on their relative location.
+
+In one dimension, let $x(u)$ be the feature at location $u$. Then WSS states
+that $\mathbb{E}\left[x(u)\right] = \mu$ for all $u$, and
+\begin{equation}
+\textrm{cov}_x(u,v) = \textrm{cov}_x(0, v-u) = \Gamma(v-u),
+\end{equation} where $\Gamma$ is the autocovariance. For simplicity, we describe the 1D case but this can be easily extended to 2D spatial autocovariance.
+
+Therefore, assuming WSS allows the covariance matrix of templates \emph{of any size} to be synthesized from the autocovariance matrix using a simple lookup.
+
+\subsubsection{Whitening Synthesized Templates}
+Our first innovation is `Non-Zero' whitening. When synthesizing detection templates from rendered images, a common problem is how to handle the background. If the model is rendered over a natural image background, gradients in the background will be incorporated into the discriminative template, potentially causing false-positives if background elements exist in the query image.
+
+Alternatively, if the background is left textureless \scream{did Hariharan do this?} (see Fig.~\ref{fig:rendering}), whitening the resulting HOG template will produce undesirable background artifacts. These are created when centering the template (by subtracting the mean $\mu$), where strong negative weights are introduced in the textureless region (as seen in Fig.~\ref{fig:whocomparison}). This could result in positive matches being suppressed due to spurious background gradients.
+
+\scream{might need to match notation with subsequent sections}
+NZ-WHO removes these artifacts so that the background has no effect on the template response. Given HOG features $x$, we create a new vector $x'$ which contains only the non-zero elements of $x$. We select the same elements of $\mu$ to produce $\mu'$, while the autocovariance lookup is only performed for the cells with non-zero gradient, producing $\Sigma'$ corresponding to the features in $x'$. After solving the resulting system (which is now smaller than in the WHO approach) we find
+\begin{equation}
+w'=\Sigma'^{-1}(x' - \mu') \label{eq:nz-who},
+\end{equation}which we reassemble into the final NZ-WHO template $w$ by replacing the non-zero elements of $x$ with the corresponding $w'$ element.
+
+Notice that $\Sigma$ is not square-rooted in Eq.~\ref{eq:nz-who}, whereas it is in the definition of whitening (Eq.~\ref{eq:whitening}). This is because the whitened template will only be used in the context of detection, which involves the inner product with the whitened HOG features of the query image $y$:
+\begin{equation}
+(y-\mu)^{T}\Sigma^{-\frac{1}{2}}\Sigma^{-\frac{1}{2}}(x-\mu)\\
+= (y-\mu)^{T} w.
+\end{equation}
+We can therefore capture the whitening of the query image features in $w$.
+
+% We use the GPU to parallelize the lookup of the correct autocovariance cells during covariance matrix syntheses, which is \scream{x} times faster than using the CPU (Figure \ref{fig:covariancetime}).
+
+
 %\scream{chris:We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), an improvement over WHO which is both more discriminative than WHO and can be computed many orders of magnitude faster than WHO (70ms as opposed to to several seconds for WHO). This speedup allows us to generate NZ-WHO templates on the fly, allowing us to quickly evaluate arbitrary viewpoint hypotheses.}
 
-The computational efficiency of our approach comes from using the iterative
-conjugate gradient method to whiten the HOG template. Whitening a feature
+\subsubsection{Fast Whitening}
+
 vector $x$ requires a system of linear equations $\Sigma w = (x - \mu)$ to be
 solved, usually by decomposing the covariance matrix $\Sigma$ (with LU or
 Cholesky decomposition). Since the covariance matrices of HOG templates have
@@ -317,9 +355,9 @@ nice spectral properties (see Section \ref{sec:fast_whitening}), the conjugate
 gradient method will converge to the solution several orders of magnitude
 faster than decomposition methods.
 
-Our second innovation is 'Non-Zero' whitening. When synthesizing detection
-templates from rendered images, a common problem is how to handle the
-background. If we render the model over a natural image background, gradients
+Table \ref{tab:who_initializations} provides a detailed comparison of WHO and NZ-WHO templates, illustrating that our method is faster and more discriminative than Whitened Histograms of Orientations. \scream{Does the table show this?}
+
+
 in the background will be incorporated into the discriminative template.
 Alternatively, we could leave the background textureless \scream{did Hariharan
 do this?} (see Fig.~\ref{fig:rendering}), but whitening the resulting HOG
@@ -329,12 +367,10 @@ weights are introduced in the textureless region (as seen in
 Fig.~\ref{fig:whocomparison}). This could result in positive matches being
 suppressed due to spurious background gradients.
 
-To remove such artifacts, we construct $x$ using only cells with non-zero
 gradients. After whitening we restore the full template, with the zero-gradient
 cells left unchanged. This approach has the added benefit of reducing the size
 of the linear system we need to solve, further speeding up our method.
 
-Table \ref{tab:who_initializations} provides a detailed comparison of WHO and
 NZ-WHO templates, illustrating that our method is faster and more
 discriminative than Whitened Histograms of Orientations. \scream{Does the table
 show this? should we do more than AP and realtime analysis?}
@@ -394,7 +430,7 @@ show this? should we do more than AP and realtime analysis?}
 % In this section, we will give a brief overview of whole whitening stages. In the first section \ref{feature_statistics}, we will discuss about first and second order statistics of HOG feature. Then, we will discuss about using autocovariance $\Gamma$ to create covariance matrix $\Sigma$ for non-zero cells and SIMD implementation to speed up the generation. Then, we will explain fast and accurate way to solve $w = \Sigma^{-1}x$ using Conjugate Gradient method. % Finally, we will analyze the effect of regularization.
 
 % \subsection{Whitening and Textureless Background}
-
+\begin{comment}
 \subsection{Constructing the Covariance Matrix}
 \label{sec:feature_statistics}
 % Whats used in our work and using Autocovariance matrix
@@ -429,7 +465,7 @@ We use the GPU to parallelize the lookup of the correct autocovariance cells
 during covariance matrix syntheses, which is an order of magnitude times faster than using
 the CPU (Figure \ref{fig:covariancetime}).
 
-
+\end{comment}
 
 % Since the statistics have been computed for a generic HOG feature, we can use
 % the same statistics for all templates and images. In practice, since it is
