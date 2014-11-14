@@ -1,5 +1,20 @@
-\subsection{Rendering}
+In this section, we describe our approach to generating 3D
+exemplare-based templates on-the-fly. It is based on 3D CAD model
+rendering (Sect.~\ref{sec:rendering}) followed by feature extraction
+and applying a whitening procedure. Based on the original whitening
+formulation (Sect.~\ref{sec:who}), we propose three novel extensions that
+enable the application of whitening to the on-the-fly setting.
+%
+First, we adapt the whitening to the specific case of rendered
+images (Sect.~\ref{sec:nzwho}). Second, we show how to speed up the
+whitening by two orders of magnitudes for high-resolution templates
+(Sect.~\ref{sec:fastwhiten}). And third, we improve the runtime of our
+3D exemplar template detectors also at test time, by performing
+convolutions in the frequency domain (Sect.~\ref{sec:fft}).
 
+
+\subsection{Rendering}
+\label{sec:rendering}
 We used a public rendering engine to create realistic rendering and
 depth. We used CAD models that contain color, texture and material information such as
 transparency and reflectance to make the rendering as much realistic
@@ -21,8 +36,12 @@ continuously.
   \label{fig:rendering}
 \end{figure}
 
+
 \subsection{Whitened Histograms of Orientations (WHO)}
 \label{sec:who}
+Our technique for rendering and training template detectors on-the-fly
+is drawing from recent work, which we review briefly in this section.
+%
 Recently, Hariharan \etal. introduced Whitened Histograms of Orientations (WHO)
 \cite{Hariharan12}, which uses statistics from natural images to whiten HOG
 templates, making them more discriminative. Whitening is a common signal
@@ -31,11 +50,12 @@ processing operation for decorrelating a set of random variables
 $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By
 whitening the signal,
 \begin{equation}
-\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X]) \label{eq:whitening}
+\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X]) \label{eq:whitening},
 \end{equation}
-, we remove 2nd order correlation between all features. Since collecting covariance matrix for every template shape
+we remove 2nd order correlation between all features. Since collecting covariance matrix for every template shape
  is expensive, \cite{Hariharan12} proposed easy way to synthesize
-covariance $\Sigma$ from autocovariance $\Gamma$ and we followed their method to generate $\Sigma$
+covariance $\Sigma$ from autocovariance $\Gamma$ and we followed their
+method to generate $\Sigma$.
 
 % The whitening and LDA have the same
 % formulation when we make a decision boundary $w = \Sigma^{-1}(\mu_+ - \mu_0)$
@@ -67,7 +87,7 @@ covariance $\Sigma$ from autocovariance $\Gamma$ and we followed their method to
 
 % Our method requires generating a covariance matrix of non-zero cells 
 
-\subsubsection{Whitening Synthesized Templates and Non-Zero WHO}
+\subsection{Whitening Synthesized Templates and Non-Zero WHO}
 \label{sec:nzwho}
 Our first innovation is `Non-Zero' whitening. When synthesizing detection
 templates from rendered images, a common problem is how to handle the
@@ -143,10 +163,18 @@ replacing the non-zero elements of $x$ with the corresponding $w'$ element.
 \end{figure}
 
 
-\subsubsection{Fast Whitening using Conjugate Gradient}
+\subsection{Fast Whitening using Conjugate Gradient}
+\label{sec:fastwhiten}
+Our second innovation lies in enhancing the computational efficiency
+of the whitening procedure, making it applicable to an on-the-fly
+rendering setting.
+%
+It originates from the insight that an iterative
+Conjugate Gradient method can be used to whiten a HOG template, which
+is much faster than the original procedure proposed
+in~\cite{Hariharan12} based on decomposition.
 
-The computational efficiency of our approach comes from using the iterative
-Conjugate Gradient method to whiten a HOG template. Whitening the non-zero
+Whitening the non-zero
 feature vector $x'$ means a solving the system of linear equations, $\Sigma' w' = (x' -
 \mu')$. In
 \cite{Hariharan12}, the authors make use of the fact that covariance matrices
@@ -196,14 +224,14 @@ and show that the residual of NZ-WHO is smaller than WHO Fig.~\ref{fig:whoresidu
   \caption{(a) Realtime analysis of whitening. HOG means feature extraction time, WHO-Chol uses method of \cite{Hariharan12} and WHO-CG uses iterative Conjugate Gradient, and NZ-WHO-CG uses only non-zero cells and use Conjugate Gradient. (b) final speed of using NZ-WHO compare to WHO}
   \label{fig:whotime}
 \end{figure}
-
-
+%
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.5\linewidth]{residual}
   \caption{Residuals from different method}
   \label{fig:whoresidual}
 \end{figure}
+
 
 \subsection{High Resolution Templates and FFT based Convolution}
 \label{sec:fft} 
@@ -218,8 +246,9 @@ length $m$ filter, naive convolution takes $O(nm)$ time whereas FFT-based
 convolution takes $O\left( (n + m)\log (n+m) \right)$ time. For large $m$, high
 resolution template, we can gain computational advantage.
 
-\subsection{Variations of WHO}
 
+\subsection{Variations of WHO}
+\label{sec:variations}
 To validate our approach, we run an ensemble of NZ-WHO templates as a bank of exemplar detectors and compare its performance with other WHO variants. Since WHO variants uses HOG features, they are slower than HOG templates but WHO variants in general performs better than WHO by significant margin. However, WHO using Cholesky decomposition with Gaussian Elemination takes the most time yet performs worse than NZ-WHO which is two order of magnitude faster to generate. 
 
 We also calibrated the various methods
