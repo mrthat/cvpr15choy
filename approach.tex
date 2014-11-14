@@ -105,8 +105,10 @@ This could result in positive matches being suppressed due to spurious
 background gradients.
 
 NZ-WHO removes these artifacts so that the background has no effect on the
-template response. Given HOG features $x$, we create a new vector $x'$ which
-contains only the non-zero elements of $x$. We select the same elements of
+template response. Let $T$ be the feature extraction transformation and $p$ be
+the rendering setting (see Sect.~\ref{sec:fine}). Given HOG features $x=T(I_r)$
+from rendering image $I_r$, we create a new vector $x'$ which
+contains only the non-zero elements of $x$. We select the corresponding elements of
 $\mu$ to produce $\mu'$, while the autocovariance lookup is only performed for
 the cells with non-zero gradient, producing $\Sigma'$ corresponding to the
 features in $x'$. After solving the resulting system (which is now smaller than
@@ -168,7 +170,7 @@ replacing the non-zero elements of $x$ with the corresponding $w'$ element.
 Our second innovation lies in enhancing the computational efficiency
 of the whitening procedure, making it applicable to an on-the-fly
 rendering setting.
-%
+
 It originates from the insight that an iterative
 Conjugate Gradient method can be used to whiten a HOG template, which
 is much faster than the original procedure proposed
