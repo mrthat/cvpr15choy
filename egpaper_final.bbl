@@ -141,6 +141,11 @@ P.~Sermanet, D.~Eigen, X.~Zhang, M.~Mathieu, R.~Fergus, and Y.~LeCun.
   convolutional networks.
 \newblock {\em CoRR}, abs/1312.6229, 2013.
 
+\bibitem{Shewchuk94}
+J.~R. Shewchuk.
+\newblock An introduction to the conjugate gradient method without the
+  agonizing pain, 1994.
+
 \bibitem{stark10bmvc}
 M.~Stark, M.~Goesele, and B.~Schiele.
 \newblock Back to the future: Learning shape models from {3D} {CAD} data.

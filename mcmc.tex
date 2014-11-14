@@ -23,7 +23,7 @@ the exponential family, and let
 \end{align}
 where $\max_{s} w(p) \ast T_s(\mathcal{I})$ is the maximum convolution score of
 NZ-WHO template $w(p)$ with image feautures $T_s(\mathcal{I})$ for all scale $s$, as defined
-in Sect.~\ref{}. \scream{chris: I'll add this to technical part}
+in Sect.~\ref{sec:nzwho}. 
 
 \paragraph{Inference.}
 We approximate the MAP solution for $p$ by drawing samples from the
@@ -41,9 +41,9 @@ We define $3$ different types of moves that can alter the state
 (Fig.~\ref{fig:moves}), {\em (i)} changing the focal length $f$, {\em
 (ii)} one of the rotational pose parameters $v_i$, and {\em (iii)} CAD model
 index $m$. For (i) and (ii), we use Gaussian proposal distributions, and a uniform
-distribution over model changes for (iii). \scream{For scale and translation, we
+distribution over model changes for (iii). For scale and translation, we
 implicitly compute all possible translation and scale by convolving $w(q)$ to
-HOG pyramid.}
+HOG pyramid.
 \begin{align}
     g(p \rightarrow p + v_i') & \sim \mathcal{N}(\mu = 0,\sigma = \sigma_v) \quad i \in \{1,2,3\}\\
     g(p \rightarrow p + f') & \sim \mathcal{N}(\mu = 0,\sigma = \sigma_f)\\
@@ -62,8 +62,8 @@ where $g$ is the proposal distribution. % and $P$ is the distribution of which w
 
 In practice, we run this algorithm for 20 iterations, keeping
 the sample with the highest probability as our approximate estimate of
-the MAP solution. \scream{We set $\sigma_v = 5$ degree and $\sigma_f = 1$ and
-$c = 0.1$ for all experiments.}
+the MAP solution. We set $\sigma_v = 5$ degree and $\sigma_f = 1$ and
+$c = 0.1$ for all experiments.
 
 % there are several advantages that was not possible such as
 % \textbf{on-the-fly} template generation and making large number of
