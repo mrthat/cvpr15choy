@@ -91,7 +91,7 @@ Many methods have attempted to move object detection towards richer outputs, esp
 
 The methods above perform discrete pose estimation, quantizing the viewing sphere into a number of poses and selecting the best one during inference. Fine-grained pose estimators, in contrast, can infer continuous (or arbitrarily fine-grained) poses. One such method from \cite{Zia13} aligns a 3D deformable part-based wireframe model with input images to accurately predict object poses.
 
-More recently, \cite{Aubry14, Lim14} made progress in joint instance-level object detection and pose estimation. To estimate pose they use synthetic renderings of CAD models to learn discriminative mid-level patches. \cite{Aubry14} calibrates these patches on a small set of real images, while \cite{Lim14} presents a method for learning the relative discriminativeness of the patches.
+More recently, \cite{Aubry14, Lim14} made progress in joint instance-level object detection and pose estimation. To estimate pose they use synthetic renderings of CAD models to learn discriminative mid-level patches. \cite{Aubry14} calibrates these patches on a small set of real images, while \cite{Lim14} present a method for learning the relative discriminativeness of the patches.
 
 \textcolor{red}{Again, should we highlight the differences between these methods and ours?}
 
@@ -193,11 +193,11 @@ In one dimension, let $x(u)$ be the feature at location $u$. Then WSS states tha
 \textrm{cov}_x(u,v) = \textrm{cov}_x(0, v-u) = \Gamma(v-u),
 \end{equation} where $\Gamma$ is the autocovariance. For simplicity, we show the 1D case but this can be easily extended to 2D spatial autocovariance.
 
-Therefore, assuming WSS allows us to synthesize the covariance matrix for templates \emph{of any size} from the autocovariance. This hugely reduces the memory required because to build the covariance matrix of a template of $w \times h$ HOG cells (with 31 elements each), we only need a $w \times h \times 31$ autocovariance matrix. In comparison, the covariance matrix itself is $(w \times h \times 31) \times (w \times h \times 31)$. Furthermore, by using the autocovariance we can avoid storing the covariance matrix for every different aspect ratio used during detection.
+Therefore, assuming WSS allows us to synthesize the covariance matrix for templates \emph{of any size} from the autocovariance matrix. This hugely reduces the memory required because to build the covariance matrix of a template of $w \times h$ HOG cells (with 31 elements per cell), we only need a $w \times h \times 31$ autocovariance matrix. In comparison, the covariance matrix itself is $(w \times h \times 31) \times (w \times h \times 31)$. Furthermore, by using the autocovariance we can avoid storing the covariance matrix for every different aspect ratio used during detection.
 
-To further simplify $\Gamma$, we assumed horizontal and vertical symmetry. In our implementation, we compute a $40 \times 40 \times 31$ autocovariance matrix, meaning we can synthesize covariance matrices for HOG grids of as big as $40 \times 40$.
+To further simplify $\Gamma$, we assumed horizontal and vertical symmetry. In our implementation, we compute a $40 \times 40 \times 31$ autocovariance matrix, meaning we can synthesize covariance matrices for HOG grids as big as $40 \times 40$. In practice we limit the number of cells per template to 250.
 
-Synthesizing the covariance matrix is memory copy operations so we used GPU to speed up the process (Figure \ref{fig:covariancetime}).
+We use the GPU to parallelize the lookup of the correct autocovariance cells during covariance matrix syntheses, which is \scream{x} times faster than using the CPU (Figure \ref{fig:covariancetime}).
 
 
 
@@ -260,9 +260,12 @@ Synthesizing the covariance matrix is memory copy operations so we used GPU to s
   \label{fig:rendering}
   \end{figure}
  
-To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$ which takes $O(n^3)$ time. In \cite{Hariharan12}, the authors make use of positive semidefinite and Hermitian properties of a covariance matrix to use Cholesky decomposition and Gaussian elimination which is twice as fast a the LU decomposition. However, if we make use of a spectral property of the covariance matrix, we can further speed up the whitening stage.
+To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$. In \cite{Hariharan12}, the authors make use of the fact that covariance matrices are Hermitian and positive semidefinite to solve the system via the Cholesky decomposition, which is twice as fast as the LU decomposition. These decompositions require $O(n^3)$ time, whereas the conjugate gradient method takes $O(n^2\kappa)$ time, where $\kappa$ is the condition number of the matrix. This makes conjugate gradient a faster option for matrices with small condition numbers relative to their size.
+
+Figure \ref{fig:spectral} shows the singular values of a covariance matrix for one HOG template after a small regularization constant is added to the diagonal. The condition number of of the matrix is \scream{x}, much smaller than the size of the matrix (7500). As a result, conjugate gradient converges in \scream{x ms}, two orders of magnitude faster than the system can be solved using the Cholesky factorization (\scream{5 s}).
+
   
-  If we use a high resolution template such as \ref{fig:rendering}
+%  If we use a high resolution template such as \ref{fig:rendering}
 
 % where $w$ is the weight we want to find and $x$ is the HOG feature from the rendering and $\lambda$ is the regularization constant (see section \ref{sec:regularization}). For $w\in \mathcal{R}^n$, it takes $O(n^3)$ time to solve the linear equation. If we use a high resolution template to capture small geometric properties we can get high accuracy matchings but the solving the linear equation becomes computationally burdensome. 
 
@@ -270,9 +273,11 @@ To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$ which takes $O(n^3
 
 % decomposition methods such as LU or Cholesky Decomposition not only take long time but they also accumulate numerical error. 
 
-In our setting, we used high resolution template which has more than 250 HOG cells. This result in $\Sigma \in \mathcal{R}^{7500 \times 7500}$. It takes about 9 seconds if we use LU decomposition and 5 seconds if we use Cholesky decomposition.  % The default way of solving the linear equation in many linear algebra library is decomposing the matrix using LU Decomposition (in MATLAB the default method of backslash operator) which takes $O(\frac{2}{3}n^3)$ flops for $n\times n$ matrix. Since the matrix, $\Sigma + \lambda I$ is Hermitian and Positive Semi Definite. We can speed up using Cholesky Decomposition. 
+%In our setting, we used high resolution template which has more than 250 HOG cells. This result in $\Sigma \in \mathcal{R}^{7500 \times 7500}$. It takes about 9 seconds if we use LU decomposition and 5 seconds if we use Cholesky decomposition.  % The default way of solving the linear equation in many linear algebra library is decomposing the matrix using LU Decomposition (in MATLAB the default method of backslash operator) which takes $O(\frac{2}{3}n^3)$ flops for $n\times n$ matrix. Since the matrix, $\Sigma + \lambda I$ is Hermitian and Positive Semi Definite. We can speed up using Cholesky Decomposition. 
 
-We also used iterative Conjugate Gradient to make use of low rank property of the covariance \cite{Gharbi12}. After adding small regularization, the regularized covariance matrix has nice spectral property (Figure \ref{fig:spectral}. The singular values are clustered in small region and most of the energies are concentrated on the first (number) singular values. Thus, the conjugate gradients stage doesn't go upto the size of the matrix to converge.
+
+
+%We also used iterative Conjugate Gradient to make use of low rank property of the covariance \cite{Gharbi12}. After adding small regularization, the regularized covariance matrix has nice spectral property (Figure \ref{fig:spectral}). The singular values are clustered in small region and most of the energies are concentrated on the first (number) singular values. Thus, the conjugate gradients stage doesn't go upto the size of the matrix to converge.
 
 \begin{figure}[t]
   \begin{center}
@@ -417,7 +422,6 @@ We modeled the distribution of the convolution as an exponential distribution an
 We run experiments on PASCAL 2007 car category images with at least one car (num images) and got x percent improvement after fine tuning.
 
 % there are several advantages that was not possible such as \textbf{on-the-fly} template generation and making large number of templates  
-
 \begin{figure}[t]
 \centering
     \includegraphics[width=0.7\linewidth]{tuning2} \\ [-5pt]
@@ -446,15 +450,11 @@ We run experiments on PASCAL 2007 car category images with at least one car (num
 
 
 
+
 \section{Experiments}
 
 In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as ensembles of weak detectors and show that the rendering image can be We want to see how robust the NZ-WHO to real images a
 
-Second, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
-
-\subsection{2D-3D Matching as an Object Detector} 
-
-We created ensemble of NZ-WHO templates using 9 CAD models and measured the Average Precision (AP) of object detection task and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11}. MPPE is the average of viewpoint accuracy.  
 \subsection{Object Detection} 
 Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
 Our ensemble of NZ-WHO templates is generated from rendering image with no calibration but shows strong performance on object detection. The baseline method are Aspect Layout Model (ALM) \cite{Xiang12} and VOC-DPM \cite{Pepik12}. Note that the baseline methods require complex 3D modeling and viewpoint annotated natural images.
@@ -476,22 +476,6 @@ The detection result is on Table \ref{tab:3dobject} and example output from our 
 \caption{Detection results on 3D-Object dataset \cite{Savarese07}. Original image (left) and detection result overlaid on top with a bounding box and corresponding confidence score(right)}
   \label{fig:3dobject}
 \end{figure}
-
-% Instance-level 2D-3D matching (registration) is a difficult problem since we need a CAD model that looks similar to the object in the image. Especially, due to extreme intraclass variability of chair \cite{Aubry14} used a very large collection of CAD models to cover variety of chairs. Similarly, \cite{Lim14}
-\begin{table}[!htbp]
-  \begin{center}
-    \begin{tabular}{|c|c|c|c|}
-    \hline
-     AP/MPPE& Ours & ALM\cite{Xiang12} & VOCDPM\cite{Pepik12} \\
-    \hline\hline
-    car & \textbf{99.8}/91.7 &  98.4/93.4 & \textbf{99.8}/\textbf{97.5} \\ 
-    bicycle & 93.0/87.4 & 93.0/91.4 & \textbf{98.8}/\textbf{97.5} \\
-    \hline
-    \end{tabular}
-  \end{center}
-  \caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) on 3DObject dataset car category. Our method produces high quality 2D-3D matching yet performs on par with state-of-the art detectors.}
-  \label{tab:3dobject}
-\end{table}
 
 
 % Also, we evaluated our method on PASCAL 2007 dataset.
@@ -517,59 +501,6 @@ High performance object detectors usually generalizes very well. It can handle v
 
 To show such ability, we evaluated our method on PASCAL 3D dataset \cite{Xiang14}. The dataset augments PASCAL 2012 images with high quality viewpoint annotations thus is ideal to measure pose estimation. The dataset proposes new metric called Average Viewpoint Precision (AVP) where it measures the area under viewpoint precision and detection recall curve. The viewpoints is measured by azimuth similarity. If the distance between predicted azimuth and ground truth azimuth is below a certain threshold, the viewpoint is correct. Note that the baseline methods (V-DPM, VOC-DPM) reported on the PASCAL 3D dataset are variants of DPM where each component of DPM account for various azimuths. Thus V-DPM and VOC-DPM provide discrete azimuth only whereas our method provides 3D viewpoint (yaw, pitch, roll), CAD instance (model index, rendering, depth) and focal length.
 
-We used detection bounding boxes and augment it using our method to give viewpoint estimation. We used detection bounding boxes from two different methods: VOC-DPM \cite{Pepik12} and R-CNN \cite{Girshick14}. VOC-DPM is a variation of DPM that can estimate viewpoint and is the state-of-the-art performance in viewpoint estimation \cite{Xiang14}. The result is on Table \ref{tab:pascal12} and precision recall curves for car using R-CNN + Ours are on Figure \ref{fig:car_cnn_ap}. 
-
-We got significant improvement on viewpoint estimation by using our method on top of general purpose detectors. Note that our method estimates azimuth, elevation, in-plane rotation, focal length estimation, fine-grained categorization whereas V-DPM, VOC-DPM only estimate discrete viewpoints.
-
-Example outputs are on Figure \ref{fig:pascal12cnn}.
-
-
-\begin{figure*}[h]
-\setlength\tabcolsep{1pt}
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-   \hline
-  \includegraphics[width=0.24\textwidth]{car_cnn/1a.png} &   
-  \includegraphics[width=0.24\textwidth]{car_cnn/1b.png} &   
-  \includegraphics[width=0.24\textwidth]{car_cnn/1c.png} &   
-  \includegraphics[width=0.24\textwidth]{car_cnn/1d.png}  \\  
-   \hline
-  \includegraphics[width=0.24\textwidth]{car_cnn/2a.png} &   
-  \includegraphics[width=0.24\textwidth]{car_cnn/2b.png} &   
-  \includegraphics[width=0.24\textwidth]{car_cnn/2c.png} &   
-  \includegraphics[width=0.24\textwidth]{car_cnn/2e.png}  \\  
-   \hline
-  \includegraphics[width=0.24\textwidth]{car_cnn/4a.png} &   
-  \includegraphics[width=0.24\textwidth]{car_cnn/4b.png} &   
-  \includegraphics[width=0.24\textwidth]{car_cnn/4c.png} &   
-  \includegraphics[width=0.24\textwidth]{car_cnn/4d.png}  \\  
-%    \hline
-%   \includegraphics[width=0.24\textwidth]{car_cnn/10a.png} &   
-%   \includegraphics[width=0.24\textwidth]{car_cnn/10b.png} &   
-%   \includegraphics[width=0.24\textwidth]{car_cnn/10c.png} &   
-%   \includegraphics[width=0.24\textwidth]{car_cnn/10d.png}  \\  
-%   \hline 
-%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3a.png} &   
-%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3b.png} &   
-%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3c.png} &   
-%   \includegraphics[width=0.24\textwidth]{bicycle_cnn/3d.png}  \\
-  \hline
-  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7a.png} &   
-  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7b.png} &   
-  &\\
-  \hline
-  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4a.png} &   
-  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4b.png} &   
-  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4c.png} &   
-  \includegraphics[width=0.24\textwidth]{bicycle_cnn/4d.png}  \\
-  \hline
-  CNN Proposals & \multicolumn{3}{|c|}{Our matching results on proposal bounding boxes} \\
-  \hline
-\end{tabular}
-\caption{Example enriched bounding boxes. Given R-CNN\cite{Girshick14} detection bounding boxes, our method predicted 2D-3D matching reasonably. On the first column, R-CNN detection bounding boxes overlaid. From the second to the last columns, output of our method given a R-CNN box. Blue boxes are R-CNN output and purple boxes are the tightest bounding box enclosing predicted CAD model}
-  \label{fig:pascal12cnn}
-\end{figure*}
-
 
 \begin{table*}[!htbp]
     \footnotesize
@@ -593,22 +524,6 @@ bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.
 \label{tab:pascal12}
 \end{table*}
 
-\begin{figure}[h]
-\setlength\tabcolsep{1pt}
-\centering
-\begin{tabular}{cc}
-  \hline
-  \includegraphics[width=0.49\linewidth]{car_cnn4_crop.png} &   
-  \includegraphics[width=0.49\linewidth]{car_cnn8_crop.png} \\   
-  \includegraphics[width=0.49\linewidth]{car_cnn16_crop.png} &   
-  \includegraphics[width=0.49\linewidth]{car_cnn24_crop.png} \\   
-  \hline
-\end{tabular}
-\caption{Average Precision (AP) and Average Viewpoint Precision (AVP) and viewpoint confusion table on PASCAL 12 car validation set using R-CNN + Ours. From the top left, 4 views, 8 views, 16 views and 24 views. Since our method only augment the object detection, the AP remains the same for all cases. As we increase the viewpoint estimation, the AVP decreases. Note that since we estimate null viewpoint if our method fails to find match, there are more 0 viewpoint predictions (top row of confusion matrices) }
-  \label{fig:car_cnn_ap}
-\end{figure}
-
-
 \subsection{Stability of Our Method for Irregular Bounding Boxes}
 
 % Generic object detectors give overlapping detection bounding boxes of the same object which can be handled by non maximal suppression. For these overlapping detections, 
@@ -617,7 +532,7 @@ R-CNN detection bounding boxes are irregular in shape since they come from other
 
 We assumed that object can be arbitrarily truncated by the bounding box and search all plausible scales and translations. This can be efficiently computed using FFT-based convolution (refer Section. \ref{sec:fft}). We put examples of such conditions in Figure \ref{fig:stability}. Although the input bounding boxes are irregular and truncate objects, our method reliably generated a reasonable prediction of pose, translation, scale and CAD model.
 
-% R-CNN \cite{Girshick14} gives very irregular bounding boxes since the proposals bounding boxes come from various methods.
+
 
 \begin{figure}[h]
 \setlength\tabcolsep{5pt}
@@ -630,6 +545,7 @@ We assumed that object can be arbitrarily truncated by the bounding box and sear
 \caption{Stability of our method for overlapping R-CNN detection \cite{Girshick14}. Blue box is the R-CNN detection that is feed into the system as initial detection. Purple box and overlaid rendering is the final output of the system. Note that for various overlapping bounding boxes, our system accurately estimated the reasonable result}
   \label{fig:stability}
 \end{figure}
+
 
 % For qualitative examples, we put hand-picked results from our method Fig. \ref{fig:car} and Fig. \ref{fig:bicycle}.
 
