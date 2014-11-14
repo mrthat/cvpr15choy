@@ -1,5 +1,5 @@
 In this section, we describe our approach to generating 3D
-exemplare-based templates on-the-fly. It is based on 3D CAD model
+exemplar-based templates on-the-fly. It is based on 3D CAD model
 rendering (Sect.~\ref{sec:rendering}) followed by feature extraction
 and applying a whitening procedure. Based on the original whitening
 formulation (Sect.~\ref{sec:who}), we propose three novel extensions that
@@ -15,24 +15,17 @@ convolutions in the frequency domain (Sect.~\ref{sec:fft}).
 
 \subsection{Rendering}
 \label{sec:rendering}
-We used a public rendering engine to create realistic rendering and
-depth. We used CAD models that contain color, texture and material information such as
-transparency and reflectance to make the rendering as much realistic
-as possible to simulate the natural image statistics. The example rendering is
-in Fig. \ref{fig:rendering}. We also extracted depth information as well while
-rendering to use in the reconstruction.
-
-We used a collection of CAD models to make exemplar renderings of CAD models and for viewpoints. The
-CAD models are cached so that when we fine-tune 2D-3D matching, so it can be rendered instantaneously.
-We made the renderings to change focal length and yaw, pitch, roll so that we can fine tune the matching
-continuously.
+We made rendering engine that uses color, texture and material information in
+CAD models to generate realistic rendering to simulate the natural image
+statistics. The example rendering is
+in Fig. \ref{fig:rendering}. 
 
 \begin{figure}[t]
   \begin{center}
      \includegraphics[width=0.4\linewidth]{rendering}
      \includegraphics[width=0.4\linewidth]{depth}
   \end{center}
-  \caption{Example rendering and depth made by our renderer}
+  \caption{An example rendering and depth image made by our renderer}
   \label{fig:rendering}
 \end{figure}
 
@@ -40,22 +33,24 @@ continuously.
 \subsection{Whitened Histograms of Orientations (WHO)}
 \label{sec:who}
 Our technique for rendering and training template detectors on-the-fly
-is drawing from recent work, which we review briefly in this section.
-%
-Recently, Hariharan \etal. introduced Whitened Histograms of Orientations (WHO)
-\cite{Hariharan12}, which uses statistics from natural images to whiten HOG
+is drawing from recent work. Hariharan \etal. introduced Whitened Histograms of Orientations (WHO)
+\cite{Hariharan12}, which uses feature statistics from natural images to whiten HOG
 templates, making them more discriminative. Whitening is a common signal
 processing operation for decorrelating a set of random variables
-\cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a
-$k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By
-whitening the signal,
-\begin{equation}
-\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X]) \label{eq:whitening},
-\end{equation}
-we remove 2nd order correlation between all features. Since collecting covariance matrix for every template shape
- is expensive, \cite{Hariharan12} proposed easy way to synthesize
-covariance $\Sigma$ from autocovariance $\Gamma$ and we followed their
-method to generate $\Sigma$.
+\cite{Martinsson05, Belouchrani00}. By whitening features, we remove 2nd order
+correlation between all features. 
+
+% More formally, suppose that we have a
+% $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By
+% whitening the signal,
+% \begin{equation}
+% \tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X]) \label{eq:whitening},
+% \end{equation}
+
+% Since collecting covariance matrix for every template shape
+%  is expensive, \cite{Hariharan12} proposed easy way to synthesize
+% covariance $\Sigma$ from autocovariance $\Gamma$ and we followed their
+% method to generate $\Sigma$.
 
 % The whitening and LDA have the same
 % formulation when we make a decision boundary $w = \Sigma^{-1}(\mu_+ - \mu_0)$

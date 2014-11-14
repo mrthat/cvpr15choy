@@ -6,11 +6,6 @@ M.~Aubry, D.~Maturana, A.~Efros, B.~Russell, and J.~Sivic.
   dataset of cad models.
 \newblock In {\em CVPR}, 2014.
 
-\bibitem{Aubry13}
-M.~Aubry, B.~Russell, and J.~Sivic.
-\newblock Painting-to-{3D} model alignment via discriminative visual elements.
-\newblock {\em ACM Transactions on Graphics}, 2013.
-
 \bibitem{Belouchrani00}
 A.~Belouchrani and A.~Cichocki.
 \newblock Robust whitening procedure in blind source separation context.
@@ -99,6 +94,11 @@ D.~G. Lowe.
 \newblock Three-dimensional object recognition from single two-dimensional
   images.
 \newblock {\em Artificial Intelligence}, pages 355--395, 1987.
+
+\bibitem{Malisiewicz11}
+T.~Malisiewicz, A.~Gupta, and A.~A. Efros.
+\newblock Ensemble of exemplar-svms for object detection and beyond.
+\newblock In {\em ICCV}, 2011.
 
 \bibitem{Martinsson05}
 P.~Martinsson, V.~Rokhlin, and M.~Tygert.
