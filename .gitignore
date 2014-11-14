@@ -1,1 +1,7 @@
 *.key
+figures/bicycle_cnn/PASCAL12_*
+figures/car_cnn/PASCAL12_*
+figures/bicycle_3dobject/3DObject_*
+figures/car_pascal/PASCAL12_*
+figures/car/PASCAL*
+figures/car_3dobject/3DObject*
