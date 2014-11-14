@@ -43,29 +43,50 @@ from rendered 3D CAD model images.
 
 \subsection{WHO Variants}
 \label{sec:variations}
-To validate our approach, we run an ensemble of NZ-WHO templates as a bank of exemplar detectors and compare its performance with other WHO variants. Since WHO variants uses HOG features, they are slower than HOG templates but WHO variants in general performs better than WHO by significant margin. However, WHO using Cholesky decomposition with Gaussian Elemination takes the most time yet performs worse than NZ-WHO which is two order of magnitude faster to generate. 
+To validate our approach, we run an ensemble of NZ-WHO templates as a
+bank of exemplar detectors and compare its performance with other WHO
+variants, notable WHO~\cite{Hariharan12} and the original non-whitened
+HOG~\cite{Dalal05}. In addition, we evaluate WHO-CG and WHO-CG-Z:
+WHO-CG uses iterative Conjugate Gradient method to generate
+WHO. WHO-CG-Z whitens the whole template, but zeros out textureless
+region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using
+iterative Conjugate Gradients  (our method).
 
-We also calibrated the various methods
+Tab.~\ref{tab:who_initializations} gives the correponding results for
+the various methods on a subset of the 3D Object Classes car
+dataset~\cite{Savarese07} (all images corresponding to one particular
+car instance, seen from different viewpoints), reporting 3 quantities:
+detection performance in average precision (AP), pose estimation in mean
+precision in pose estimtation (MPPE), and the respective runtime.
+%
+For all methods, the table gives the results with and without
+calibration, using the calibration method of~\cite{Aubry14}. This
+calibration learns affine transformation of the detection confidence.
+For each method, we generated templates for 1 CAD model exemplar
+rendered from 24 azimuth and 4 elevation angles.
+% Since WHO variants uses HOG features, they are slower than
+% HOG templates but WHO variants in general performs better than WHO by
+% significant margin. However, WHO using Cholesky decomposition with
+% Gaussian Elemination takes the most time yet performs worse than
+% NZ-WHO which is two order of magnitude faster to generate.
 
-In the experiment, we compared the performance of HOG, WHO, WHO-CG, WHO-CG-Z and NZ-WHO. The WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}
+\paragraph{Results.}
+In Tab.~\ref{tab:who_initializations}, we observe that, on average,
+calibration indeed improves performance in terms of AP, sometimes
+drastically (e.g., from $54.4$ to $92.8$ for WHO-CG-Z), as observed in
+prior work~\cite{Aubry14}. At the same time, calibration is
+computationally expensiv, resulting in runtimes that are two orders of
+magnitudes larger than without calibration. Strikinly, our method
+NZ-WHO-CG achieves the second best AP of $90.0$ while completing in 79
+ms vs. 8.7 s when using calibration.
 
-The experiment results is on Tab.~\ref{tab:who_initializations}
-We found out that without calibration, NZ-WHO performs the best on object
-detection on 3DObject car dataset \cite{Savarese07}. See Table
-\ref{tab:who_initializations} for detail. In essence, if we use calibration, we
-could achieve better performance but since our goal is to do 2D-3D matching and
-continuous viewpoint estimation using on-the-fly template generation, we did not
-calibrated our templates.
-
-
-We empirically found out that NZ-WHO performs reasonably well without time
-consuming calibration stage compare to other variational method to generate
-templates. We used 1 CAD model with viewpoints covering 24 azimuths and 4
-elevations. Each template takes approximately 80 milliseconds to generate a
-NZ-WHO template. We also calibrated templates using the method presented in
-\cite{Aubry14}. The calibration learns affine transformation of the detection
-confidence.% Note that in Section \ref{experiments}, we provide the same
-% experiment with 9 CAD models.
+% We empirically found out that NZ-WHO performs reasonably well without time
+% consuming calibration stage compare to other variational method to generate
+% templates. We used 1 CAD model with viewpoints covering 24 azimuths and 4
+% elevations. Each template takes approximately 80 milliseconds to generate a
+% NZ-WHO template. We also calibrated templates using the method presented in
+% \cite{Aubry14}. e.% Note that in Section \ref{experiments}, we provide the same
+% % experiment with 9 CAD models.
 
 
 \begin{table}[!htbp]
@@ -81,7 +102,7 @@ WHO\cite{Hariharan12} & 82.1 / 85.4           &  3811ms& 84.4 / 83.0            
 WHO-CG                & 81.7 / \textbf{84.9}  &  104ms & 83.7 / 87.3                 & 8.3 sec \\
 WHO-CG-Z              & 54.4 / 65.1           &  103ms & \textbf{92.8} / 86.7        & 8.7 sec  \\
 % NZC-WHO-Z    & 89.10/\textbf{78.64} &    & 91.15/74.79                  &     \\
-NZ-WHO-CG             & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}        & 8.5 sec   \\
+NZ-WHO-CG {\em (ours)}  & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}        & 8.5 sec   \\
 \hline
 \end{tabular}
 \caption{Average Precision(AP) and Mean Precision in Pose Estimation (MPPE) \cite{Lopez-Sastre11} variations of WHO on 3DObject Car dataset\cite{Savarese07}. WHO refers to standard WHO using the method presented in \cite{Hariharan12}, WHO-CG uses iterative Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the whole template and zero out textureless region. NZ-WHO-CG is the NZ-WHO which whitens only non-zero cells using iterative Conjugate Gradient method. The time column indicates the time to generate one template. We followed calibration procedure presented in \cite{Aubry14}.}
@@ -363,12 +384,12 @@ bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.
 \setlength\tabcolsep{1pt}
 \centering
 \begin{tabular}{cc}
-  \hline
+%  \hline
   \includegraphics[width=0.49\linewidth]{car_cnn4_crop.png} &   
   \includegraphics[width=0.49\linewidth]{car_cnn8_crop.png} \\   
   \includegraphics[width=0.49\linewidth]{car_cnn16_crop.png} &   
   \includegraphics[width=0.49\linewidth]{car_cnn24_crop.png} \\   
-  \hline
+%  \hline
 \end{tabular}
 \caption{Average Precision (AP) and Average Viewpoint Precision (AVP)
   and viewpoint confusion table on PASCAL 12 car validation set using
