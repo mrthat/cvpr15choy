@@ -163,6 +163,25 @@ variants of DPM~\cite{Felzenszwalb10} where each component of DPM
 account for various azimuths. Thus V-DPM and VOC-DPM provide discrete
 azimuth only whereas our method provides 3D viewpoint (yaw, pitch,
 roll), CAD instance (model index, rendering, depth) and focal length.
+%
+\begin{figure}[t]
+ \begin{center}
+    \setlength\tabcolsep{0pt}
+    \begin{tabular}{ccc}
+    % \includegraphics[width=0.9\linewidth]{tuning} 
+   \includegraphics[width=0.33\linewidth]{tuning/1.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/2.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/3.png} \\[-5pt]
+   (a) & (b) & (c)\\
+   \includegraphics[width=0.33\linewidth]{tuning/4.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/5.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/6.png} \\[-5pt]
+   (d) & (e) & (f)\\
+   \end{tabular}
+ \end{center}
+ \caption{Effect of fine tuning. (left) original image, (middle) initial detection, (right) continuous fine tuning}
+ \label{fig:tuning}
+\end{figure}
 
 \paragraph{Setup.}
 We use detection bounding boxes provided by both object detectors and
@@ -309,25 +328,23 @@ bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.
 While the R-CNN detector~\cite{Girshick14} is highly robust to
 variations in object appearance and even occlusion and truncation,
 the resulting bounding box detections vary largely in the object
-portions that they contain  -- notably, they might
+portions that they contain, which provides a major challenge to any
+method that uses these detections as an input for further processing,
+such as ours.
+%
+In order to accomodate this variability, we add a considerable context
+region around the proposed bounding boxes before running our method.
+We assume that the object can be arbitrarily truncated by the bounding
+box and search all plausible scales and translations. This can be
+efficiently computed using FFT-based convolution
+(Section. \ref{sec:fft}).
 
-
-
-
-In Fig.~\ref{}, we visualize the effect 
-
-accomodate 
-
-
-
- are irregular in
-shape since they come from other region proposal methods and sometimes
-they truncate objects. To handle such irregular shape and truncation,
-we added small context around the bounding boxes and run our method. 
-
-We assumed that object can be arbitrarily truncated by the bounding box and search all plausible scales and translations. This can be efficiently computed using FFT-based convolution (refer Section. \ref{sec:fft}). We put examples of such conditions in Figure \ref{fig:stability}. Although the input bounding boxes are irregular and truncate objects, our method reliably generated a reasonable prediction of pose, translation, scale and CAD model.
-
-
+Fig.~\ref{fig:stability} visualizes example outputs of our method when
+starting from different proposed R-CNN bounding boxes. As can be seen
+from the figure, although the input bounding boxes (cyan) are often
+irregular and contain truncated objects, our method reliably
+generates a reasonable prediction of pose, translation, scale and CAD
+model (magenta bounding boxes enclose the output of our system).
 
 \begin{figure}[h]
 \setlength\tabcolsep{5pt}
