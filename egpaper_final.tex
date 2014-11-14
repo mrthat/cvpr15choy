@@ -218,13 +218,23 @@ the patches.
 % \end{comment}
 % All the code and CAD models is publicly available online \cite{Choy14} (currently not disclosed for anonymous review, visualizations are available in the supplementary material).
 
-\section{2D-3D Matching using Non-Zero Whitened Histograms of Orientations(NZ-WHO)}
+\section{Our Approach \scream{better name?}}
 \label{sec:nz-who}
 
 \subsection{Overview}
-Our method attempts to match CAD models 
+Our method attempts to match CAD models to 2D images, determining the best model within a class, its pose and scale, and the focal length of the camera used to produce the image. These parameters are first coarsely estimated using a discrete bank of detectors trained offline, before they are refined using MCMC by generating new detectors on the fly.
 
+The basic detection method underlying our approach is HOG template matching. However, we propose a new HOG variant called Non-Zero Whitened Histograms of Orientations (NZ-WHO), where the HOG templates are whitened using statistics found from a random collection of natural images, producing a more discriminative template.
 
+In addition to the library of CAD models that will be matched to the query images, our method requires a collection of random natural images. Offline, we compute HOG features of these images and record their mean and spatial autocovariance. The images are not used during testing, only the statistics generated from them.
+
+Notably, we do not require any labelled training images of the objects to be detected. Our templates are generated exclusively by rendering CAD models from our library. From these renderings we produce novel HOG-like features we call Non-Zero Whitened Histograms of Orientations (NZ-WHO), which use the natural image statistics found offline to whiten a standard HOG template, making it more discriminative.
+
+The matching proceeds in two steps: First, we apply a bank of pre-trained detectors to the image, corresponding to a set of discrete viewpoints, scales, and object models. This provides a rough estimate of these parameters. Second, we refine these parameters using MCMC, where each candidate is evaluated by rendering a new whitened template on the fly. 
+
+Optionally, our algorithm can be initialized using proposal bounding boxes from state-of-the-art object detectors \cite{Felzenszwalb10,Girshick14} before executing the two steps above. In this scenario, our approach provides a means to augment standard bounding box detectors with more interesting 3D information.
+
+\begin{comment}
 Our method is in line with \cite{Aubry14, Lim14} in the sense that we
 use only renderings, not real images. However, rather than using fixed
 sized mid-level patches, we use whole objects and make root
@@ -263,6 +273,10 @@ present real time analysis of NZ-WHO template generation to show that
 this can be done on-the-fly. The fine tuning stage process jointly
 optimizes translation, yaw, roll, pitch, scale, and focal length
 continuously and also searches for different CAD models.
+
+\end{comment}
+
+\subsection{Non-Zero Whitened Histograms of Orientations (NZ-WHO)}
 
 We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both more discriminative than WHO, and can be generated in 70ms (compared to several seconds for WHO). This speed up means we can generate templates on the fly, allowing our approach to evaluate arbitrary viewpoint hypotheses. 
 \scream{chris:We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), an improvement over WHO which is both more discriminative than WHO and can be computed many orders of magnitude faster than WHO (70ms as opposed to to several seconds for WHO). This speedup allows us to generate NZ-WHO templates on the fly, allowing us to quickly evaluate arbitrary viewpoint hypotheses.}
