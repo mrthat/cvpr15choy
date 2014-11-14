@@ -59,15 +59,62 @@ First line of institution2 address\\
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-A large body of recent work on object detection has focused on exploiting 3D CAD model databases to improve detection performance. Many of these approaches work by aligning exact 3D models to images using templates generated from renderings of the 3D models at a finite set of discrete viewpoints. The training procedures for these approaches, however, are very expensive and require gigabytes of memory and storage, and the viewpoint discretization hampers pose estimation performance.
+A large body of recent work on object detection has focused on exploiting 3D CAD
+model databases to improve detection performance. Many of these approaches work
+by aligning exact 3D models to images using templates generated from renderings
+of the 3D models at a finite set of discrete viewpoints. The training procedures
+for these approaches, however, are very expensive and require gigabytes of
+memory and storage, and the viewpoint discretization hampers pose estimation
+performance.
 
-We propose an efficient method for synthesizing templates from 3D models that runs on the fly -- that is, it quickly produces detectors for an arbitrary viewpoint of a 3D model without expensive dataset-dependent training or template storage. Given a 3D model and an arbitrary continuous detection viewpoint, our method synthesizes a discriminative template by extracting features from a rendered view of the object and decorrelating spatial dependences among the features. Our decorrelation procedure relies on a gradient-based algorithm that is more numerically stable than standard decomposition-based procedures, and we efficiently search for candidate detections by computing FFT-based template convolutions. Due to the speed of our template synthesis procedure, we are able to perform joint optimization on continuous scale, translation, rotation, and focal length. We provide an efficient GPU implementation of our algorithm, and we validate its performance on 3DObject dataset and PASCAL 2012 dataset.
+We propose an efficient method for synthesizing templates from 3D models that
+runs on the fly -- that is, it quickly produces detectors for an arbitrary
+viewpoint of a 3D model without expensive dataset-dependent training or template
+storage. Given a 3D model and an arbitrary continuous detection viewpoint, our
+method synthesizes a discriminative template by extracting features from a
+rendered view of the object and decorrelating spatial dependences among the
+features. Our decorrelation procedure relies on a gradient-based algorithm that
+is more numerically stable than standard decomposition-based procedures, and we
+efficiently search for candidate detections by computing FFT-based template
+convolutions. Due to the speed of our template synthesis procedure, we are able
+to perform joint optimization on continuous scale, translation, rotation, and
+focal length. We provide an efficient GPU implementation of our algorithm, and
+we validate its performance on 3DObject dataset and PASCAL 2012 dataset.
 
-%     Using 3D model to detect and register the model to RGB image has been a growing field of study. Recently, Aubry \etal \cite{Aubry14} and J. Lim \etal \cite{Lim14} tried to estimate pose and align exact CAD model to an image using part-based templates. Malisiewicz \etal \cite{Malisiewicz11} also addresses the issue by transferring metadata after detection. Hejrati \etal \cite{Hejrati14} uses template synthesis to detect an object. All these approaches require extensive training, a lot of memory space. Also, the training based approach requires defining fixed viewpoints which limit themselves.
-%  To overcome these difficulties, we propose an efficient and fast way to synthesize and validate templates using on the fly realistic rendering that can jointly optimize scale, translation, rotation and focal length continuously. We render an object and extract features and decorrelate spatial dependencies within them on the fly to make a discriminative template. To speed up the decorrelation procedure, we adopt a gradient based algorithm which is numerically more stable than decomposition procedure. Finally, we efficiently search for candidate match by computing convolution using FFT and jointly optimize to match the object accurately. To speed up further, we propose an efficient GPU implementation and tested on PASCAL images.
+%     Using 3D model to detect and register the model to RGB image has been a
+%     growing field of study. Recently, Aubry \etal \cite{Aubry14} and J. Lim
+%     \etal \cite{Lim14} tried to estimate pose and align exact CAD model to an
+%     image using part-based templates. Malisiewicz \etal \cite{Malisiewicz11}
+%     also addresses the issue by transferring metadata after detection. Hejrati
+%     \etal \cite{Hejrati14} uses template synthesis to detect an object. All
+%     these approaches require extensive training, a lot of memory space. Also,
+%     the training based approach requires defining fixed viewpoints which limit
+%     themselves.  To overcome these difficulties, we propose an efficient and
+%     fast way to synthesize and validate templates using on the fly realistic
+%     rendering that can jointly optimize scale, translation, rotation and focal
+%     length continuously. We render an object and extract features and
+%     decorrelate spatial dependencies within them on the fly to make a
+%     discriminative template. To speed up the decorrelation procedure, we adopt
+%     a gradient based algorithm which is numerically more stable than
+%     decomposition procedure. Finally, we efficiently search for candidate
+%     match by computing convolution using FFT and jointly optimize to match the
+%     object accurately. To speed up further, we propose an efficient GPU
+%     implementation and tested on PASCAL images.
 
-%   In contrast to other mid-level patch based 3D matching methods which requires extensive training and more than 10Gb of memory space and physical storage, ours require no training nor saving the templates thus enabling it to run on any personal computer. 
-%   To overcome these difficulties, we propose an efficient and fast way to synthesize and validate templates using on the fly realistic rendering that can jointly optimize scale, translation, rotation and focal length continuously. We render an object and extract features and decorrelate spatial dependencies within them on the fly to make a discriminative template. To speed up the decorrelation procedure, we adopt a gradient based algorithm which is numerically more stable than decomposition procedure. Finally, we efficiently search for candidate match by computing convolution using FFT and jointly optimize to match the object accurately. To speed up further, we propose an efficient GPU implementation and tested on PASCAL images.
+%   In contrast to other mid-level patch based 3D matching methods which
+%   requires extensive training and more than 10Gb of memory space and physical
+%   storage, ours require no training nor saving the templates thus enabling it
+%   to run on any personal computer.  To overcome these difficulties, we propose
+%   an efficient and fast way to synthesize and validate templates using on the
+%   fly realistic rendering that can jointly optimize scale, translation,
+%   rotation and focal length continuously. We render an object and extract
+%   features and decorrelate spatial dependencies within them on the fly to make
+%   a discriminative template. To speed up the decorrelation procedure, we adopt
+%   a gradient based algorithm which is numerically more stable than
+%   decomposition procedure. Finally, we efficiently search for candidate match
+%   by computing convolution using FFT and jointly optimize to match the object
+%   accurately. To speed up further, we propose an efficient GPU implementation
+%   and tested on PASCAL images.
 
 \end{abstract}
 
@@ -79,7 +126,28 @@ We propose an efficient method for synthesizing templates from 3D models that ru
 \section{Related Works}
 \subsection{Whitened Histograms of Orientations (WHO)}
 % History of Whitening and how whitening works
-Recently, Hariharan \etal. introduced Whitened Histograms of Orientations (WHO) \cite{Hariharan12}, which used statistics from natural images to whiten HOG templates, making them more discriminative. Whitening is a common signal processing operation for decorrelating a set of random variables \cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By whitening the signal, i.e., $\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X])$, we remove 2nd order correlation between all features. So, all elements in the random variable $\tilde{X} = \left[\tilde{X}_1, \tilde{X}_2, \dots, \tilde{X}_k\right]$, become more independent. In the context of HOG features, a whitened HOG template will produce Gaussian noise when convolved with a random natural image, but a delta-like response on an image matching the template. WHO templates are more discriminative than standard HOG templates because they only capture the gradients that differentiate the object from random images. \scream{chris added the following} Hariharan \etal. also interpreted the whitening as Linear Discriminant Analysis (LDA) where all classes have different means but have the same covariance. The whitening and LDA have the same formulation when we make a decision boundary $w = \Sigma^{-1}(\mu_+ - \mu_0)$ where $\mu_+$ is the features from a class (LDA) or a signal to whiten (whitening), $\mu_0$ is the negative class center (LDA) or a signal statistics (whitening) and $\Sigma$ is the covariance matrix of classes (LDA) or correlation within signal (whitening).
+Recently, Hariharan \etal. introduced Whitened Histograms of Orientations (WHO)
+\cite{Hariharan12}, which used statistics from natural images to whiten HOG
+templates, making them more discriminative. Whitening is a common signal
+processing operation for decorrelating a set of random variables
+\cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a
+$k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By
+whitening the signal, i.e., $\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X])$, we
+remove 2nd order correlation between all features. So, all elements in the
+random variable $\tilde{X} = \left[\tilde{X}_1, \tilde{X}_2, \dots,
+\tilde{X}_k\right]$, become more independent. In the context of HOG features, a
+whitened HOG template will produce Gaussian noise when convolved with a random
+natural image, but a delta-like response on an image matching the template. WHO
+templates are more discriminative than standard HOG templates because they only
+capture the gradients that differentiate the object from random images.
+\scream{chris added the following} Hariharan \etal. also interpreted the
+whitening as Linear Discriminant Analysis (LDA) where all classes have different
+means but have the same covariance. The whitening and LDA have the same
+formulation when we make a decision boundary $w = \Sigma^{-1}(\mu_+ - \mu_0)$
+where $\mu_+$ is the features from a class (LDA) or a signal to whiten
+(whitening), $\mu_0$ is the negative class center (LDA) or a signal statistics
+(whitening) and $\Sigma$ is the covariance matrix of classes (LDA) or
+correlation within signal (whitening).
 
 \textcolor{red}{Should we mention how our method improves on this (ie by using CG)?}
 
@@ -88,26 +156,54 @@ Recently, Hariharan \etal. introduced Whitened Histograms of Orientations (WHO) 
 
 \subsection{Object Detection and Viewpoint Estimation}
 
-Modern object detectors generalize very well, handling intraclass variability, occlusion, truncation and viewpoint changes \cite{Felzenszwalb10, Girshick14}. However, this generalization comes at the cost of fine-grained information, including accurate 3D pose and object sub-category recognition. Such methods typically produce bounding box detection hypotheses, with little further information.
+Modern object detectors generalize very well, handling intraclass variability,
+occlusion, truncation and viewpoint changes \cite{Felzenszwalb10, Girshick14}.
+However, this generalization comes at the cost of fine-grained information,
+including accurate 3D pose and object sub-category recognition. Such methods
+typically produce bounding box detection hypotheses, with little further
+information.
 
-Many methods have attempted to move object detection towards richer outputs, especially by jointly performing detection and pose estimation \cite{Pepik12, Xiang12, Fidler12, Xiang14, Hejrati14, Aubry14, Lim14}. To achieve this, \cite{Xiang12, Hejrati14, Fidler12} use 3D representations that deform as viewpoint changes and \cite{Pepik12} uses geometric constraints to regularize 2D appearance models.
+Many methods have attempted to move object detection towards richer outputs,
+especially by jointly performing detection and pose estimation \cite{Pepik12,
+Xiang12, Fidler12, Xiang14, Hejrati14, Aubry14, Lim14}. To achieve this,
+\cite{Xiang12, Hejrati14, Fidler12} use 3D representations that deform as
+viewpoint changes and \cite{Pepik12} uses geometric constraints to regularize 2D
+appearance models.
 
-The methods above perform discrete pose estimation, quantizing the viewing sphere into a number of poses and selecting the best one during inference. Fine-grained pose estimators, in contrast, can infer continuous (or arbitrarily fine-grained) poses. One such method from \cite{Zia13} aligns a 3D deformable part-based wireframe model with input images to accurately predict object poses.
+The methods above perform discrete pose estimation, quantizing the viewing
+sphere into a number of poses and selecting the best one during inference.
+Fine-grained pose estimators, in contrast, can infer continuous (or arbitrarily
+fine-grained) poses. One such method from \cite{Zia13} aligns a 3D deformable
+part-based wireframe model with input images to accurately predict object poses.
 
-More recently, \cite{Aubry14, Lim14} made progress in joint instance-level object detection and pose estimation. To estimate pose they use synthetic renderings of CAD models to learn discriminative mid-level patches. \cite{Aubry14} calibrates these patches on a small set of real images, while \cite{Lim14} present a method for learning the relative discriminativeness of the patches.
+More recently, \cite{Aubry14, Lim14} made progress in joint instance-level
+object detection and pose estimation. To estimate pose they use synthetic
+renderings of CAD models to learn discriminative mid-level patches.
+\cite{Aubry14} calibrates these patches on a small set of real images, while
+\cite{Lim14} present a method for learning the relative discriminativeness of
+the patches.
 
 \textcolor{red}{Again, should we highlight the differences between these methods and ours?}
 
-% specialized in giving such accurate information, can be applied on any generic object detectors to give high quality metadata.
-% Many 
-% Since the WHO does not require extensive training such as \cite{Felzenszwalb10, Malisiewicz11, Girshick14}, WHO is gaining momentum in 2D-3D matching. \cite{Aubry13, Aubry14, Lim14} combined WHO with synthetic rendering to jointly detect and estimate pose by making mid-level patches using WHO. Using this
-% WSuch approach has an advantage over generic detections. First, it is easy to trace the detection to specific template. The template also has The rendering has corresponding CAD model and viewpoint thus enabling joint detection and viewpoint estimation. 
-% To deal with textureless background \cite{Aubry13} whitens HOG feature and then zero out the WHO feature where there is no texture. But centering a HOG feature where there is no edge creates strong negative edges. We found out that centering only non-zero cells help detection but whitening all cell makes features to leak out to texture-less regions.
-% With increasing popularity of rendering image, whitening, traditional signal processing technique, as a preprocessing stage has been widely used also in computer vision community.
-% Many object detectors \cite{Felzenszwalb10, Malisiewicz11}
-% \subsection{Mid-level Patches for 2D-3D matching}
-%  FPM introduction : per instance matching  
-%  Seeing 3D chair : mid-level patches
+% specialized in giving such accurate information, can be applied on any generic
+% object detectors to give high quality metadata.  Many Since the WHO does not
+% require extensive training such as \cite{Felzenszwalb10, Malisiewicz11,
+% Girshick14}, WHO is gaining momentum in 2D-3D matching. \cite{Aubry13,
+% Aubry14, Lim14} combined WHO with synthetic rendering to jointly detect and
+% estimate pose by making mid-level patches using WHO. Using this WSuch approach
+% has an advantage over generic detections. First, it is easy to trace the
+% detection to specific template. The template also has The rendering has
+% corresponding CAD model and viewpoint thus enabling joint detection and
+% viewpoint estimation.  To deal with textureless background \cite{Aubry13}
+% whitens HOG feature and then zero out the WHO feature where there is no
+% texture. But centering a HOG feature where there is no edge creates strong
+% negative edges. We found out that centering only non-zero cells help detection
+% but whitening all cell makes features to leak out to texture-less regions.
+% With increasing popularity of rendering image, whitening, traditional signal
+% processing technique, as a preprocessing stage has been widely used also in
+% computer vision community.  Many object detectors \cite{Felzenszwalb10,
+% Malisiewicz11} \subsection{Mid-level Patches for 2D-3D matching} FPM
+% introduction : per instance matching  Seeing 3D chair : mid-level patches
   
 %\begin{comment}
 %  \subsection{Contributions}
@@ -125,22 +221,59 @@ More recently, \cite{Aubry14, Lim14} made progress in joint instance-level objec
 \section{2D-3D Matching using Non-Zero Whitened Histograms of Orientations(NZ-WHO)}
 \label{sec:nz-who}
 
-We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both more discriminative than WHO, and can be generated in 70ms (compared to several seconds for WHO). This speed up means we can generate templates on the fly, allowing our approach to evaluate arbitrary viewpoint hypotheses. 
-\scream{chris:We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), an improvement over WHO which is both more discriminative than WHO and can be computed many orders of magnitude faster than WHO (70ms as opposed to to several seconds for WHO). This speedup allows us to generate NZ-WHO templates on the fly, allowing us to quickly evaluate arbitrary viewpoint hypotheses.}
+We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO), that are both
+more discriminative than WHO, and can be generated in 70ms (compared to several
+seconds for WHO). This speed up means we can generate templates on the fly,
+allowing our approach to evaluate arbitrary viewpoint hypotheses. 
 
-The computational efficiency of our approach comes from using the iterative conjugate gradient method to whiten the HOG template. Whitening a feature vector $x$ requires a system of linear equations $\Sigma w = (x - \mu)$ to be solved, usually by decomposing the covariance matrix $\Sigma$ (with LU or Cholesky decomposition). Since the covariance matrices of HOG templates have nice spectral properties (see Section \ref{sec:fast_whitening}), the conjugate gradient method will converge to the solution several orders of magnitude faster than decomposition methods.
+\scream{chris:We propose Non-Zero Whitened Histograms of Orientations (NZ-WHO),
+an improvement over WHO which is both more discriminative than WHO and can be
+computed many orders of magnitude faster than WHO (70ms as opposed to to several
+seconds for WHO). This speedup allows us to generate NZ-WHO templates on the
+fly, allowing us to quickly evaluate arbitrary viewpoint hypotheses.}
 
-Our second innovation is 'Non-Zero' whitening. When synthesizing detection templates from rendered images, a common problem is how to handle the background. If we render the model over a natural image background, gradients in the background will be incorporated into the discriminative template. Alternatively, we could leave the background textureless \scream{did Hariharan do this?} (see Fig.~\ref{fig:rendering}), but whitening the resulting HOG template produces in undesirable background artifacts. These are created when centering the template (by subtracting the mean $\mu$), where strong negative weights are introduced in the textureless region (as seen in Fig.~\ref{fig:whocomparison}). This could result in positive matches being suppressed due to spurious background gradients.
+The computational efficiency and numerical stability of our approach comes from
+using the iterative conjugate gradient method to whiten the HOG template.
+Whitening a feature vector $x$ requires a system of linear equations $\Sigma w =
+(x - \mu)$ to be solved, usually by decomposing the covariance matrix $\Sigma$
+(with LU or Cholesky decomposition). Since the covariance matrices of HOG
+templates have nice spectral properties (see Section \ref{sec:fast_whitening}),
+the conjugate gradient method will converge to the solution several orders of
+magnitude faster than decomposition methods.
 
-To remove such artifacts, we construct $x$ using only cells with non-zero gradients. After whitening we restore the full template, with the zero-gradient cells left unchanged. This approach has the added benefit of reducing the size of the linear system we need to solve, further speeding up our method.
+Our second innovation is 'Non-Zero' whitening. When synthesizing detection
+templates from rendered images, a common problem is how to handle the
+background. If we render the model over a natural image background, gradients in
+the background will be incorporated into the discriminative template.
+Alternatively, we could leave the background textureless \scream{did Hariharan
+do this?} (see Fig.~\ref{fig:rendering}), but whitening the resulting HOG
+template produces in undesirable background artifacts. These are created when
+centering the template (by subtracting the mean $\mu$), where strong negative
+weights are introduced in the textureless region (as seen in
+Fig.~\ref{fig:whocomparison}). This could result in positive matches being
+suppressed due to spurious background gradients.
 
-Table \ref{tab:who_initializations} provides a detailed comparison of WHO and NZ-WHO templates, illustrating that our method is faster and more discriminative than Whitened Histograms of Orientations. \scream{Does the table show this?}
+To remove such artifacts, we construct $x$ using only cells with non-zero
+gradients. After whitening we restore the full template, with the zero-gradient
+cells left unchanged. This approach has the added benefit of reducing the size
+of the linear system we need to solve, further speeding up our method.
+
+Table \ref{tab:who_initializations} provides a detailed comparison of WHO and
+NZ-WHO templates, illustrating that our method is faster and more discriminative
+than Whitened Histograms of Orientations. \scream{Does the table show this?}
 
 % We compare the performance of WHO and NZ-WHO on 3D Object dataset \cite{Savarese07} and report performance on Table \ref{tab:who_initializations}. 
 
 % To deal with the problems, we propose Non-Zero Whitened Histograms of Orientations.
 
-% To accommodate the growing usage of rendering image for 2D-3D matching using WHO\cite{Aubry13, Aubry14, Lim14}, we analyzed various methods to whiten synthetic rendering image and propose Non-Zero Whitened Histograms of Orientations (NZ-WHO) which is a direct extension of \cite{Hariharan12} designed for rendering images with textureless background. % Since a NZ-WHO template has zero-mean and all elements in the template follow same distribution, no explicit calibration is required if all the templates have approximately the same number of cells. 
+% To accommodate the growing usage of rendering image for 2D-3D matching using
+% WHO\cite{Aubry13, Aubry14, Lim14}, we analyzed various methods to whiten
+% synthetic rendering image and propose Non-Zero Whitened Histograms of
+% Orientations (NZ-WHO) which is a direct extension of \cite{Hariharan12}
+% designed for rendering images with textureless background. % Since a NZ-WHO
+% template has zero-mean and all elements in the template follow same
+% distribution, no explicit calibration is required if all the templates have
+% approximately the same number of cells. 
 
 % Since Combining NZ-WHO with Conjugate Gradient, 
 
@@ -189,44 +322,96 @@ Table \ref{tab:who_initializations} provides a detailed comparison of WHO and NZ
 \subsection{Constructing the Covariance Matrix}
 \label{sec:feature_statistics}
 % Whats used in our work and using Autocovariance matrix
-We first collected the first and second order statistics (mean and autocovariance) of HOG features from arbitrary natural images. Following \cite{Hariharan12}, we assume Wide-Sense Stationarity (WSS) of HOG features generated from natural images. That is, we assume the mean of a HOG cell is independent of its place in the image, and the autocovariance of patches depends only on their relative location.
+We first collected the first and second order statistics (mean and
+autocovariance) of HOG features from arbitrary natural images. Following
+\cite{Hariharan12}, we assume Wide-Sense Stationarity (WSS) of HOG features
+generated from natural images. That is, we assume the mean of a HOG cell is
+independent of its place in the image, and the autocovariance of patches depends
+only on their relative location.
 
-In one dimension, let $x(u)$ be the feature at location $u$. Then WSS states that $\mathbb{E}\left[x(u)\right] = \mu_x$ for all $u$, and
+In one dimension, let $x(u)$ be the feature at location $u$. Then WSS states
+that $\mathbb{E}\left[x(u)\right] = \mu_x$ for all $u$, and
 \begin{equation}
 \textrm{cov}_x(u,v) = \textrm{cov}_x(0, v-u) = \Gamma(v-u),
 \end{equation} where $\Gamma$ is the autocovariance. For simplicity, we show the 1D case but this can be easily extended to 2D spatial autocovariance.
 
-Therefore, assuming WSS allows us to synthesize the covariance matrix for templates \emph{of any size} from the autocovariance matrix. This hugely reduces the memory required because to build the covariance matrix of a template of $w \times h$ HOG cells (with 31 elements per cell), we only need a $w \times h \times 31$ autocovariance matrix. In comparison, the covariance matrix itself is $(w \times h \times 31) \times (w \times h \times 31)$. Furthermore, by using the autocovariance we can avoid storing the covariance matrix for every different aspect ratio used during detection.
+Therefore, assuming WSS allows us to synthesize the covariance matrix for
+templates \emph{of any size} from the autocovariance matrix. This hugely reduces
+the memory required because to build the covariance matrix of a template of $w
+\times h$ HOG cells (with 31 elements per cell), we only need a $w \times h
+\times 31$ autocovariance matrix. In comparison, the covariance matrix itself is
+$(w \times h \times 31) \times (w \times h \times 31)$. Furthermore, by using
+the autocovariance we can avoid storing the covariance matrix for every
+different aspect ratio used during detection.
 
-To further simplify $\Gamma$, we assumed horizontal and vertical symmetry. In our implementation, we compute a $40 \times 40 \times 31$ autocovariance matrix, meaning we can synthesize covariance matrices for HOG grids as big as $40 \times 40$. In practice we limit the number of cells per template to 250.
+To further simplify $\Gamma$, we assumed horizontal and vertical symmetry. In
+our implementation, we compute a $40 \times 40 \times 31$ autocovariance matrix,
+meaning we can synthesize covariance matrices for HOG grids as big as $40 \times
+40$. In practice we limit the number of cells per template to 250.
 
-We use the GPU to parallelize the lookup of the correct autocovariance cells during covariance matrix syntheses, which is \scream{x} times faster than using the CPU (Figure \ref{fig:covariancetime}).
+We use the GPU to parallelize the lookup of the correct autocovariance cells
+during covariance matrix syntheses, which is \scream{x} times faster than using
+the CPU (Figure \ref{fig:covariancetime}).
 
 
 
-% Since the statistics have been computed for a generic HOG feature, we can use the same statistics for all templates and images. In practice, since it is expensive to whiten all the sliding patches in the image, we followed \cite{Hariharan12} and defined the templates to be $w = \Sigma^{-1}(X-E[X])$\begin{comment}which is a good approximation of $\Sigma^{-\frac{T}{2}} \Sigma^{-\frac{1}{2}}(X-E[X])$\end{comment} 
+% Since the statistics have been computed for a generic HOG feature, we can use
+% the same statistics for all templates and images. In practice, since it is
+% expensive to whiten all the sliding patches in the image, we followed
+% \cite{Hariharan12} and defined the templates to be $w =
+% \Sigma^{-1}(X-E[X])$\begin{comment}which is a good approximation of
+% $\Sigma^{-\frac{T}{2}} \Sigma^{-\frac{1}{2}}(X-E[X])$\end{comment} 
 
-% \begin{comment}Gathering statistics, especially computing spatial covariance of a signal is computationally burdensome. \end{comment}
-% To speed up the statistics collection, \begin{comment}in addition to the wide-sense stationarity (WSS) of HOG, \end{comment}we assumed horizontal and vertical symmetry of covariance. 
+% \begin{comment}Gathering statistics, especially computing spatial covariance
+% of a signal is computationally burdensome. \end{comment} To speed up the
+% statistics collection, \begin{comment}in addition to the wide-sense
+% stationarity (WSS) of HOG, \end{comment}we assumed horizontal and vertical
+% symmetry of covariance. 
 
- %Hariharan \etal \cite{Hariharan12} interpreted the whitening also as the Linear Discriminant Analysis where each class has the same covariance $\Sigma$ but with different mean value. They defined this whitened HOG feature as Whitened Histograms of Orientations (WHO) and we will follow their convention of the name.
+ %Hariharan \etal \cite{Hariharan12} interpreted the whitening also as the
+ %Linear Discriminant Analysis where each class has the same covariance $\Sigma$
+ %but with different mean value. They defined this whitened HOG feature as
+ %Whitened Histograms of Orientations (WHO) and we will follow their convention
+ %of the name.
 
 % \subsection{Rendering}
 % 
-% We used a public rendering engine to create realistic rendering and depth\begin{comment}\cite{Choy14render}\end{comment}. The CAD models we used in our experiments contain color, texture and material information such as transparency and reflectance. We tried to make the rendering as much realistic as possible to simulate the natural image statistics. The example rendering is in Fig. \ref{fig:rendering}. We also extracted depth information as well while rendering to use in the reconstruction.
+% We used a public rendering engine to create realistic rendering and
+% depth\begin{comment}\cite{Choy14render}\end{comment}. The CAD models we used
+% in our experiments contain color, texture and material information such as
+% transparency and reflectance. We tried to make the rendering as much realistic
+% as possible to simulate the natural image statistics. The example rendering is
+% in Fig. \ref{fig:rendering}. We also extracted depth information as well while
+% rendering to use in the reconstruction.
 
 
-% To whiten a HOG features, we first have to synthesize the covariance matrix. Following the method of \cite{Hariharan12}, which assumes spatial Wide-Sense Stationarity (WSS) of a feature, covariance matrix can be synthesized using spatial autocovariance $\Gamma$. This assumes the \begin{comment} and features such as HOG are gradients in a small patch whose statistics does not change (an object can be in anywhere in an image)\end{comment}. 
+% To whiten a HOG features, we first have to synthesize the covariance matrix.
+% Following the method of \cite{Hariharan12}, which assumes spatial Wide-Sense
+% Stationarity (WSS) of a feature, covariance matrix can be synthesized using
+% spatial autocovariance $\Gamma$. This assumes the \begin{comment} and features
+% such as HOG are gradients in a small patch whose statistics does not change
+% (an object can be in anywhere in an image)\end{comment}. 
 
-%However, unlike small fixed-sized mid-level patches, the root templates have different aspect ratios, different gradient patterns and large number of HOG cells which results in large covariance $\Sigma \in \mathcal{R}^{7000 \times 7000}$ that is difficult to cache. Thus, to generate a NZ-WHO template, we have to synthesize a covariance matrix and solve the system of linear equations. 
+%However, unlike small fixed-sized mid-level patches, the root templates have
+%different aspect ratios, different gradient patterns and large number of HOG
+%cells which results in large covariance $\Sigma \in \mathcal{R}^{7000 \times
+%7000}$ that is difficult to cache. Thus, to generate a NZ-WHO template, we have
+%to synthesize a covariance matrix and solve the system of linear equations. 
 
 
 
-% Thus, every time we whiten a root template, we have to generate a covariance matrix using autocovariance $\Gamma$. 
+% Thus, every time we whiten a root template, we have to generate a covariance
+% matrix using autocovariance $\Gamma$. 
 
-%\begin{comment} Also, since we are whitening only the non-zero HOG cells whose position is unknown beforehand and all templates have different aspect ratio for , we cannot cache the matrix. Using CPU, it takes about \end{comment}
+%\begin{comment} Also, since we are whitening only the non-zero HOG cells whose
+%position is unknown beforehand and all templates have different aspect ratio
+%for , we cannot cache the matrix. Using CPU, it takes about \end{comment}
 
-% In practice, synthesizing covariance matrix $\Sigma$ takes long time due to its large size.  $\Sigma$ ranges from $\Sigma \in \mathcal{R}^{7000 \times 7000}$ to $\Sigma \in \mathcal{R}^{7500 \times 7500}$. We vary the template resolution and run $\Sigma$ generation on CPU and GPU 100 times and report the average time in Fig. \ref{fig:covariancetime}.
+% In practice, synthesizing covariance matrix $\Sigma$ takes long time due to
+% its large size.  $\Sigma$ ranges from $\Sigma \in \mathcal{R}^{7000 \times
+% 7000}$ to $\Sigma \in \mathcal{R}^{7500 \times 7500}$. We vary the template
+% resolution and run $\Sigma$ generation on CPU and GPU 100 times and report the
+% average time in Fig. \ref{fig:covariancetime}.
 
 \begin{figure}[t]
   \begin{center}
@@ -263,26 +448,67 @@ We use the GPU to parallelize the lookup of the correct autocovariance cells dur
   \label{fig:rendering}
   \end{figure}
  
-To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$. In \cite{Hariharan12}, the authors make use of the fact that covariance matrices are Hermitian and positive semidefinite to solve the system via the Cholesky decomposition, which is twice as fast as the LU decomposition. These decompositions require $O(n^3)$ time, whereas the conjugate gradient method takes $O(n^2\kappa)$ time, where $\kappa$ is the condition number of the matrix. This makes conjugate gradient a faster option for matrices with small condition numbers relative to their size.
+To whiten a signal $x$, we have to solve $\Sigma w = x - \mu$. In
+\cite{Hariharan12}, the authors make use of the fact that covariance matrices
+are Hermitian and positive semidefinite to solve the system via the Cholesky
+decomposition, which is twice as fast as the LU decomposition. These
+decompositions require $O(n^3)$ time, whereas the conjugate gradient method
+takes $O(n^2\kappa)$ time, where $\kappa$ is the condition number of the matrix.
+This makes conjugate gradient a faster option for matrices with small condition
+numbers relative to their size.
 
-Figure \ref{fig:spectral} shows the singular values of a covariance matrix for one HOG template after a small regularization constant is added to the diagonal. The condition number of of the matrix is \scream{x}, much smaller than the size of the matrix (7500). As a result, conjugate gradient converges in \scream{x ms}, two orders of magnitude faster than the system can be solved using the Cholesky factorization (\scream{5 s}).
+Figure \ref{fig:spectral} shows the singular values of a covariance matrix for
+one HOG template after a small regularization constant is added to the diagonal.
+The condition number of of the matrix is \scream{x}, much smaller than the size
+of the matrix (7500). As a result, conjugate gradient converges in \scream{x
+ms}, two orders of magnitude faster than the system can be solved using the
+Cholesky factorization (\scream{5 s}).
 
-The final challenge in on-the-fly template evaluation is performing the convolution between the template and the target image. Standard convolution would be prohibitively slow for the high resolution templates we're using, so we implemented the convolution via Fast Fourier Transform on the GPU. This allows template evaluation to run in \scream{x ms}, compared to \scream{x ms} for the naive CPU implementation.
+The final challenge in on-the-fly template evaluation is performing the
+convolution between the template and the target image. Standard convolution
+would be prohibitively slow for the high resolution templates we're using, so we
+implemented the convolution via Fast Fourier Transform on the GPU. This allows
+template evaluation to run in \scream{x ms}, compared to \scream{x ms} for the
+naive CPU implementation.
 
   
 %  If we use a high resolution template such as \ref{fig:rendering}
 
-% where $w$ is the weight we want to find and $x$ is the HOG feature from the rendering and $\lambda$ is the regularization constant (see section \ref{sec:regularization}). For $w\in \mathcal{R}^n$, it takes $O(n^3)$ time to solve the linear equation. If we use a high resolution template to capture small geometric properties we can get high accuracy matchings but the solving the linear equation becomes computationally burdensome. 
+% where $w$ is the weight we want to find and $x$ is the HOG feature from the
+% rendering and $\lambda$ is the regularization constant (see section
+% \ref{sec:regularization}). For $w\in \mathcal{R}^n$, it takes $O(n^3)$ time to
+% solve the linear equation. If we use a high resolution template to capture
+% small geometric properties we can get high accuracy matchings but the solving
+% the linear equation becomes computationally burdensome. 
 
-% To briefly recap, the LU Decomposition and Cholesky Decomposition are most popular methods to solve a linear equation. In linear algebra libraries such as MATLAB, these decomposition methods are default method to solve a linear equation (backslash \textbackslash in MATLAB). Since the covariance matrix is Hermitian and Positive Semi-Definite, we can use Cholesky Decomposition which is twice as fast as the LU Decomposition.  
+% To briefly recap, the LU Decomposition and Cholesky Decomposition are most
+% popular methods to solve a linear equation. In linear algebra libraries such
+% as MATLAB, these decomposition methods are default method to solve a linear
+% equation (backslash \textbackslash in MATLAB). Since the covariance matrix is
+% Hermitian and Positive Semi-Definite, we can use Cholesky Decomposition which
+% is twice as fast as the LU Decomposition.  
 
-% decomposition methods such as LU or Cholesky Decomposition not only take long time but they also accumulate numerical error. 
+% decomposition methods such as LU or Cholesky Decomposition not only take long
+% time but they also accumulate numerical error. 
 
-%In our setting, we used high resolution template which has more than 250 HOG cells. This result in $\Sigma \in \mathcal{R}^{7500 \times 7500}$. It takes about 9 seconds if we use LU decomposition and 5 seconds if we use Cholesky decomposition.  % The default way of solving the linear equation in many linear algebra library is decomposing the matrix using LU Decomposition (in MATLAB the default method of backslash operator) which takes $O(\frac{2}{3}n^3)$ flops for $n\times n$ matrix. Since the matrix, $\Sigma + \lambda I$ is Hermitian and Positive Semi Definite. We can speed up using Cholesky Decomposition. 
+%In our setting, we used high resolution template which has more than 250 HOG
+%cells. This result in $\Sigma \in \mathcal{R}^{7500 \times 7500}$. It takes
+%about 9 seconds if we use LU decomposition and 5 seconds if we use Cholesky
+%decomposition.  % The default way of solving the linear equation in many linear
+%algebra library is decomposing the matrix using LU Decomposition (in MATLAB the
+%default method of backslash operator) which takes $O(\frac{2}{3}n^3)$ flops for
+%$n\times n$ matrix. Since the matrix, $\Sigma + \lambda I$ is Hermitian and
+%Positive Semi Definite. We can speed up using Cholesky Decomposition. 
 
 
 
-%We also used iterative Conjugate Gradient to make use of low rank property of the covariance \cite{Gharbi12}. After adding small regularization, the regularized covariance matrix has nice spectral property (Figure \ref{fig:spectral}). The singular values are clustered in small region and most of the energies are concentrated on the first (number) singular values. Thus, the conjugate gradients stage doesn't go upto the size of the matrix to converge.
+%We also used iterative Conjugate Gradient to make use of low rank property of
+%the covariance \cite{Gharbi12}. After adding small regularization, the
+%regularized covariance matrix has nice spectral property (Figure
+%\ref{fig:spectral}). The singular values are clustered in small region and most
+%of the energies are concentrated on the first (number) singular values. Thus,
+%the conjugate gradients stage doesn't go upto the size of the matrix to
+%converge.
 
 \begin{figure}[t]
   \begin{center}
@@ -306,7 +532,14 @@ The final challenge in on-the-fly template evaluation is performing the convolut
 
 \subsection{Variations of WHO}
 
-We empirically found out that NZ-WHO performs reasonably well without time consuming calibration stage compare to other variational method to generate templates. We used 1 CAD model with viewpoints covering 24 azimuths and 4 elevations. Each template takes approximately 80 milliseconds to generate a NZ-WHO template. We also calibrated templates using the method presented in \cite{Aubry14}. The calibration learns affine transformation of the detection confidence.% Note that in Section \ref{experiments}, we provide the same experiment with 9 CAD models.
+We empirically found out that NZ-WHO performs reasonably well without time
+consuming calibration stage compare to other variational method to generate
+templates. We used 1 CAD model with viewpoints covering 24 azimuths and 4
+elevations. Each template takes approximately 80 milliseconds to generate a
+NZ-WHO template. We also calibrated templates using the method presented in
+\cite{Aubry14}. The calibration learns affine transformation of the detection
+confidence.% Note that in Section \ref{experiments}, we provide the same
+experiment with 9 CAD models.
 
 
 \begin{table*}[!htbp]
@@ -329,7 +562,12 @@ NZ-WHO-CG             & \textbf{90.0} / 82.8  &   79ms & 90.3 / \textbf{86.8}   
 \label{tab:who_initializations}
 \end{table*}
 
-We found out that without calibration, NZ-WHO performs the best on object detection on 3DObject car dataset \cite{Savarese07}. See Table \ref{tab:who_initializations} for detail. In essence, if we use calibration, we could achieve better performance but since our goal is to do 2D-3D matching and continuous viewpoint estimation using on-the-fly template generation, we did not calibrated our templates.
+We found out that without calibration, NZ-WHO performs the best on object
+detection on 3DObject car dataset \cite{Savarese07}. See Table
+\ref{tab:who_initializations} for detail. In essence, if we use calibration, we
+could achieve better performance but since our goal is to do 2D-3D matching and
+continuous viewpoint estimation using on-the-fly template generation, we did not
+calibrated our templates.
 
 
 \begin{comment}
@@ -347,7 +585,12 @@ Unlike \cite{Aubry14}, we did not whiten all cells and then zero out some HOG ce
 
 % \subsection{Effect of Regularization}
 % \label{sec:regularization}
-%  Also, since all covariance matrix is Positive Semi Definite, our matrix $\Sigma$ must be Positive Semi-Definite too. To guarantee the property, We found out that the regularization has significant impact on the performance. In \cite{Hariharan12}, Hariharan \etal used small fixed regularization since the covariance matrix of specially correlated features is intrinsically row-rank to make the matrix invertible.
+%  Also, since all covariance matrix is Positive Semi Definite, our matrix
+%  $\Sigma$ must be Positive Semi-Definite too. To guarantee the property, We
+%  found out that the regularization has significant impact on the performance.
+%  In \cite{Hariharan12}, Hariharan \etal used small fixed regularization since
+%  the covariance matrix of specially correlated features is intrinsically
+%  row-rank to make the matrix invertible.
 %  
 % However if we closely analyze the impact of the regularization, we can see that larger the $\lambda$ is, the centered HOG becomes more dominant. 
 % 
@@ -459,7 +702,7 @@ We run experiments on PASCAL 2007 car category images with at least one car (num
 
 \section{Experiments}
 
-In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as ensembles of weak detectors and show that the rendering image can be We want to see how robust the NZ-WHO to real images a
+In this section, we validate our proposed NZ-WHO templates in two different ways. First, we make a set of NZ-WHO templates for a set of CAD models from various viewpoints. Then we run the bank of NZ-WHO templates as an ensemble of weak detectors and show that we can achieve 2D-3D matching We want to see how robust the NZ-WHO to real images
 
 Second, we show that our method can complement the detection bounding boxes coming out of standard object detectors. This process will enrich object detection bounding boxes with 2D-3D matching which gives continuous viewpoint estimation, a CAD model (rendering, depth) and fine-grained category.  
 
