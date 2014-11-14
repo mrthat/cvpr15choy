@@ -18,7 +18,14 @@
   %  %   \end{tabular}
   % \end{tabular}\\
   % (b)
-  \caption{Using a bank of CAD models, we generate NZ-WHO templates which can be used to either detect objects directly or initialize pose of an object in the bounding box from other detectors. Once initialization is given, we use NZ-WHO to propose and validate plausible pose on-the-fly and further tune the translation, 3D viewpoint and focal length continuously.}
+  \caption{Using a database of 3D CAD models, we generate NZ-WHO
+    templates which can be used to either detect objects directly or
+    enrich the output of an existing detector with high-quality,
+    continuous pose and 3D CAD model exemplar.}
+    % initialize pose of an object in the bounding box from other
+    % detectors. Once initialization is given, we use NZ-WHO to propose
+    % and validate plausible pose on-the-fly and
+    % further tune the translation, 3D viewpoint and focal length continuously.}
   % \vspace{-1em}
   \label{fig:front}
 \end{figure}
@@ -30,7 +37,7 @@ level of performance in 2D bounding box
 localization~\cite{pascal12, Felzenszwalb10, Overfeat, Krizhevsky12, Girshick14}, due to their
 ability to generalize across differences in object appearance,
 lighting, and viewpoint. While this generalization
-ability of these methods is benefitial for robustness, it also limits
+ability of these methods is beneficial for robustness, it also limits
 the level of detail that these detectors can deliver as an output.
 
 As a consequence, there has been increased interest in multi-view object
@@ -89,31 +96,32 @@ image matching techniques.
 For (i), recent approaches to 2D-3D matching~\cite{Aubry14, Lim14}
 typically rely on a
 collection of 3D exemplar models, which they render from a
-large number of viewpoints. The resulting artifial images are then
+large number of viewpoints. The resulting artificial images are then
 used to train exemplar models that can be matched to a real-world
 image at test time.
 %
 For (ii), it has been realized that template-based exemplar detectors
 based on HOG~\cite{Dalal05} features can be trained analytically, by
 replacing the standard SVM with an LDA classifier
-(E-LDA)~\cite{Hariharan12}. As a result, it is feasible to train
+(E-LDA)~\cite{Hariharan12}, resulting in a whitened feature
+representation, termed WHO. As a result, it is feasible to train
 hundreds of thousands of mid-level patch detectors for
 recognition~\cite{Aubry14}.
 %
-Unfortunately, the performance of E-LDA relies crucially on an
+Unfortunately, the performance of WHO relies crucially on an
 additional calibration step that equalizes the detection scores of
 independently trained exemplar models. Since this step involves costly
 mining of hard negative examples~\cite{Dalal05,Felzenszwalb10} on a
 validation set, it constitutes the major computational bottleneck of
-E-LDA, limiting its scalability.
+WHO, limiting its scalability.
 
 In this paper, we propose a novel method for 2D-3D alignment of
 exemplar CAD models to real-world images that circumvents the need for
-calibration, and greatly enhances the scalability of E-LDA. As a
+calibration, and greatly enhances the scalability of WHO. As a
 result, we can render novel views and train corresponding exemplar
 models {\em on the fly}, without the need for offline processing. As a
 by-product, we can formulate the alignment problem as a parameter
-search in a continuous pose space, consisting of yaw, pitch and roll, resulting in truely continuous pose estimates, which
+search in a continuous pose space, consisting of yaw, pitch and roll, resulting in truly continuous pose estimates, which
 we implement using MCMC sampling.
 %  require a large number of rendering and 2D
 % templates for each of the CAD model with specific viewpoint. Since
@@ -135,10 +143,10 @@ Our paper makes the following specific contributions.
 
 First, we present a novel method for training exemplar models from
 rendered 3D CAD data {\em on the fly}, enabled by a novel variant of
-E-LDA, and making efficient use of the specific characteristics of
-rendered images. To our knowledge, our method constitutes the first
-attempt to simultaneously render and train exemplar detectors on the
-fly.
+WHO, termed NZ-WHO, and making efficient use of the specific
+characteristics of rendered images. To our knowledge, our method
+constitutes the first attempt to simultaneously render and train
+exemplar detectors on the fly.
 % In our paper, we present Non-Zero Whiten Histograms of Orientations
 % (NZ-WHO) to dramatically speed up the template generation and get rid
 % of time consuming calibration and yet achieves performance on par with
