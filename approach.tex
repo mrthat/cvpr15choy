@@ -194,7 +194,7 @@ feature vector $x'$ means a solving the system of linear equations, $\Sigma' w' 
 \mu')$. In
 \cite{Hariharan12}, the authors make use of the fact that covariance matrices
 are symmetric and positive semidefinite to solve the system via the Cholesky
-decomposition with Gaussian Elemination, which requires $O(n^3)$ time.
+decomposition with Gaussian Elimination, which requires $O(n^3)$ time.
 
 The Conjugate Gradient method is an iterative algorithm for solving symmetric
 positive definite systems which runs in $O(n^2\kappa)$ time, where $\kappa$ is
@@ -203,7 +203,8 @@ the condition number of the matrix. \cite{Shewchuk94}.
 This makes Conjugate Gradient faster than decomposition for matrices with small condition
 numbers relative to their size.
 
-The covariance matrix for HOG templates is typically ill-conditioned\cite{Hariharan12}, but we
+The covariance matrix for HOG templates is typically
+ill-conditioned\cite{Hariharan12}, but we
 can add a regularization constant to the diagonal to reduce its condition
 number to the point where the conjugate gradient method will converge quickly.
 We use a constant of $0.15$, which reduces the condition number from $10^{20}$

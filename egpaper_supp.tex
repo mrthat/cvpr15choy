@@ -77,37 +77,57 @@ We run our ensemble of NZ-WHO templates as a detector on 3D Object dataset\cite{
   \label{fig:3dobject_ap}
 \end{figure}
 
-More qualitative results are on the Fig.~\ref{fig:3dobject_fig}. The each of the template in the ensemble of NZ-WHO templates has a corresponding rendering and a CAD model. These can be transferred as a metadata and overlay the rendering on top of the detection.
+More qualitative results are on the Fig.~\ref{fig:3dobject_good} and Fig.~\ref{fig:3dobject_bad}. The each of the template in the ensemble of NZ-WHO templates has a corresponding rendering and a CAD model. These can be transferred as a metadata and overlay the rendering on top of the detection.
 
 \begin{figure*}[h]
 \setlength\tabcolsep{1pt}
 \centering
 \begin{tabular}{|c|c|}
   \hline
-  \includegraphics[width=0.40\linewidth]{supp/car1.png} &
-  \includegraphics[width=0.40\linewidth]{supp/bicycle1.png} \\
-  \includegraphics[width=0.40\linewidth]{supp/car23.png} &
-  \includegraphics[width=0.40\linewidth]{supp/bicycle3.png} \\
+  \includegraphics[width=0.40\linewidth]{supp/car32.png} &
+  \includegraphics[width=0.40\linewidth]{supp/bicycle17.png} \\
   \includegraphics[width=0.40\linewidth]{supp/car26.png} &
-  \includegraphics[width=0.40\linewidth]{supp/bicycle4.png} \\
+  \includegraphics[width=0.40\linewidth]{supp/bicycle18.png} \\
   \includegraphics[width=0.40\linewidth]{supp/car29.png} & 
-  \includegraphics[width=0.40\linewidth]{supp/bicycle5.png} \\
+  \includegraphics[width=0.40\linewidth]{supp/bicycle13.png} \\
   \includegraphics[width=0.40\linewidth]{supp/car10.png} &
   \includegraphics[width=0.40\linewidth]{supp/bicycle9.png} \\
-  \includegraphics[width=0.40\linewidth]{supp/car13.png} &
-  \includegraphics[width=0.40\linewidth]{supp/bicycle13.png} \\
-  \includegraphics[width=0.40\linewidth]{supp/car15.png} &
+  \includegraphics[width=0.40\linewidth]{supp/car1.png} &
   \includegraphics[width=0.40\linewidth]{supp/bicycle11.png} \\
   \includegraphics[width=0.40\linewidth]{supp/car8.png} &
   \includegraphics[width=0.40\linewidth]{supp/bicycle12.png} \\
   \includegraphics[width=0.40\linewidth]{supp/car20.png} & 
   \includegraphics[width=0.40\linewidth]{supp/bicycle15.png} \\
+  \includegraphics[width=0.40\linewidth]{supp/car31.png} & 
+  \includegraphics[width=0.40\linewidth]{supp/bicycle10.png} \\
+  \includegraphics[width=0.40\linewidth]{supp/car33.png} & 
+  \includegraphics[width=0.40\linewidth]{supp/bicycle16.png} \\
   \hline
   Car & Bicycle \\
   \hline
   \end{tabular}
-\caption{Detection results on 3D Object dataset car and bike classes. In each column, original image (left) and detection result overlaid on top (right).}% with a bounding box and corresponding confidence score (right).}
-  \label{fig:3dobject_fig}
+\caption{Successful detection results on 3D Object dataset car and bike classes. In each column, original image (left) and detection result overlaid on top (right).}% with a bounding box and corresponding confidence score (right).}
+  \label{fig:3dobject_good}
+\end{figure*}
+
+
+\begin{figure*}[h]
+\setlength\tabcolsep{1pt}
+\centering
+\begin{tabular}{|c|c|}
+  \hline
+  \includegraphics[width=0.40\linewidth]{supp/car13.png} &
+  \includegraphics[width=0.40\linewidth]{supp/bicycle1.png} \\
+  \includegraphics[width=0.40\linewidth]{supp/car30.png} &
+  \includegraphics[width=0.40\linewidth]{supp/bicycle5.png} \\
+  \includegraphics[width=0.40\linewidth]{supp/car18.png} &
+  \includegraphics[width=0.40\linewidth]{supp/bicycle19.png} \\
+  \hline
+  Car & Bicycle \\
+  \hline
+  \end{tabular}
+\caption{Failed pose estimation results on 3D Object dataset car and bike classes. In each column, original image (left) and detection result overlaid on top (right).}% with a bounding box and corresponding confidence score (right).}
+  \label{fig:3dobject_bad}
 \end{figure*}
 
 \clearpage

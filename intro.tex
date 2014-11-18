@@ -2,22 +2,6 @@
   \centering
   % \includegraphics[width=0.9\linewidth]{schematics} 
   \includegraphics[width=0.99\linewidth]{front} % \\[-5pt]
-  % (a)\\[0pt]
-  % \setlength\tabcolsep{0pt}
-  % \begin{tabular}{cc}
-  %     \includegraphics[width=0.45\linewidth]{car/orig2} & 
-  %     \includegraphics[width=0.45\linewidth]{car/overlay2}
-  %  %   \begin{tabular}{cc}
-  %  %       \includegraphics[width=0.16\linewidth]{cad_car/2001-2004 Ford Ranger Edge} & 
-  %  %       \includegraphics[width=0.16\linewidth]{cad_car/2002 Dodge Ram FedEx} \\ 
-  %  %       \includegraphics[width=0.16\linewidth]{cad_car/2007-Nissan-Versa-_-Tiida-SL} & 
-  %  %       \includegraphics[width=0.16\linewidth]{cad_car/2008-Jeep-Cherokee} \\ 
-  %  %       \includegraphics[width=0.16\linewidth]{cad_car/2009 Toyota Cargo} & 
-  %  %       \includegraphics[width=0.16\linewidth]{cad_car/2010-Chevrolet-Aveo5-LT} \\ 
-  %  %       \includegraphics[width=0.16\linewidth]{cad_car/2012-Citroen-DS4}  
-  %  %   \end{tabular}
-  % \end{tabular}\\
-  % (b)
   \caption{Using a database of 3D CAD models, we generate NZ-WHO
     templates which can be used to either detect objects directly or
     enrich the output of an existing detector with high-quality,
@@ -82,7 +66,8 @@ image matching techniques.
 % gets more and more approachable but due to inherent difficulty and
 % limited performance of existing methods, many applications still
 % require supervision to achieve 2D-3D matching.
-% In medical community, registering 3D scan data to 2D image enabled various minimally invasive surgeries \cite{Markelj12}.
+% In medical community, registering 3D scan data to 2D image enabled various
+% minimally invasive surgeries \cite{Markelj12}.
 %
 % For category-level matching, \cite{Xiang12, Hejrati14, Pepik12} used
 % 3D parts or aspect to represent underlying category-level 3D geometry
@@ -119,10 +104,13 @@ In this paper, we propose a novel method for 2D-3D alignment of
 exemplar CAD models to real-world images that circumvents the need for
 calibration, and greatly enhances the scalability of WHO. As a
 result, we can render novel views and train corresponding exemplar
-models {\em on the fly}, without the need for offline processing and we call these NZ-WHO templates \ref{fig:front}. As a
+models {\em on the fly}, without the need for offline processing and we call
+these NZ-WHO templates \ref{fig:front}. As a
 by-product, we can formulate the alignment problem as a parameter
-search in a continuous pose space, consisting of yaw, pitch and roll, resulting in truly continuous pose estimates, which
+search in a continuous pose space, consisting of yaw, pitch and roll, resulting
+in truly continuous pose estimates, which
 we implement using MCMC sampling.
+
 %  require a large number of rendering and 2D
 % templates for each of the CAD model with specific viewpoint. Since
 % there are so many templates that it becomes almost impossible to get

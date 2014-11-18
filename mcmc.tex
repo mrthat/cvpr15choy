@@ -22,7 +22,7 @@ the exponential family, and let
     P(p) & \sim e^{ \max_{s} w(p) \ast \mathcal{T}_s(\mathcal{I})},
 \end{align}
 where $\max_{s} w(p) \ast T_s(\mathcal{I})$ is the maximum convolution score of
-NZ-WHO template $w(p)$ with image feautures $T_s(\mathcal{I})$ for all scale $s$, as defined
+NZ-WHO template $w(p)$ with image features $T_s(\mathcal{I})$ for all scale $s$, as defined
 in Sect.~\ref{sec:nzwho}. 
 
 \paragraph{Inference.}
@@ -78,7 +78,7 @@ $c = 0.1$ for all experiments.
 
 \paragraph{Initialization.}
 Since the Metropolis-Hastings algorithm is susceptible to getting
-stuck in local optima, we need a good initialiation in order to
+stuck in local optima, we need a good initialization in order to
 increase the probability to find a solution that is close to the
 global optima. We achieve this by first running a discrete,
 pre-trained version of our algorithm (i.e., an ensemble of NZ-WHO

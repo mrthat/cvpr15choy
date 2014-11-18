@@ -129,7 +129,7 @@ categories {\em car} and {\em bicycle}.
 
 To that end, we create an ensemble of NZ-WHO templates (Sect.~\ref{sec:approach})
 using $9$ different CAD models and a total of 192 different
-viewpoints, using 4 different evelation angles, 24 azimuth angles,
+viewpoints, using 4 different elevation angles, 24 azimuth angles,
 and 2 focal lengths. We run the entire ensemble exhaustively over
 each test image, in a sliding window fashion.
 
@@ -176,8 +176,8 @@ with costly bounding box and viewpoint annotations.
     \hline
      AP/MPPE& Ours & ALM\cite{Xiang12} & VOC-DPM\cite{Pepik12} \\
     \hline\hline
-    car & \textbf{99.8}/91.7 &  98.4/93.4 & \textbf{99.8}/\textbf{97.5} \\ 
-    bicycle & 93.0/87.4 & 93.0/91.4 & \textbf{98.8}/\textbf{97.5} \\
+    car     & \textbf{99.8} / 91.7 & 98.4 / 93.4 & \textbf{99.8} / \textbf{97.5} \\ 
+    bicycle & 93.0 / 90.9          & 93.0 / 91.4 & \textbf{98.8} / \textbf{97.5} \\
     \hline
     \end{tabular}
   \end{center}
@@ -286,18 +286,15 @@ viewpoint prediction ($0$ angles).
 
 For both cases, we compare the performance of a discrete incarnation
 of our method (Sect.~\ref{sec:approach}) and our full model, including the
-fine-tuning based on MCMC~\cite{Sect.~\ref{sec:tuning}}
+fine-tuning based on MCMC (Sect.~\ref{sec:fine}).
 
 Quantitative results are given in Tab.~\ref{tab:pascal12} in terms of
 AP and AVP and in Fig.~\ref{fig:car_cnn_ap} in terms of
 precision-recall plots and viewpoint confusion matrices. Example
 outputs of our method applied to candidate object detections are given
 in Fig.~\ref{fig:pascal12cnn}, and the effect of fine-tuning is
-visualized in Fig.~\ref{fig:tuning}.
-
- More qualitative results are part of
+visualized in Fig.~\ref{fig:tuning}. More qualitative results are part of
 supplemental material
-
 \paragraph{Results.}
 %
 In Tab.~\ref{tab:pascal12}, we make mainly two observation. First, we
