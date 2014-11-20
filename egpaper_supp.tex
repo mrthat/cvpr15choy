@@ -185,31 +185,40 @@ the right.}% with a bounding box and corresponding confidence score (right).}
   \label{fig:3dobject_bicycle_bad}
 \end{figure*}
 
-\section{PASCAL3D+}
-
+\section{Enriching Existing Detections}
+%
 It this section, we provide qualitative examples and plots for the experiment
-``Enriching Existing Detection''. To recapitulate, we used object detection
-bounding boxes from state-of-the-art detectors \cite{Girshick14, Pepik12} and
-enrich bounding boxes with 2D-3D registration and continuous viewpoint
-estimation. We present detection average precision, average viewpoint
-precision, viewpoint confusion matrix and mean precision in pose estimation
-results on Fig.~\ref{fig:pascal_ap}. 
+``Enriching Existing Detections'' (Sect.~6.3 in the main paper).
 
-We followed the evaluation criteria of \cite{Xiang14} for detection and
-viewpoint estimation.
+To recapitulate, we enrich object detection bounding boxes from
+a state-of-the-art detector (R-CNN~\cite{Girshick14}) with 2D-3D
+registration and continuous viewpoint estimation. We present detection
+average precision, average viewpoint precision, viewpoint confusion
+matrix and mean precision in pose estimation results in
+Fig.~\ref{fig:pascal_ap}, following the evaluation criteria
+of~\cite{Xiang14} for detection and viewpoint
+estimation. Fig.~\ref{fig:pascal3d_car_good} to
+Fig.~\ref{fig:pascal3d_bicycle_bad} give qualitative results.
+%
+%In this experiment, we use R-CNN\cite{Girshick14} for detection bounding box
+%proposals and our system produces accurate 2D-3D matching on the proposal
+%regions.
 
-In this experiment, we used R-CNN\cite{Girshick14} for detection bounding box
-proposals and our system produces accurate 2D-3D matching on the proposal
-regions. We used $15\%$ context (extend the proposal region by $15\%$ on the
-top, right, left and bottom). We run our pipeline on PASCAL3D+
-dataset\cite{Xiang14} with fine-tuning stage. 
-
-If our method fails to estimate viewpoint (confidence score is below 45), it
-estimates 0 azimuth, 0 elevation, 0 yaw. Note that for all categories and
-different number of viewpoints, our method has difficulty discerning frontal
-view and back view.
-
-
+We use $15\%$ context (extending the proposal region by $15\%$ on the
+top, right, left, and bottom). We run our pipeline on the
+PASCAL3D+~\cite{Xiang14} dataset, including our fine-tuning stage.
+%
+%If our method fails to estimate viewpoint (confidence score is below
+%45), it
+If our method fails to estimate viewpoint (confidence score is below a
+threshold), it outputs 0 azimuth, 0 elevation, 0 yaw. Note that for
+both categories and different numbers of viewpoints, our method has
+difficulty distinguishing front and back views, but yields little
+confusion between neighboring views. The failure cases given in
+Fig.~\ref{fig:pascal3d_car_bad} and
+Fig.~\ref{fig:pascal3d_bicycle_bad} are mostly caused by truncation,
+occlusion, and unusual object shape.
+%
 \begin{figure*}[h]
   \centering
   \begin{tabular}{cc}
@@ -237,11 +246,7 @@ view and back view.
   $n-1$ is front-left for number of viewpoints $n$.}
   \label{fig:pascal_ap}
 \end{figure*}
-
-
-We put qualitative results on Fig.~\ref{fig:pascal3d_car_good} to
-Fig.~\ref{fig:pascal3d_bicycle_bad}. 
-
+%
 \begin{figure*}[h]
 \setlength\tabcolsep{1pt}
 \centering
@@ -386,13 +391,12 @@ Fig.~\ref{fig:pascal3d_bicycle_bad}.
 
 
 \section{Fine Tuning}
-
-In this section, we give qualitative examples of before and after the
-fine-tuning stage on Fig.~\ref{tuning}.
-
-See section ``Pose Fine-Tuning via MCMC'' for more detail.
-
-
+Lastly, we provide qualitative examples of the fine-tuning stage of
+our pipeline based on MCMC sampling (Sect.~5 in the main paper) in
+Fig.~\ref{fig:tuning}. Please note that, while the visual difference
+appear subtle, our method often manages to improve upon the initial
+pose estimate.
+%
 \begin{figure*}[h]
 \setlength\tabcolsep{1pt}
 \centering
@@ -423,8 +427,6 @@ and intersection over union respectively.}
 \end{figure*}
 
 
-\clearpage
-\clearpage
 {\small
 \bibliographystyle{ieee}
 \bibliography{egbib}
