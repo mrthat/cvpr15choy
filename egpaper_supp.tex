@@ -289,10 +289,10 @@ occlusion, and unusual object shape.
   \includegraphics[width=0.24\linewidth]{supp/pas_car18d.png} \\
   \hline
   \end{tabular}
-  \caption{Successful detection and pose estimation result on PASCAL3D+ dataset
-  car category, On each column, original image is on the left and overlaid
-  2D-3D registration on the right with a proposal bounding box (blue) and a
-  predicted bounding box (purple).} 
+  \caption{Successful detection and pose estimation results on
+    PASCAL3D+~\cite{Xiang14} cars. Original image (left) and
+  overlaid detection result (right). Proposal bounding box (blue) and
+  predicted bounding box (purple).}
   \label{fig:pascal3d_car_good}
 \end{figure*}
 
@@ -328,9 +328,9 @@ occlusion, and unusual object shape.
   \includegraphics[width=0.22\linewidth]{supp/pas_bicycle12b.png}  \\
   \hline
   \end{tabular}
-\caption{Successful detection and pose estimation result on PASCAL3D+ dataset
-  bicycle category, On each column, original image is on the left and overlaid
-  2D-3D registration on the right with a proposal bounding box (blue) and a
+\caption{Successful detection and pose estimation results on
+    PASCAL3D+~\cite{Xiang14} bicycles. Original image (left) and
+  overlaid detection result (right). Proposal bounding box (blue) and
   predicted bounding box (purple).} 
   \label{fig:pascal3d_bicycle_good}
 \end{figure*}
@@ -363,9 +363,9 @@ occlusion, and unusual object shape.
   \includegraphics[width=0.22\linewidth]{supp/pas_car23b.png} \\
   \hline
   \end{tabular}
-\caption{Failed detection or pose estimation result on PASCAL3D+ dataset
-  car category, On each column, original image is on the left and overlaid
-  2D-3D registration on the right with a proposal bounding box (blue) and a
+\caption{Failed detection or pose estimation result on
+  PASCAL3D+~\cite{Xiang14} cars. Original image (left) and
+  overlaid detection result (right). Proposal bounding box (blue) and
   predicted bounding box (purple).} 
   \label{fig:pascal3d_car_bad}
 \end{figure*}
@@ -389,9 +389,9 @@ occlusion, and unusual object shape.
   \includegraphics[width=0.22\linewidth]{supp/pas_bicycle19a.png}  &
   \includegraphics[width=0.22\linewidth]{supp/pas_bicycle19b.png}  \\   \hline
   \end{tabular}
-\caption{Failed detection or pose estimation result on PASCAL3D+ dataset
-  bicycle category, On each column, original image is on the left and overlaid
-  2D-3D registration on the right with a proposal bounding box (blue) and a
+\caption{Failed detection or pose estimation result on
+  PASCAL3D+~\cite{Xiang14} bicycles. Original image (left) and
+  overlaid detection result (right). Proposal bounding box (blue) and
   predicted bounding box (purple).} 
   \label{fig:pascal3d_bicycle_bad}
 \end{figure*}
@@ -427,9 +427,10 @@ pose estimate.
   \includegraphics[width=0.22\linewidth]{supp/tuning_6b.png} & 
   \includegraphics[width=0.22\linewidth]{supp/tuning_6c.png}  \\
   \end{tabular}
-\caption{From left to right, original images, initial pose estimations and
-fine-tuned result. The numbers, from the left, indicate detection confidence
-and intersection over union respectively.} 
+\caption{Effect of fine-tuning based on MCMC sampling. From left to
+  right: original image, initial pose estimate, and fine-tuned
+  result. Numbers indicate detection confidence (s) and intersection
+  over union (o), respectively.} 
   \label{fig:tuning}
 \end{figure*}
 
