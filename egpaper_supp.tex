@@ -124,9 +124,10 @@ bicycle poses.
   \includegraphics[width=0.40\linewidth]{supp/car31.png} \\
   \hline
   \end{tabular}
-\caption{Successful detection results on 3D Object dataset, car
-category. In each column, original image is on the left and detection result overlaid on
-the right.}% with a bounding box and corresponding confidence score (right).}
+\caption{Successful detection results on 3D Object
+  Classes~\cite{savarese07} cars. Original image (left) and overlaid
+  detection result (right).}% with a bounding box and corresponding
+                            % confidence score (right).}
   \label{fig:3dobject_car_good}
 \end{figure*}
 
@@ -145,9 +146,9 @@ the right.}% with a bounding box and corresponding confidence score (right).}
   \includegraphics[width=0.40\linewidth]{supp/bicycle10.png} \\
   \hline
   \end{tabular}
-\caption{Successful detection results on 3D Object dataset, bicycle
-category. In each column, original image is on the left and detection result overlaid on
-the right).}% with a bounding box and corresponding confidence score (right).}
+\caption{Successful detection results on 3D Object
+  Classes~\cite{savarese07} bicycles. Original image (left) and
+  overlaid detection result (right).}
   \label{fig:3dobject_bicycle_good}
 \end{figure*}
 
@@ -162,9 +163,9 @@ the right).}% with a bounding box and corresponding confidence score (right).}
   \includegraphics[width=0.40\linewidth]{supp/car25.png} \\
   \hline
   \end{tabular}
-\caption{Failed detection or pose estimation results on 3D Object dataset, car
-category. In each column, original image is on the left and detection result overlaid
-on the right.}% with a bounding box and corresponding confidence score (right).}
+\caption{Failed detection or pose estimation on 3D Object
+  Classes~\cite{savarese07} cars. Original image (left) and overlaid
+  detection result (right).}
   \label{fig:3dobject_car_bad}
 \end{figure*}
 
@@ -179,9 +180,9 @@ on the right.}% with a bounding box and corresponding confidence score (right).}
   \includegraphics[width=0.40\linewidth]{supp/bicycle20.png} \\
 \hline
 \end{tabular}
-\caption{Failed detection or pose estimation results on 3D Object dataset, bicycle
-category. In each column, original image is on the left and detection result overlaid on
-the right.}% with a bounding box and corresponding confidence score (right).}
+\caption{Failed detection or pose estimation on 3D Object
+  Classes~\cite{savarese07} bicycles. Original image (left) and overlaid
+  detection result (right).}
   \label{fig:3dobject_bicycle_bad}
 \end{figure*}
 
@@ -239,11 +240,17 @@ occlusion, and unusual object shape.
     (g) Bicycle, 16 views&
     (h) Bicycle, 24 views\\
   \end{tabular}
-  \caption{Detection and pose estimation on PASCAL3D+ dataset. On the left, we
-  present average precision curve (red) average viewpoint precision curve
-  (green). On the right, we present confusion matrix and mean precision in pose
-  estimation. Viewpoint index 1 is front, index 2 is front-right \dots and
-  $n-1$ is front-left for number of viewpoints $n$.}
+  \caption{Detection and pose estimation on PASCAL3D+~\cite{Xiang14}
+    cars and bicycles.
+    Average Precision (red) and Average Viewpoint Precision (green)
+    are given in the left plot and viewpoint confusion table and MPPE
+    are given in the right plot. The viewpoint index 1 is front, 2 is
+    front-right, \dots, $n-1$ is front-left for number of viewpoints $n$.}
+ % On the left, we
+ %  present average precision curve (red) average viewpoint precision curve
+ %  (green). On the right, we present confusion matrix and mean precision in pose
+ %  estimation. Viewpoint index 1 is front, index 2 is front-right \dots and
+ %  $n-1$ is front-left for number of viewpoints $n$.}
   \label{fig:pascal_ap}
 \end{figure*}
 %
