@@ -59,21 +59,30 @@
 %\thispagestyle{empty}
 
 %%%%%%%%% BODY TEXT
-We present qualitative results in the supplementary material for our paper
-``Enriching Object Detection with 2D-3D Registration and Continuous Viewpoint
-Estimation''.
+In the following, we present additional quantitative and qualitative
+results that accompany the experiments described in Sect.~6 of the
+main paper, ``Enriching Object Detection with 2D-3D Registration and
+Continuous Viewpoint Estimation''.
 % In Sect.~\ref{sec:3dobject}, we present detection result on qualitative results.
 
-\section{3D Object Dataset}
+\section{2D-3D Matching as an Object Detector}
 \label{sect:3dobject}
-
 It this section, we provide qualitative examples and plots for the experiment
-``2D-3D Matching as an Object Detector''. To recapitulate, we run our ensemble
-of NZ-WHO templates as an ensemble of exemplar templates on 3D Object
-dataset\cite{savarese07} without fine-tuning stage. The detection average
-precision, average viewpoint precision, viewpoint confusion matrix and mean
-precision in pose estimation results are on Fig.~\ref{fig:3dobject_ap}
+``2D-3D Matching as an Object Detector'' (Sect.~6.2 in the main
+paper).
 
+To recapitulate, we run our ensemble
+of NZ-WHO templates on the 3D Object Classes
+dataset~\cite{savarese07}, without the fine-tuning
+stage. Fig.~\ref{fig:3dobject_ap} gives the corresponding detection
+average precision, average viewpoint precision, viewpoint confusion
+matrix and mean precision in pose estimation results. Specifically, we
+followed the detection and viewpoint estimation criteria
+of~\cite{Xiang12} where a detection is correct iff
+intersection over union is at least $0.5$ and viewpoint estimation is
+correct iff detection is correct \emph{and} azimuth of the viewpoint
+prediction falls into the correct viewpoint bin.
+%
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.99\linewidth]{supp/car_ap_3dobject_tight.png}\\
@@ -82,22 +91,23 @@ precision in pose estimation results are on Fig.~\ref{fig:3dobject_ap}
   \includegraphics[width=0.99\linewidth]{supp/bicycle_ap_3dobject_tight.png}\\
   \vspace{-5pt}
     (b) Bicycle\\
-  \caption{Detection and pose estimation on 3D Object dataset car category (top) and bicycle category (bottom).
-  Average Precision (red) and Average Viewpoint Precision (green) are overlaid on the left plot and
-  viewpoint confusion table and MPPE are on the right plot. The viewpoint index 1 is front, index 2 is
-  front-right, \dots index 8 is front-left.}
+  \caption{Detection and pose estimation on 3D Object
+    Classes~\cite{savarese07} car (a) and bicycle (b).
+    Average Precision (red) and Average Viewpoint Precision (green)
+    are given in the left plot and viewpoint confusion table and MPPE
+    are given in the right plot. The viewpoint index 1 is front, 2 is
+    front-right, \dots, 8 is front-left.}
   \label{fig:3dobject_ap}
 \end{figure}
 
-For qualitative results, we put successful car viewpoint prediction results on
-Fig.~\ref{fig:3dobject_car_good} and
-failure cases on Fig.~\ref{fig:3dobject_car_bad}. And for bicycle, successful
-results are on Fig.~\ref{fig:3dobject_bicycle_good} and
-failure cases on Fig.~\ref{fig:3dobject_bicycle_bad}. We followed detection
-and viewpoint estimation criteria of \cite{Xiang12} where detection is correct
-iff intersection over union of more than 0.5 and viewpoint estimation is
-correct iff detection is correct \emph{and} azimuth of the viewpoint
-prediction falls in to the correct viewpoint bin.
+Fig.~\ref{fig:3dobject_car_good} shows successful detection and
+viewpoint estimation results for car,
+Fig.~\ref{fig:3dobject_bicycle_good} for
+bicycle. Fig.~\ref{fig:3dobject_car_bad} and
+Fig.~\ref{fig:3dobject_bicycle_bad} show failure cases, which are
+mostly due to confused front and back views for cars, and slanted
+bicycle poses.
+
 
 \begin{figure*}[h]
 \setlength\tabcolsep{1pt}
