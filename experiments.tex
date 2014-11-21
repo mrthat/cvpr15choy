@@ -75,7 +75,7 @@ In Tab.~\ref{tab:who_initializations}, we observe that, on average,
 calibration indeed improves performance in terms of AP, sometimes
 drastically (e.g., from $54.4$ to $92.8$ for WHO-CG-Z), as observed in
 prior work~\cite{Aubry14}. At the same time, calibration is
-computationally expensive, resulting in runtimes that are two orders of
+computationally expensive, resulting in generation time that are two orders of
 magnitudes larger than without calibration. Strikingly, our method
 NZ-WHO-CG achieves the second best AP of $90.0$ while completing in 79
 ms vs. 8.7 s when using calibration.
@@ -98,7 +98,7 @@ ms vs. 8.7 s when using calibration.
     Methods (AP/MPPE) & before calib.  & time & after calib.~\cite{Aubry14} & time \\
     \hline\hline
     HOG\cite{Dalal05}      & 72.3 / 65.0          &  31ms  & 60.4 / 50.2           & 8.7 sec \\ 
-    WHO\cite{Hariharan12}  & 82.1 / \textbf{85.4} &  3811ms& 84.4 / 83.0           & 12.4 sec\\
+    WHO\cite{Hariharan12}  & 82.1 / \textbf{85.4} &  6162ms& 84.4 / 83.0           & 15.4 sec\\
     WHO-CG                 & 81.7 / 84.9          &  104ms & 83.7 / \textbf{87.3}  & 8.3 sec \\
     WHO-CG-Z               & 54.4 / 65.1          &  103ms & \textbf{92.8} / 86.7  & 8.7 sec \\
     % NZC-WHO-Z    & 89.10 /\textbf{78.64} &    & 91.15 / 74.79                  &     \\
@@ -106,7 +106,7 @@ ms vs. 8.7 s when using calibration.
     \hline
   \end{tabular}
   \caption{Average Precision(AP), Mean Precision in Pose Estimation
-    (MPPE)~\cite{Lopez-Sastre11}, and runtime for variations of WHO on
+    (MPPE)~\cite{Lopez-Sastre11}, and generation time for variations of WHO on
     3D Object Classes cars~\cite{Savarese07}. Please see text for
     details.}
   % WHO refers to standard WHO using the
