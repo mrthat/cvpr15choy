@@ -82,7 +82,7 @@ R.~Lopez-Sastre, T.~Tuytelaars, and S.~Savarese.
 \newblock Deformable part models revisited: A performance evaluation for object
   category pose estimation.
 \newblock In {\em Computer Vision Workshops (ICCV Workshops), 2011 IEEE
-  International Conference on}, pages 1052--1059, Nov 2011.
+  International Conference on}, 2011.
 
 \bibitem{Lowe87}
 D.~G. Lowe.
@@ -155,8 +155,7 @@ C.~Vondrick, A.~Khosla, T.~Malisiewicz, and A.~Torralba.
 \bibitem{Xiang14}
 Y.~Xiang, R.~Mottaghi, and S.~Savarese.
 \newblock Beyond pascal: A benchmark for 3d object detection in the wild.
-\newblock In {\em IEEE Winter Conference on Applications of Computer Vision
-  (WACV)}, 2014.
+\newblock In {\em WACV}, 2014.
 
 \bibitem{Xiang12}
 Y.~Xiang and S.~Savarese.
