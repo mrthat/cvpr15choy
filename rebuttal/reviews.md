@@ -19,8 +19,7 @@ Main weaknesses
 
 1. The work relies on using realistic (with texture) 3D models. This limits the applicability where such rich models are not available.
 2. The proposed technique relies on a large number of templates, and their evaluation at many scales. 
-3. The finetuning approach presented is slow and doesn't seem
-very effective
+3. The finetuning approach presented is slow and doesn't seem very effective
 
 ## Strength
 
@@ -122,7 +121,8 @@ Weakness:
 
 - WRITING the paper should be proof-read before submission, eg.
 
-    * paragraph 4.1  reference missing (eg. l 674 "[]" 4.1 which rendering engine? which CAD
+    * paragraph 4.1
+    * reference missing (eg. l 674 "[]" 4.1 which rendering engine? which CAD
       models?)
     * proofread references (eg. [23])
 
