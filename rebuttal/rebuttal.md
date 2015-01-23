@@ -6,24 +6,24 @@ performance”[R1]. The method was “well motivated”  and validated with
 
 One-time calibration [R1, R2]: We propose a way to fine tune the viewpoint in
 continuous space without expensive training, thus providing the vision community
-with a modular framework for viewpoint estimation. However, caching all the possible
-templates for continuous azimuth, elevation, in-plane rotation, focal length and
+with a modular framework for viewpoint estimation. However, caching 
+templates for continuous azimuths, elevations, in-plane rotations, focal lengths and
 intraclass CAD models is intractable. To overcome this, our
-method generates proposals on-the-fly which requires covariance inversion on-the-fly. 
+method generates templates on-the-fly which requires covariance inversion on-the-fly. 
 
 Effectiveness of fine-tuning [R1, R2]: Our continuous viewpoint estimation
 method not only accurately refines the coarse
 viewpoint estimation but also recovers from incorrect pose initializations.
 Unfortunately, the PASCAL 3D+ and 3D Object datasets only measure the number
-of correct viewpoint bins from bird-eye view. If the coarse viewpoint estimation
+of correct viewpoint bins from a bird’s-eye view. If the coarse viewpoint estimation
 falls into the correct bin, we cannot observe further refinement using this metric.
-Therefore, the improvements only represent the recovery of poses that
-are initially estimated incorrectly.
+Therefore, the improvements only represent the recoveries of poses from
+grossly wrong estimations.
 This point was not explicit in the paper and we will add it to our final paper. 
 
-RCNN + Ours [R1]: DPM-VOC+VP method templates were made from ground truth
-bounding boxes so the bounding boxes tend to be tighter and more informative than
-the region based bounding boxes (RCNN). Our algorithm handles over/under 
+RCNN + Ours improvements [R1]: DPM-VOC+VP method templates were made from ground truth
+bounding boxes, so the bounding boxes tend to be tighter and more informative than
+the region-based bounding boxes (RCNN). Our algorithm handles over/under 
 estimated bounding boxes by creating HOG scale pyramid but more accurate 
 the bounding box is, the better the performance. This effect
 is dominant for coarser viewpoint where RCNN and DPM-VOC+VP have similar
@@ -32,9 +32,9 @@ detection performance.
 Sigma inversion time [R2]: Sigma is a covariance matrix of size (W x H x F) x (W x H x F)
 where W and H are the number of HOG cells in a row and a column, and F is the
 dimension of HOG feature [Hariharan et al. 12]. In practice, we used
-high-resolution template and the resulting covariance matrix was around
+high-resolution templates, resulting in a covariance matrix size of about
 7000x7000 (~180MByte in single precision). Thus, using the Cholesky
-decomposition, it took more than 4 seconds on i7-4770K. To get extra speed up,
+decomposition, inversion took more than 4 seconds on i7-4770K. To get an extra speed-up,
 we also tried to make use of the Toeplitz-Block-Toeplitz structure and achieved
 O(n log n) time complexity using DFT but the time complexity coefficient was
 too large and the non-zero pattern destroys the Toeplitz structure. We 
@@ -50,7 +50,7 @@ experiment in our final paper.
 Related work from Zia el al. [R3]: We thank the reviewer for pointing this out. We agree that Zia et
 al. tackles the similar problem. However, due to the complexity, their
 model requires accurate bounding box as well as viewpoint estimation as an 
-initialization. On the other hand, our method can work as a standalone detector 
+initialization. On the contrary, our method works also as a standalone detector 
 and performs on par with many state-of-the-art detectors on the 3D Object dataset
 (though the dataset is saturated as correctly pointed out by [R1]).
 We will add comparison with Zia et al on the final version.
@@ -62,3 +62,19 @@ We apologize for such mistakes.
 
 We will try our best to incorporate all the remaining issues pointed out by the
 reviewers in the final paper should it be accepted.
+
+Total: 3971/4000 Character
+
+----------------------Reviews not incorporated------------------------
+From R1
+“The work relies on using realistic (with texture) 3D models. This limits the applicability where such rich models are not available.”
+“The proposed technique relies on a large number of templates, and their evaluation at many scales.”
+
+From R2
+“concerns about the reality of the speed-up” -- do some rough calculation about the naive approach to directly show the speedup of your method
+“limited experiments”
+
+From R3
+“a little more background on WHO could be given”
+“could be tested on KITTI”
+“missing baseline”
