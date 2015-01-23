@@ -12,13 +12,13 @@ Main strengths
 
 1. The paper is well written and explains the proposed technique well
 2. The authors propose considerable improvements (both speed and detection performance) to the WHO approach of Hariharan et al. This I believe is their key contribution.
-3. The proposed algorithm can be used on top of the output of existing 2D detection methods. 
+3. The proposed algorithm can be used on top of the output of existing 2D detection methods.
 4. As opposed to existing work on 3D detection, the presented work is much cleaner to understand and optimize.
 
 Main weaknesses
 
 1. The work relies on using realistic (with texture) 3D models. This limits the applicability where such rich models are not available.
-2. The proposed technique relies on a large number of templates, and their evaluation at many scales. 
+2. The proposed technique relies on a large number of templates, and their evaluation at many scales.
 3. The finetuning approach presented is slow and doesn't seem very effective
 
 ## Strength

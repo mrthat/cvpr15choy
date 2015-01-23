@@ -4,25 +4,24 @@ improvements to WHO”[R1] in terms of “speed”[R1,R3] and “detection
 performance”[R1]. The method was “well motivated”  and validated with
 “extensive experiments”[R1].
 
-Caching Sigma inverse for the templates [R1, R2]: 
-We propose a way to fine tune the viewpoint in
+One-time calibration [R1, R2]: We propose a way to fine tune the viewpoint in
 continuous space without expensive training, thus providing the vision community
 with a modular framework for viewpoint estimation. However, caching all the possible
 templates for continuous azimuth, elevation, in-plane rotation, focal length and
 intraclass CAD models is intractable. To overcome this, our
-method generates proposals on-the-fly which requires covariance inversion. 
+method generates proposals on-the-fly which requires covariance inversion on-the-fly. 
 
-Effectiveness of fine-tuning [R1, R2]:
-Our continuous viewpoint estimation method not only accurately refines the coarse
+Effectiveness of fine-tuning [R1, R2]: Our continuous viewpoint estimation
+method not only accurately refines the coarse
 viewpoint estimation but also recovers from incorrect pose initializations.
 Unfortunately, the PASCAL 3D+ and 3D Object datasets only measure the number
 of correct viewpoint bins from bird-eye view. If the coarse viewpoint estimation
 falls into the correct bin, we cannot observe further refinement using this metric.
-Therefore, the improvements we present only represent the refinement of poses that
+Therefore, the improvements only represent the recovery of poses that
 are initially estimated incorrectly.
-This point was not explicit in the paper abd we will add it to our final paper. 
+This point was not explicit in the paper and we will add it to our final paper. 
 
-R1, RCNN + Ours: DPM-VOC+VP method templates were made from ground truth
+RCNN + Ours [R1]: DPM-VOC+VP method templates were made from ground truth
 bounding boxes so the bounding boxes tend to be tighter and more informative than
 the region based bounding boxes (RCNN). Our algorithm handles over/under 
 estimated bounding boxes by creating HOG scale pyramid but more accurate 
@@ -30,8 +29,7 @@ the bounding box is, the better the performance. This effect
 is dominant for coarser viewpoint where RCNN and DPM-VOC+VP have similar
 detection performance.
 
-Sigma inversion time [R2]:
-Sigma is a covariance matrix of size (W x H x F) x (W x H x F)
+Sigma inversion time [R2]: Sigma is a covariance matrix of size (W x H x F) x (W x H x F)
 where W and H are the number of HOG cells in a row and a column, and F is the
 dimension of HOG feature [Hariharan et al. 12]. In practice, we used
 high-resolution template and the resulting covariance matrix was around
@@ -49,8 +47,7 @@ compared the matrix inversion time. We thank [R2] for correctly pointing this
 out and we will incorporate a GPU implementation of the Cholesky decomposition
 experiment in our final paper.
 
-Related work from Zia el al. [R3]:
-We thank the reviewer for pointing this out. We agree that Zia et
+Related work from Zia el al. [R3]: We thank the reviewer for pointing this out. We agree that Zia et
 al. tackles the similar problem. However, due to the complexity, their
 model requires accurate bounding box as well as viewpoint estimation as an 
 initialization. On the other hand, our method can work as a standalone detector 
