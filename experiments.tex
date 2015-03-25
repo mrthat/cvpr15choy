@@ -148,7 +148,7 @@ set of $8$ discrete viewpoint classes.
 Tab.~\ref{tab:3dobject} gives the corresponding results, comparing our
 method to two recent state-of-the-art baselines, the aspect layout
 model (ALM~\cite{Xiang12}), and the
-DPM-VOC+VP~\cite{Pepik12}. Fig.~\ref{fig:3dobject} gives
+DPM-VOC+VP~\cite{Pepik12}. Fig.~\ref{fig:3dobject_vis} gives
 qualitative results.
 
 We observe that our model performs on par with the state-of-the-art
@@ -374,23 +374,33 @@ fine-tuned visually comes closer to the true 3D pose.
 \end{figure*}
 %
 \begin{table*}[t]
-    \footnotesize
+\footnotesize
   \begin{center}
-\begin{tabular}{|c||c||c||c|c||c|c|}
-\hline
-AP/AVP              & V-DPM \cite{Xiang14} & DPM-VOC+VP \cite{Pepik12}  & \cite{Pepik12} + Ours (discrete) & \cite{Pepik12} + Ours (full) & R-CNN + Ours (discrete) & R-CNN + Ours (full)\\
-\hline\hline
-car-4v              & 37.2 / 20.2         & 45.6 / 36.9             & 47.6 / 42.7       & 47.6 / \textbf{42.7}        & 49.6 / 41.5         & 49.6 / 41.5\\ \hline
-car-8v              & 37.3 / 23.5         & 47.6 / 36.6             & 47.6 / \textbf{39.8}       & 47.6 / 39.5        & 49.6 / 38.0         & 49.6 / 39.0\\ \hline
-car-16v             & 36.6 / 18.1         & 46.0 / 29.6             & 47.6 / 32.7       & 47.6 / 33.0        & 49.6 / 34.0         & 49.6 / \textbf{34.3}\\ \hline
-car-24v             & 36.3 / 13.7         & 42.1 / 24.6             & 47.6 / 27.4       & 47.6 / 27.4        & 49.6 / 27.0         & 49.6 / \textbf{27.6}\\ \hline
-\hline
-bicycle-4v          & 45.2 / 41.7         & 46.9 / 43.9             & 48.1 / 47.6       & 48.1 / 46.6        & 61.7 / 56.5         & 61.7 / \textbf{56.7}\\ \hline
-bicycle-8v          & 47.3 / 36.7         & 48.1 / 40.3             & 48.1 / 40.6       & 48.1 / 40.6        & 61.7 / 48.9         & 61.7 / \textbf{49.2}\\ \hline
-bicycle-16v         & 46.5 / 18.4         & 45.6 / 22.9             & 48.1 / 26.2       & 48.1 / 27.3        & 61.7 / 34.7         & 61.7 / \textbf{35.8}\\ \hline
-bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.5       & 48.1 / 20.9        & 61.7 / \textbf{27.0}         & 61.7 / 23.9\\ \hline
-\end{tabular}
-\end{center}
+    \begin{tabular}{|c||c||c||c|c||c|c|}
+    \hline
+    AP/AVP              & V-DPM \cite{Xiang14} & DPM-VOC+VP \cite{Pepik12}  & \cite{Pepik12} + Ours (discrete) & \cite{Pepik12} + Ours (full) & R-CNN + Ours (discrete) & R-CNN + Ours (full)\\
+    \hline\hline
+    aeroplane-4v        & 40.0 / 34.6         & 41.5 / 37.4             & 41.1 / 32.7       & 41.1 / 30.5        & 67.8 / \textbf{41.3}         & 67.8 / 40.8 \\ \hline
+    aeroplane-8v        & 39.8 / 23.4         & 40.5 / 28.6             & 41.1 / 26.8       & 41.1 / 24.2        & 67.8 / 26.8         & 67.8 / \textbf{27.4} \\ \hline
+    aeroplane-16v       & 43.6 / 15.4         & 38.0 / 15.9             & 41.1 / 17.7       & 41.1 / 16.3        & 67.8 / 21.2         & 67.8 / \textbf{21.5} \\ \hline
+    aeroplane-24v       & 42.2 / 8.0          & 36.0 /  9.7             & 41.1 / 10.9       & 41.1 / 10.2        & 67.8 / 15.6         & 67.8 / \textbf{15.7} \\ \hline
+    \hline
+    car-4v              & 37.2 / 20.2         & 45.6 / 36.9             & 47.6 / 42.7       & 47.6 / \textbf{42.7}        & 49.6 / 41.5         & 49.6 / 41.5\\ \hline
+    car-8v              & 37.3 / 23.5         & 47.6 / 36.6             & 47.6 / \textbf{39.8}       & 47.6 / 39.5        & 49.6 / 38.0         & 49.6 / 39.0\\ \hline
+    car-16v             & 36.6 / 18.1         & 46.0 / 29.6             & 47.6 / 32.7       & 47.6 / 33.0        & 49.6 / 34.0         & 49.6 / \textbf{34.3}\\ \hline
+    car-24v             & 36.3 / 13.7         & 42.1 / 24.6             & 47.6 / 27.4       & 47.6 / 27.4        & 49.6 / 27.0         & 49.6 / \textbf{27.6}\\ \hline
+    \hline
+    chair-4v            & 11.1 / 6.8          & 8.7  / 6.1              &  11.4 / 7.1       & 11.4 / 6.7         & 25.2 / 10.6         & 25.2 / \textbf{10.7} \\ \hline
+    chair-8v            & 11.4 / 5.9          & 11.3 / 9.4              &  11.4 / 6.6       & 11.4 / 6.6         & 25.2 / \textbf{9.4}          & 25.2 / 9.3 \\ \hline
+    chair-16v           & 12.8 / 6.0          & 10.2 / 6.1              &  11.4 / 4.7       & 11.4 / 4.7         & 25.2 / \textbf{6.7}          & 25.2 / 6.7 \\ \hline
+    chair-24v           & 12.6 / 4.4          & 8.0  / 4.2              &  11.4 / 3.1       & 11.4 / 3.4         & 25.2 / 4.6          & 25.2 / \textbf{5.4} \\ \hline
+    \hline
+    bicycle-4v          & 45.2 / 41.7         & 46.9 / 43.9             & 48.1 / 47.6       & 48.1 / 46.6        & 61.7 / 56.5         & 61.7 / \textbf{56.7}\\ \hline
+    bicycle-8v          & 47.3 / 36.7         & 48.1 / 40.3             & 48.1 / 40.6       & 48.1 / 40.6        & 61.7 / 48.9         & 61.7 / \textbf{49.2}\\ \hline
+    bicycle-16v         & 46.5 / 18.4         & 45.6 / 22.9             & 48.1 / 26.2       & 48.1 / 27.3        & 61.7 / 34.7         & 61.7 / \textbf{35.8}\\ \hline
+    bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.5       & 48.1 / 20.9        & 61.7 / \textbf{27.0}         & 61.7 / 23.9\\ \hline
+    \end{tabular}
+  \end{center}
 \caption{Average Precision(AP) and Average Viewpoint Precision (AVP) on
   PASCAL3D+~\cite{Xiang14}. For combined methods (* + Ours), we use
   bounding boxes from * and augment viewpoint using our method.}
@@ -404,6 +414,14 @@ bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.
   % state-of-the-art R-CNN performance}
 \label{tab:pascal12}
 \end{table*}
+
+\begin{comment}
+\hline
+boat-4v             & 3.0 / 1.5           & 0.5 / 0.3               &  /        &  /         & 27.9 / 11.3         & 27.9 / 11.5 \\ \hline
+boat-8v             & 5.8 / 1.0           & 0.5 / 0.2               &  /        &  /         & 27.9 / 5.4          & 27.9 / 5.4 \\ \hline
+boat-16v            & 6.2 / 0.5           & 0.7 / 0.3               &  /        &  /         & 27.9 / 2.0          & 27.9 / 2.0 \\ \hline
+boat-24v            & 6.0 / 0.3           & 5.3 / 2.2               &  /        &  /         & 27.9 / 1.8          & 27.9 / 2.5 \\ \hline
+\end{comment}
 
 \begin{figure}[h]
 \setlength\tabcolsep{1pt}

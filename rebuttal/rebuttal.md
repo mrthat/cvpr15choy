@@ -30,6 +30,37 @@ We will try our best to incorporate all the remaining issues pointed out by the 
 
 6223/4000
 
+
+------------------------------------------------------------------
+
+We appreciate the valuable comments from all the reviewers. We're pleased that reviewers agreed our proposed method was “efficient”[R2,R3], “well motivated”[R1], and validated with “extensive experiments”[R1], as well as demonstrating “considerable improvements to WHO”[R1] in terms of “speed”[R1,R3] and “detection performance”[R1].
+
+We believe that the main novelties of our parer are: 1) simultaneously rendering and training a template on-the-fly in real time, 2) removing the need for calibration, and introducing the Conjugate Gradient method for WHO computation which yields superior timing and residuals, 3) continuous viewpoint and focal length estimation using on-the-fly template generation and validation. We concur that our work has a "nice contribution"[R3] and has the potential to "affect the broader recognition community as a whole"[R1]
+
+Detailed questions in order:
+
+R1:
+
+Number of templates: we agree that the number of template evaluation is, in principle, a computational bottleneck of template-based methods. In our work, we address it by adaptively choosing which template to train (and successively evaluate) online, at recognition time, as part of our MCMC fine-tuning.
+
+Effectiveness of fine-tuning: the Average Viewpoint Precision (AVP) discretize azimuth into n bins to evaluate viewpoint estimation performance. Thus, for coarser viewpoints, the viewpoint bins get wider so the improvement from fine-tuning can hardly be measured.
+
+Calibration time: the timings reported on the last column of Tab. 1 are per learned template and do indeed include the calibration times. Each template is calibrated exactly once, independently, using the technique from [Aubry et al. CVPR'14] on 200k random negative patches.
+
+Saturation of results: we agree that results are beginning to saturate on the 3D Object Classes dataset, but we believe it is still valuable due to its controlled conditions (viewpoint annotations, balanced number of images per object instance and viewpoint). Furthermore, we are achieving close to state-of-the-art performance using exclusively synthetic training data.
+
+R2:
+
+Improvement of WHO computation: we would like to clarify three points: 1) the main speedup of our method results from avoiding the need for calibration as well as the fast matrix inversion, 2) covariance (sigma) matrix inversion is a one-time operation, but has to be done independently for each template since the aspect ratios and the foreground pattern of a template is unique thus the matrix cannot be shared, and there is no gain from caching the matrix, 3) the non-negligible run time is an effect of our high resolution templates (resulting in sigma matrix of size about 7000x7000 entries, 180 MByte in single precision). 
+
+Sparse GPU matrix product: since we did in fact implement the matrix product on the GPU in FFT-space (Sect. 4.5) we believe the question might address the Cholesky decomposition on GPU. We will add a corresponding timing comparison to Tab. 1.
+
+2 classes: in line with prior work [Aubry et al. CVPR'14] (chair), [Hejrati et al. CVPR'14] (car,box), [Zia et al. PAMI'13] (car,bike), [Fidler et al. NIPS'12] (car,box), and numerous others, we believe that making progress on selected classes can be a valuable contribution. Unfortunately, the CAD models shipped with Pascal 3D+ are not suitable for rendering, so we acquired models from a third party. We are currently collecting CAD models from other sources to enable more diverse experiments.
+
+R3:
+
+Relation to [Zia et al. PAMI'13]: their work learns a coarse, parametric shape model from hand-annotated CAD models and needs a strong initialization from an existing detector, while our method directly provides CAD model alignments without human intervention and can be run as a standalone detector, resulting in performance on par with state-of-the-art (Tab. 1). We are of course happy to include the reported results on 3D Object Classes in Tab. 1 in the final version.
+
 -------------------------------------------------------------------------
 
 R1's comments:
