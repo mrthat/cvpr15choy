@@ -6,11 +6,6 @@ M.~Aubry, D.~Maturana, A.~Efros, B.~Russell, and J.~Sivic.
   dataset of cad models.
 \newblock In {\em CVPR}, 2014.
 
-\bibitem{Belouchrani00}
-A.~Belouchrani and A.~Cichocki.
-\newblock Robust whitening procedure in blind source separation context.
-\newblock {\em Electronics Letters}, 2000.
-
 \bibitem{Chen13}
 T.~Chen, Z.~Zhu, A.~Shamir, S.-M. Hu, and D.~Cohen-Or.
 \newblock 3sweepp: Extracting editable objects from a single photo.
@@ -94,11 +89,6 @@ D.~G. Lowe.
 T.~Malisiewicz, A.~Gupta, and A.~A. Efros.
 \newblock Ensemble of exemplar-svms for object detection and beyond.
 \newblock In {\em ICCV}, 2011.
-
-\bibitem{Martinsson05}
-P.~Martinsson, V.~Rokhlin, and M.~Tygert.
-\newblock A fast algorithm for the inversion of general toeplitz matrices.
-\newblock {\em Computers and Mathematics with Applications}, 2005.
 
 \bibitem{Kholgade14}
 A.~E. Natasha~Kholgade, Tomas~Simon and Y.~Sheikh.

@@ -16,21 +16,26 @@ convolutions in the frequency domain (Sect.~\ref{sec:fft}).
 \subsection{Rendering}
 \label{sec:rendering}
 
-We used an off-the-shelf rendering engine that can create a realistic rendering and
-a depth map. The CAD models we used contain color, texture and material information such as
-transparency and reflectance to make the rendering as realistic
-as possible to simulate the natural image statistics. An rendering example that we used in our experiments is
-in Fig. \ref{fig:rendering}. Along with a rendering, we extracted a depth map which can later 
-be used for reconstruction.
+We used an off-the-shelf rendering engine that can create a realistic rendering
+and a depth map. The CAD models we used contain color, texture and material
+information such as transparency and reflectance to make the rendering as
+realistic as possible to simulate the natural image statistics. An rendering
+example that we used in our experiments is in Fig. \ref{fig:rendering}. Along
+with a rendering, we extracted a depth map which can later be used for
+reconstruction.
 
-To handle intraclass variability, we used various CAD models (sedan, truck, racing car, hatchback etc) to cover intraclass variability and made renderings of these CAD models for various viewpoints. The
-CAD models were cached so that when we fine-tune 2D-3D matching, we can render the model instantaneously.
-Our renderer can continuously vary yaw, pitch, roll and the focal length as well so that the final fine tuning stage produces accurate the continuous viewpoint, a focal length and a bounding box.
+To handle intraclass variability, we used various CAD models (sedan, truck,
+racing car, hatchback etc) to cover intraclass variability and made renderings
+of these CAD models from various viewpoints. The CAD models were cached so that
+when we fine-tune 2D-3D matching, we can render the model instantaneously. Our
+renderer can continuously vary yaw, pitch, roll and the focal length as well so
+that the final fine tuning stage produces accurate the continuous viewpoint, a
+focal length and a bounding box.
 
 \begin{figure}[t]
   \begin{center}
-     \includegraphics[width=0.4\linewidth]{rendering}
-     \includegraphics[width=0.4\linewidth]{depth}
+    \includegraphics[width=0.4\linewidth]{rendering}
+    \includegraphics[width=0.4\linewidth]{depth}
   \end{center}
   \caption{An example rendering and depth image from renderer.}
   \label{fig:rendering}
@@ -39,24 +44,43 @@ Our renderer can continuously vary yaw, pitch, roll and the focal length as well
 
 \subsection{Whitened Histograms of Orientations (WHO)}
 \label{sec:who}
-Our technique for rendering and generating exemplar template detectors on-the-fly
-is drawing from recent work. Hariharan \etal. introduced Whitened Histograms of Orientations (WHO)
-\cite{Hariharan12}, which uses feature statistics from natural images to whiten HOG
-templates, making them more discriminative. Whitening is a common signal
-processing operation for decorrelating a set of random variables
-\cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a
-$k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By
-whitening the signal,
+Our technique for rendering and generating exemplar template detectors
+on-the-fly is drawing from recent work. Hariharan \etal. introduced Whitened
+Histograms of Orientations (WHO), which uses feature statistics from natural
+images to create a large number of classifiers analytically using Linear
+Discriminant Analysis(LDA) rather than training SVM
+classifiers\cite{Hariharan12}. The confidence score for data $x_i$ can be defined as 
 
-\begin{equation}
-\tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X]) \label{eq:whitening},
-\end{equation}
+\begin{align}
+    S(x_i) = w_{x_t}^T x_i
+\end{align}
 
-we remove 2nd order correlation between all features. Since collecting covariance
-matrix for every template shape is expensive, \cite{Hariharan12} proposed an easy
-way to synthesize
-covariance $\Sigma$ from autocovariance $\Gamma$ and we followed their
-method to generate $\Sigma$.
+where $w_{x_t} = \Sigma^{-1} (x_t - \mu)$ is a LDA classifier for a template $x_t$.
+
+% \begin{align}
+%     S(x_i) = w_{x_t}^T x_i\\
+%     w_{x_t} = \Sigma^{-1} (x_t - \mu)
+% \end{align}
+
+% The advantage of the approach is twofold: (a) you do not need a large number of
+% training and hard negative mining \cite{Felzenszwalb10} (b) it takes a fraction
+% of time generate (train) a discriminative template.
+
+% templates, making them more discriminative. Whitening is a common signal
+% processing operation for decorrelating a set of random variables
+% \cite{Martinsson05, Belouchrani00}. More formally, suppose that we have a
+% $k$-dimensional random variable $X \in \mathcal{R}^k$ with $Cov(X)=\Sigma$. By
+% whitening the signal,
+% 
+% \begin{equation}
+% \Phi(X)=\Sigma^{-\frac{1}{2}}(X - E[X]) \label{eq:whitening}
+% \end{equation}
+% 
+% we remove 2nd order correlation between all features. Since collecting covariance
+% matrix for every template shape is expensive, \cite{Hariharan12} proposed an easy
+% way to synthesize
+% covariance $\Sigma$ from autocovariance $\Gamma$ and we followed their
+% method to generate $\Sigma$.
 
 
 % More formally, suppose that we have a
@@ -66,10 +90,16 @@ method to generate $\Sigma$.
 % \tilde{X}=\Sigma^{-\frac{1}{2}}(X - E[X]) \label{eq:whitening},
 % \end{equation}
 
-% Since collecting covariance matrix for every template shape
-%  is expensive, \cite{Hariharan12} proposed easy way to synthesize
-% covariance $\Sigma$ from autocovariance $\Gamma$ and we followed their
-% method to generate $\Sigma$.
+Since collecting second order statistics to generate a covariance matrix for
+every template shape is expensive, \cite{Hariharan12} proposed easy way to
+synthesize covariance $\Sigma$. The method \cite{Hariharan12} assumes
+Wide-Sense Stationarity(WSS) of HOG features generated from natural images.
+Assumption they made was that the mean $\mu$ and autocovariance $\Gamma$ of HOG
+features do not vary with respect to the location. In this paper, we followed
+their method to generate $\Sigma$.
+
+% is independent of its place in the image, and the autocovariance of cells
+% depends only on their relative location.
 
 % The whitening and LDA have the same
 % formulation when we make a decision boundary $w = \Sigma^{-1}(\mu_+ - \mu_0)$
@@ -77,11 +107,6 @@ method to generate $\Sigma$.
 % (whitening), $\mu_0$ is the negative class center (LDA) or the signal mean
 % (whitening) and $\Sigma$ is the covariance matrix of classes (LDA) or
 % the correlation within signal (whitening).
-
-% In \cite{Hariharan12}, the authors compute the mean and covariance matrix by assuming Wide-Sense Stationarity (WSS) of HOG features
-% generated from natural images. That is, they assume the mean of a HOG cell is
-% independent of its place in the image, and the autocovariance of cells depends
-% only on their relative location.
 
 % In one dimension, let $x(u)$ be the feature at location $u$. Then WSS states
 % that $\mathbb{E}\left[x(u)\right] = \mu$ for all $u$, and
@@ -119,23 +144,23 @@ This could result in positive matches being suppressed due to spurious
 background gradients.
 
 NZ-WHO removes these artifacts so that the background has no effect on the
-template response. Let a vectorized HOG features of a rendering image $x\in
-\mathcal{R}^{nd}$ be $x=T_f(I_r)$ where $n$ is the number HOG cells and $d$ be
+template response. Let a vectorized HOG features of a rendering image $x = [ \begin{array}{ccccc}x_1^T & x_2^T & \cdots & x_n^T\end{array} ]^T \in
+\mathcal{R}^{nd}$ where $x_i$ is the $i$th HOG cell feature and $n$ is the number HOG cells and $d$ is
 the dimension of HOG feature. We create a new vector $x'$ which contains only
-the non-zero elements of $x$. To be specific, let $I_d\in \mathcal{R}^{d\times
+the non-zero HOG cell features of $x$. To be specific, let $I_d\in \mathcal{R}^{d\times
     d}$ be the identity matrix, $n'$ be the number of non-zero HOG cells, and a
 matrix $S\in \mathcal{R}^{n'd \times nd}$ be the masking matrix that selects
-non-zero HOG cell. For instance, a template has  $n=3, n'=2$, and only the
+non-zero HOG cells. For instance, a template has  $n=3, n'=2$, and only the
 second HOG cell has $0$ norm, then
 
 \begin{align}
-S = \left[ \begin{array}{ccc}
+    S = \left[ \begin{array}{ccc}
         I_d & \mathbf{0} & \mathbf{0}\\
         \mathbf{0} & \mathbf{0} & I_d
         \end{array} \right]
 \end{align}
 
-Then, we can define $x' = S x, \mu' = S\mu, \Sigma' = S \Sigma S^T$.
+The matrix selects HOG features that corresponds to the first cell and the third cell. Using the selector $S$, we can define new vectorized HOG features $x' = S x, \mu' = S\mu, \Sigma' = S \Sigma S^T$.
 After solving the resulting system (which is now smaller than
 in the WHO approach) we find
 
