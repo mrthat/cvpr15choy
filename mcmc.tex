@@ -47,7 +47,7 @@ HOG pyramid.
 \begin{align}
     g(p \rightarrow p + v_i') & \sim \mathcal{N}(\mu = p_{v_i},\sigma = \sigma_v) \quad i \in \{1,2,3\}\\
     g(p \rightarrow p + f') & \sim \mathcal{N}(\mu = p_{f},\sigma = \sigma_f)\\
-    g(p \rightarrow p + m') & \sim c \delta(p_m) + (1-c) Unif(1,M),
+    g(p \rightarrow p + m') & \sim (1-c) \delta(p_m) + c Unif(1,M),
 \end{align}
 where $g$ is the proposal distribution. % and $P$ is the distribution of which we
 %defined using Gaussian distribution around previous state. $A$ is the
@@ -77,8 +77,7 @@ $c = 0.1$ for all experiments.
 
 
 \paragraph{Initialization.}
-Since the Metropolis-Hastings algorithm is susceptible to getting
-stuck in local optima, we need a good initialization in order to
+Since the objective function is non-convex, we need a good initialization in order to
 increase the probability to find a solution that is close to the
 global optima. We achieve this by first running a discrete,
 pre-trained version of our algorithm (i.e., an ensemble of NZ-WHO
