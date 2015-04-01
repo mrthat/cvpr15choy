@@ -10,10 +10,10 @@ savings (Sect.~\ref{sec:variations}).
 Second, we demonstrate that our method can be used for multi-view
 object class detection in isolation. It can be applied in a sliding
 window fashion and deliver 2D bounding box as well as viewpoint
-information. Our method compares on par to state-of-the-art in this
+information. Our method is competitive with the state-of-the-art in this
 case (Sect.~\ref{sec:exp_iso}).
 %
-And third, we show that our method can be used to complement the
+Finally, we show that our method can be used to complement the
 detections provided by an existing object class detector, such
 as DPM~\cite{Felzenszwalb10} or RCNN~\cite{Girshick14}. In this case,
 we show a considerable performance improvement compared to previous
@@ -44,7 +44,7 @@ from rendered 3D CAD model images.
 \subsection{WHO Variants}
 \label{sec:variations}
 To validate our approach, we run an ensemble of NZ-WHO templates as a
-bank of exemplar detectors and compare its performance with other WHO
+bank of detectors and compare its performance with other WHO
 variants, notable WHO~\cite{Hariharan12} and the original non-whitened
 HOG~\cite{Dalal05}. In addition, we evaluate WHO-CG and WHO-CG-Z:
 WHO-CG uses iterative Conjugate Gradient method to generate
@@ -129,9 +129,9 @@ categories {\em car} and {\em bicycle}.
 
 To that end, we create an ensemble of NZ-WHO templates (Sect.~\ref{sec:approach})
 using $9$ different CAD models and a total of 192 different
-viewpoints, using 4 different elevation angles, 24 azimuth angles,
+viewpoints: 4 elevation angles, 24 azimuth angles,
 and 2 focal lengths. We run the entire ensemble exhaustively over
-each test image, in a sliding window fashion.
+each test image in a sliding window fashion.
 
  Performance is measured in Average Precision
 (AP) for object detection and Mean Precision in Pose Estimation
@@ -247,7 +247,7 @@ The baseline methods V-DPM~\cite{Xiang14} and
 DPM-VOC+VP~\cite{Pepik12}) reported on the PASCAL3D+ dataset are
 variants of DPM~\cite{Felzenszwalb10} where each component of DPM
 account for various azimuths. Thus V-DPM and VOC-DPM provide discrete
-azimuth only whereas our method provides 3D viewpoint (yaw, pitch,
+azimuths only whereas our method provides 3D viewpoint (yaw, pitch,
 roll), CAD instance (model index, rendering, depth) and focal length.
 %
 \begin{figure}[t]
@@ -271,15 +271,13 @@ roll), CAD instance (model index, rendering, depth) and focal length.
 
 \paragraph{Setup.}
 We use detection bounding boxes provided by both object detectors and
-augment it using our method to give viewpoint estimation. We use
+augment use our method to perform fine-grained viewpoint estimation. We use
 detection bounding boxes from two different methods:
 DPM-VOC+VP\cite{Pepik12} and R-CNN~\cite{Girshick14}, both in their
 variants trained on 8 viewpoint categories, since these perform best
 in terms of AP. For both cases,
 we use the original score for plotting precision-recall curves
-(meaning that we can not improve over their AP), but
-enrich the detections with additional viewpoint information provided
-by our method. We fall back to a default
+(meaning that we can not improve over their AP). We revert back to a default
 viewpoint prediction ($0$ angles) in case the confidence of our
 method falls below a threshold.
 
@@ -292,11 +290,11 @@ AP and AVP and in Fig.~\ref{fig:car_cnn_ap} in terms of
 precision-recall plots and viewpoint confusion matrices. Example
 outputs of our method applied to candidate object detections are given
 in Fig.~\ref{fig:pascal12cnn}, and the effect of fine-tuning is
-visualized in Fig.~\ref{fig:tuning}. More qualitative results are part of
-supplemental material
+visualized in Fig.~\ref{fig:tuning}. More qualitative results can be found in the
+supplemental material.
 \paragraph{Results.}
 %
-In Tab.~\ref{tab:pascal12}, we make mainly two observation. First, we
+In Tab.~\ref{tab:pascal12}, we make two main observations. First, we
 see that adding our method to DPM-VOC+VP consistently improves
 performance in terms of AVP, for both car and bicycle, and across all
 viewpoint bins. This is already the case for our discrete method: the
@@ -313,7 +311,7 @@ $1.1$ for bicycle-16v when using the R-CNN as the base detector.
 %
 In Fig.~\ref{fig:tuning}, we visualize the effect of fine-tuning
 qualitatively for two different test images. In both cases, the
-fine-tuned visually comes closer to the true 3D pose.
+fine-tuned pose is a better visual match to the true 3D pose.
 % We got significant improvement on viewpoint estimation by using our
 % method on top of general purpose detectors. Note that our method
 % estimates azimuth, elevation, in-plane rotation, focal length
@@ -364,17 +362,15 @@ fine-tuned visually comes closer to the true 3D pose.
   CNN Proposals & \multicolumn{3}{|c|}{Our matching results on proposal bounding boxes} \\
   \hline
 \end{tabular}
-\caption{Example enriched bounding boxes. Given R-CNN\cite{Girshick14}
+\caption{Example enriched bounding boxes. Given R-CNN~\cite{Girshick14}
   detection bounding boxes, our method predicted 2D-3D matching
-  reasonably. On the first column, R-CNN detection bounding boxes
-  overlaid. From the second to the last columns, output of our method
-  given a R-CNN box. Blue boxes are R-CNN output and purple boxes are
+  reasonably. The first column shows bounding boxes produced by R-CNN detection. Subsequent columns show the output of our method given this bounding box input. Blue boxes are R-CNN output and purple boxes are
   the tightest bounding box enclosing predicted CAD model.}
   \label{fig:pascal12cnn}
 \end{figure*}
 %
 \begin{table*}[t]
-	\scriptsize
+    \scriptsize
   \begin{center}
     \begin{tabular}{|c||c||c||c|c||c|c|}
     \hline
@@ -401,7 +397,7 @@ fine-tuned visually comes closer to the true 3D pose.
     bicycle-24v         & 44.4 / 14.3         & 45.9 / 16.7             & 48.1 / 21.5       & 48.1 / 20.9        & 61.7 / \textbf{27.0}         & 61.7 / 23.9\\ \hline
     \end{tabular}
   \end{center}
-\caption{Average Precision(AP) and Average Viewpoint Precision (AVP) on
+\caption{Average Precision (AP) and Average Viewpoint Precision (AVP) on
   PASCAL3D+~\cite{Xiang14}. For combined methods (* + Ours), we use
   bounding boxes from * and augment viewpoint using our method.}
   % R-CNN

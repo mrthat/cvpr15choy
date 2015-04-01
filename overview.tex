@@ -43,8 +43,8 @@
 
 Our method has two modes of operation.
 
-{\em (i)} it can be run in isolation, as a sliding window object
-detector, similar in spirit to exemplar SVM~\cite{Malisiewicz11}. In
+First, it can be run in isolation, as a sliding window object
+detector similar in spirit to the exemplar SVM~\cite{Malisiewicz11}. In
 that case, it can not only provide a detection bounding box but also
 meta-data such as viewpoint or 3D CAD model exemplar.
 As we show in our experiments, our method in isolation delivers
@@ -52,15 +52,16 @@ performance that is on par with state-of-the-art for the task of
 object class detection and viewpoint estimation while at the same time
 being much faster to train and requiring no training images(Sect.~\ref{sec:exp_iso}).
 
-{\em (ii)} it can be used to enrich the detections of another object
+
+Second, it can be used to enrich the detections of another object
 class detector that proposes candidate regions that can then be
-refined by our method. This second mode of operation constitutes the
+refined by our method. This mode constitutes the
 strength of our method, as we will show in our experiments
 (Sect.~\ref{sec:experiments}).
 
-Both modes of operation rely on the succession of two steps:
-on-the-fly generation of exemplar templates, based on a novel whitened
-feature representation termed NZ-WHO (Sect.~\ref{sec:approach}), and
+Both modes of operation rely on two steps:
+on-the-fly generation of exemplar templates, based on NZ-WHO, our novel whitened
+feature representation (Sect.~\ref{sec:approach}), and
 pose fine-tuning using MCMC (Sect.~\ref{sec:fine}).
 
 
@@ -148,3 +149,4 @@ pose fine-tuning using MCMC (Sect.~\ref{sec:fine}).
 % this can be done on-the-fly. The fine tuning stage process jointly
 % optimizes translation, yaw, roll, pitch, scale, and focal length
 % continuously and also searches for different CAD models.}
+

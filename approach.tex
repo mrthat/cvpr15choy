@@ -1,15 +1,15 @@
 In this section, we describe our approach to generating 3D
 exemplar-based templates on-the-fly. It is based on 3D CAD model
 rendering (Sect.~\ref{sec:rendering}) followed by feature extraction
-and applying a whitening procedure. Based on the original whitening
+and whitening. Based on the original whitening
 formulation (Sect.~\ref{sec:who}), we propose three novel extensions that
 enable the application of whitening to the on-the-fly setting.
 %
 First, we adapt the whitening to the specific case of rendered
 images (Sect.~\ref{sec:nzwho}). Second, we show how to speed up the
-whitening by two orders of magnitudes for high-resolution templates
-(Sect.~\ref{sec:fastwhiten}). And third, we improve the runtime of our
-3D exemplar template detectors also at test time, by performing
+whitening by two orders of magnitude for high-resolution templates
+(Sect.~\ref{sec:fastwhiten}). Third, we improve the evaluation of our
+3D exemplar template detectors at test time by performing
 convolutions in the frequency domain (Sect.~\ref{sec:fft}).
 
 
@@ -18,13 +18,12 @@ convolutions in the frequency domain (Sect.~\ref{sec:fft}).
 
 We used an off-the-shelf rendering engine to generate a realistic rendering
 and a depth map. The CAD models we used contain texture and material
-information. These make the rendering more realistic and allows us to transfer
-natural image statistics to rendered images. Along
-with a rendering, we extracted a depth map which can be used for
+information. These make the rendering more realistic and allow us to transfer
+natural image statistics to rendered images. During rendering we extract a depth map which can be used for
 reconstruction\ref{fig:rendering}.
 
 To handle intraclass and viewpoint variability, we used various CAD models and
-made renderings of these CAD models from different viewpoints.  Note that we
+made renderings of these CAD models from different viewpoints. Note that we
 continuously vary yaw, pitch, roll and the focal length as well so that the
 final fine tuning stage can produce accurate viewpoint estimations
 (Sect.~\ref{sec:fine}).
@@ -42,21 +41,21 @@ final fine tuning stage can produce accurate viewpoint estimations
 \subsection{Whitened Histograms of Orientations (WHO)}
 \label{sec:who}
 Our technique for rendering and generating exemplar template detectors
-on-the-fly is drawing from recent work. Hariharan \etal. introduced Whitened
+on-the-fly draws from recent work by Hariharan \etal~\cite{Hariharan12}. They introduced Whitened
 Histograms of Orientations (WHO), which uses feature statistics from natural
 images to create a large number of classifiers analytically using Linear
-Discriminant Analysis(LDA) rather than training SVM
-classifiers\cite{Hariharan12}. The confidence score for data $x_i$ can be
+Discriminant Analysis (LDA) rather than training SVM
+classifiers. The confidence score for data $x_i$ can be
 defined as $ S(x_i) = w_{x_t}^T x_i$ where $w_{x_t} = \Sigma^{-1} (x_t - \mu)$
 is an LDA classifier for a template $x_t$. Since collecting covariance matrices
 for all possible template shape is intractable, \cite{Hariharan12} assumed
 Wide-Sense Stationarity(WSS) of HOG features and generated a covariance
 $\Sigma$ from autocovariance $\Gamma$ collected on a large collection of
-natural images. i.e. for a 31 dim HOG feature $x_t$ at location $t$
+natural images. For a 31 dim HOG feature $x_t$ at location $t$
 
 \begin{align}
     E[x_t] & = \mu\\
-    E[(x_{t} - \mu ) (x_{\tau} - \mu)] & = E[(x_0 - \mu)(x_{\tau - t} - \mu)]
+    E[(x_{t} - \mu ) (x_{\tau} - \mu)] & = E[(x_0 - \mu)(x_{\tau - t} - \mu)].
 \end{align}
 
 In this paper, we followed their method to generate $\Sigma$.
@@ -131,17 +130,16 @@ background. If the model is rendered over a natural image background, gradients
 in the background will be incorporated into the discriminative template.
 
 Alternatively, if the background is left textureless (see
-Fig.~\ref{fig:rendering}), whitening the resulting HOG template
-, strong negative weights are introduced in the textureless region (by
-subtracting the mean $\mu$) as seen in Fig.~\ref{fig:whocomparison}.
+Fig.~\ref{fig:rendering}), whitening the resulting HOG template introduces strong negative weights in the textureless region (by
+subtracting the mean $\mu$), as seen in Fig.~\ref{fig:whocomparison}.
 This could result in positive matches being suppressed due to spurious
 background gradients.
 
 NZ-WHO removes these artifacts so that the background has no effect on the
 template response. Let a vectorized HOG features of a rendering image $x = [
 \begin{array}{ccccc}x_1^T & x_2^T & \cdots & x_n^T\end{array} ]^T \in
-\mathcal{R}^{nd}$ where $x_i$ is the $i$th HOG cell feature and $n$ is the
-number HOG cells and $d$ is the dimension of HOG feature. We create a new
+\mathcal{R}^{nd}$ where $x_i$ is the $i$th HOG cell feature, $n$ is the
+number of HOG cells and $d$ is the dimension of the HOG feature. We create a new
 vector $\bar{x}$ which contains only the non-zero HOG cell features of $x$. To be
 specific, let $I_d\in \mathcal{R}^{d\times d}$ be the identity matrix, $\bar{n}$ be
 the number of non-zero HOG cells, and a matrix $S\in \mathcal{R}^{\bar{n}d \times
@@ -155,7 +153,7 @@ template has  $n=3, \bar{n}=2$, and only the second HOG cell has $0$ norm, then
         \end{array} \right]
 \end{align}
 
-The matrix selects HOG features that corresponds to the first cell and the third cell. 
+The matrix selects HOG features that correspond to the first and third cells. 
 
 Using the selector $S$, we can define new vectorized HOG features $\bar{x} = S x,
 \bar{\mu} = S\mu, \bar{\Sigma} = S \Sigma S^T$. After solving the resulting system (which
@@ -209,7 +207,7 @@ and compute convolution.
      \includegraphics[width=0.28\linewidth]{ihog_whiten_non_zero200_crop.png} \\
  \end{tabular}
   \end{center}
-  \caption{Comparison of HOG, WHO and NZ-WHO. Visualization of positive weights (first row),  visualization of negative weights (second row), HOGgles \cite{vondrick2013} (third row). Note that for WHO, whitening all cell result in strong negative edges on the empty region}
+  \caption{Comparison of HOG, WHO and NZ-WHO. Visualization of positive weights (first row),  visualization of negative weights (second row), HOGgles \cite{vondrick2013} (third row). Note that for WHO, whitening all cells results in strong negative edges on the empty region}
   \label{fig:whocomparison}
 \end{figure}
 
@@ -221,7 +219,7 @@ and compute convolution.
 % This process speeds up , making it applicable to an on-the-fly rendering setting.
 % It originates from the insight that an iterative Conjugate Gradient method can be used to whiten a HOG template, which is much faster than the original procedure proposed in~\cite{Hariharan12} based on decomposition.
 
-Synthesizing an LDA template Eq.~\ref{eq:nz-who} requires solving the system of
+Synthesizing the LDA template in Eq.~\ref{eq:nz-who} requires solving the system of
 linear equations, $\bar{\Sigma} \bar{w} = (\bar{x} - \bar{\mu})$. In
 \cite{Hariharan12}, the authors make use of the fact that covariance matrices
 are symmetric and positive semidefinite to solve the system via the Cholesky
@@ -229,13 +227,13 @@ decomposition with Gaussian Elimination, which requires $O(n^3)$ time.
 
 The Conjugate Gradient method is an iterative algorithm for solving symmetric
 positive definite systems which runs in $O(n^2\kappa)$ time, where $\kappa$ is
-the condition number of the matrix. \cite{Shewchuk94}.
+the condition number of the matrix~\cite{Shewchuk94}.
 %
 This makes Conjugate Gradient faster than decomposition for matrices with small
 condition numbers relative to their size.
 
 The covariance matrix for HOG templates is typically
-ill-conditioned\cite{Hariharan12}, but adding a small regularization constant to
+ill-conditioned~\cite{Hariharan12}, but adding a small regularization constant to
 the diagonal reduces its condition number.
 We use a constant of $0.15$, which reduces the condition number from $10^{20}$
 to $50$, much smaller than the dimension of the matrix (7000).
@@ -245,20 +243,20 @@ ms when using 250 HOG cells on Nvidia GTX660, two orders of magnitude faster
 than the using Cholesky factorization with Gaussian Elimination.
 
 We report the real time analysis of whitening using decomposition and
-conjugate gradient methods in Fig.~\ref{fig:whotime}. (a) compares the
+Conjugate Gradient methods in Fig.~\ref{fig:whotime}. (a) compares the
 absolute runtime of the different methods while (b) gives the obtained
 speedup. We see that % We compare the speed of each of template generation methods in
 % Fig.~\cite{fig:covariancetime_crop} Using naive Cholesky decomposition,
-WHO template takes several seconds for realistic template sizes of
-several hundred cells, while using the iterative Conjugate Gradient
-method, it only takes 60ms. If we use NZ-WHO, we can gain extra speed
-up since we only whitens non-zero cells.
+whitening the HOG template takes several seconds for realistic template sizes of
+several hundred cells, but only 60ms using the Conjugate Gradient
+method. If we use NZ-WHO, we can gain extra speed
+up since we only whiten non-zero cells.
 
 In addition, since the iterative Conjugate Gradient method directly
 tries to reduce the residual (the norm of $y-Ax$ for $Ax = y$), it is
 more numerically stable than Cholesky decomposition with Gaussian
-Elimination. We vary the number of cells in a template and show that
-the residual of NZ-WHO is smaller than WHO Fig.~\ref{fig:whoresidual}.
+Elimination. In Fig.~\ref{fig:whoresidual} we vary the number of cells in a template and show that
+the residual of NZ-WHO is smaller than that of WHO.
 % Also, the residual from the Conjugate Gradient method (the norm of $y-Ax$ for $Ax = y$) is smaller than 
 % that of Cholesky decomposition. 
 
@@ -292,10 +290,10 @@ the residual of NZ-WHO is smaller than WHO Fig.~\ref{fig:whoresidual}.
 We generate high resolution templates with more than 250 HOG cells to capture
 details of an object to give accurate 2D-3D matching. These large templates
 cause computational burden when computing convolution. Though good for
-detecting accurate model and pose, convolution of high-resolution templates are
-much slower since computation time scales linearly with the number of HOG
-cells in the template. To overcome and speed up the convolution, we used FFT
-based GPU convolution \cite{Podlozhnyuk} which scales. Briefly, for length $n$
+accurately determining model and pose, these large templates slow down the
+convolution since computation time scales linearly with the number of HOG cells
+in the template. To overcome this, we used FFT-based GPU convolution
+\cite{Podlozhnyuk}. Briefly, for length $n$ 
 signal and length $m$ filter, naive convolution takes $O(nm)$ time whereas
 FFT-based convolution takes $O\left( (n + m)\log (n+m) \right)$ time. For large
 $m$ (high resolution templates), we can gain computational advantage.
