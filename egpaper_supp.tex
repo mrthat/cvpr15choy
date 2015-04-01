@@ -22,7 +22,7 @@
 % run, let it finish, and you should be clear).
 \usepackage[breaklinks=true,bookmarks=false]{hyperref}
 \graphicspath{ {figures/} }
-% \cvprfinalcopy % *** Uncomment this line for the final submission
+\cvprfinalcopy % *** Uncomment this line for the final submission
 
 \def\cvprPaperID{2349} % *** Enter the CVPR Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
@@ -36,7 +36,8 @@
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{Supplementary Material for the Paper ``Enriching Object Detection with\\2D-3D Registration and Continuous Viewpoint Estimation''}
+\title{Supplementary Material for the Paper ``Enriching Object Detection with\\
+2D-3D Registration and Continuous Viewpoint Estimation''}
 %\title{Enrich Object Detection : 2D-3D registration and continuous viewpoint estimation}
 
 % \author{First Author\\
@@ -254,6 +255,28 @@ occlusion, and unusual object shape.
   \label{fig:pascal_ap}
 \end{figure*}
 %
+\begin{figure*}[h]
+\setlength\tabcolsep{1pt}
+\centering
+\begin{tabular}{|cc|cc|}
+  \hline
+  \includegraphics[width=0.24\linewidth]{supp/pas_aero1a.jpg} &
+  \includegraphics[width=0.24\linewidth]{supp/pas_aero1b.png} &
+  \includegraphics[width=0.24\linewidth]{supp/pas_aero2a.jpg} &
+  \includegraphics[width=0.24\linewidth]{supp/pas_aero2b.png} \\
+  \includegraphics[width=0.24\linewidth]{supp/pas_aero3a.jpg} &
+  \includegraphics[width=0.24\linewidth]{supp/pas_aero3b.png} &
+  \includegraphics[width=0.24\linewidth]{supp/pas_aero4a.jpg} &
+  \includegraphics[width=0.24\linewidth]{supp/pas_aero4b.png} \\
+  \hline
+  \end{tabular}
+  \caption{Successful detection and pose estimation results on
+    PASCAL3D+~\cite{Xiang14} aeroplanes. Original image (left) and
+  overlaid detection result (right). Proposal bounding box (blue) and
+  predicted bounding box (purple).}
+  \label{fig:pascal3d_aero_good}
+\end{figure*}
+
 \begin{figure*}[h]
 \setlength\tabcolsep{1pt}
 \centering
