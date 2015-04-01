@@ -21,7 +21,7 @@
 % run, let it finish, and you should be clear).
 \usepackage[breaklinks=true,bookmarks=false]{hyperref}
 \graphicspath{ {figures/} }
-% \cvprfinalcopy % *** Uncomment this line for the final submission
+\cvprfinalcopy % *** Uncomment this line for the final submission
 
 \def\cvprPaperID{2349} % *** Enter the CVPR Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
@@ -38,20 +38,14 @@
 \title{Enriching Object Detection with 2D-3D Registration\\and Continuous Viewpoint Estimation}
 %\title{Enrich Object Detection : 2D-3D registration and continuous viewpoint estimation}
 
-\author{First Author\\
-Institution1\\
-Institution1 address\\
-{\tt\small firstauthor@i1.org}
+\author{Christopher Bongsoo Choy\textsuperscript{\dag}, Michael Stark\textsuperscript{\dag \ddag}, Sam Corbett-Davies\textsuperscript{\dag}, Silvio Savarese\textsuperscript{\dag}\\
+    Stanford University\textsuperscript{\dag}, Max Plank Institutes\textsuperscript{\ddag}\\
+    {\tt\small \{chrischoy, scorbett, stark, ssilvio\}@stanford.edu}
 % For a paper whose authors are all at the same institution,
 % omit the following lines up until the closing ``}''.
 % Additional authors and addresses can be added with ``\and'',
 % just like the second author.
 % To save space, use either the email address or home page, not both
-\and
-Second Author\\
-Institution2\\
-First line of institution2 address\\
-{\tt\small secondauthor@i2.org}
 }
 
 \maketitle
@@ -62,9 +56,8 @@ First line of institution2 address\\
 A large body of recent work on object detection has focused on exploiting 3D CAD
 model databases to improve detection performance. Many of these approaches work
 by aligning exact 3D models to images using templates generated from renderings
-of the 3D models at a finite set of discrete viewpoints. The training procedures
-for these approaches, however, are very expensive and require gigabytes of
-memory and storage, and the viewpoint discretization hampers pose estimation
+of the 3D models at a set of discrete viewpoints. However, the training procedures for these approaches are very expensive and require gigabytes of
+memory and storage, while the viewpoint discretization hampers pose estimation
 performance.
 
 We propose an efficient method for synthesizing templates from 3D models that
@@ -77,7 +70,7 @@ features. Our decorrelation procedure relies on a gradient-based algorithm that
 is more numerically stable than standard decomposition-based procedures, and we
 efficiently search for candidate detections by computing FFT-based template
 convolutions. Due to the speed of our template synthesis procedure, we are able
-to perform joint optimization on scale, translation, continuous rotation, and
+to perform joint optimization of scale, translation, continuous rotation, and
 focal length. We provide an efficient GPU implementation of our algorithm, and
 we validate its performance on 3D Object Classes and PASCAL3D+ datasets.
 
@@ -127,7 +120,6 @@ we validate its performance on 3D Object Classes and PASCAL3D+ datasets.
 \label{sec:related}
 \input{related}
 
-
 \section{Approach Overview}
 \label{sec:nz-who}
 \input{overview}
@@ -148,6 +140,9 @@ we validate its performance on 3D Object Classes and PASCAL3D+ datasets.
 \label{conclusion}
 \vspace{-.2cm}
 \input{conclusion}
+
+\section{Acknowledgement}
+This work has been supported by the Max Planck Center for Visual Computing \& Communication.
 
 \clearpage
 \clearpage

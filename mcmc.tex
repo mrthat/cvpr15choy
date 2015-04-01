@@ -41,13 +41,11 @@ We define $3$ different types of moves that can alter the state
 (Fig.~\ref{fig:moves}), {\em (i)} changing the focal length $f$, {\em
 (ii)} one of the rotational pose parameters $v_i$, and {\em (iii)} CAD model
 index $m$. For (i) and (ii), we use Gaussian proposal distributions, and a uniform
-distribution over model changes for (iii). For scale and translation, we
-implicitly compute all possible translation and scale by convolving $w(q)$ to
-HOG pyramid.
+distribution over model changes for (iii). We implicitly compute all possible translation and scale by convolving $w(q)$ with a HOG pyramid.
 \begin{align}
     g(p \rightarrow p + v_i') & \sim \mathcal{N}(\mu = p_{v_i},\sigma = \sigma_v) \quad i \in \{1,2,3\}\\
     g(p \rightarrow p + f') & \sim \mathcal{N}(\mu = p_{f},\sigma = \sigma_f)\\
-    g(p \rightarrow p + m') & \sim c \delta(p_m) + (1-c) Unif(1,M),
+    g(p \rightarrow p + m') & \sim (1-c) \delta(p_m) + c\,\textrm{Unif}(1,M),
 \end{align}
 where $g$ is the proposal distribution. % and $P$ is the distribution of which we
 %defined using Gaussian distribution around previous state. $A$ is the
@@ -62,7 +60,7 @@ where $g$ is the proposal distribution. % and $P$ is the distribution of which w
 
 In practice, we run this algorithm for 20 iterations, keeping
 the sample with the highest probability as our approximate estimate of
-the MAP solution. We set $\sigma_v = 5$ degree and $\sigma_f = 1$ and
+the MAP solution. We set $\sigma_v = 5^\circ$, $\sigma_f = 1$ and
 $c = 0.1$ for all experiments.
 
 % there are several advantages that was not possible such as
@@ -77,9 +75,8 @@ $c = 0.1$ for all experiments.
 
 
 \paragraph{Initialization.}
-Since the Metropolis-Hastings algorithm is susceptible to getting
-stuck in local optima, we need a good initialization in order to
-increase the probability to find a solution that is close to the
+Since the objective function is non-convex, we need a good initialization in order to
+increase the probability that we find a solution close to the
 global optima. We achieve this by first running a discrete,
 pre-trained version of our algorithm (i.e., an ensemble of NZ-WHO
 templates) in order to get promising candidate 2D bounding boxes and
