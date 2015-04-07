@@ -78,7 +78,7 @@ prior work~\cite{Aubry14}. At the same time, calibration is
 computationally expensive, resulting in generation time that are two orders of
 magnitudes larger than without calibration. Strikingly, our method
 NZ-WHO-CG achieves the second best AP of $90.0$ while completing in 79
-ms vs. 8.7 s when using calibration.
+ms vs. 8.5 s when using calibration.
 
 % We empirically found out that NZ-WHO performs reasonably well without time
 % consuming calibration stage compare to other variational method to generate
@@ -105,7 +105,7 @@ ms vs. 8.7 s when using calibration.
     NZ-WHO-CG {\em (ours)} & \textbf{90.0} / 82.8 &   79ms & 90.3 / 86.8           & 8.5 sec \\
     \hline
   \end{tabular}
-  \caption{Average Precision(AP), Mean Precision in Pose Estimation
+  \caption{Average Precision (AP), Mean Precision in Pose Estimation
     (MPPE)~\cite{Lopez-Sastre11}, and generation time for variations of WHO on
     3D Object Classes cars~\cite{Savarese07}. Please see text for
     details.}
@@ -174,7 +174,7 @@ with costly bounding box and viewpoint annotations.
   \begin{center}
     \begin{tabular}{|c|c|c|c|}
     \hline
-     AP/MPPE& Ours & ALM\cite{Xiang12} & VOC-DPM\cite{Pepik12} \\
+    AP/MPPE& Ours & ALM\cite{Xiang12} & DPM-VOC+VP\cite{Pepik12} \\
     \hline\hline
     car     & \textbf{99.8} / 91.7 & 98.4 / 93.4 & \textbf{99.8} / \textbf{97.5} \\ 
     bicycle & 93.0 / 90.9          & 93.0 / 91.4 & \textbf{98.8} / \textbf{97.5} \\
@@ -238,17 +238,17 @@ in the form a 3D pose, focal length, and 3D CAD model exemplar shape.
 To show such ability, we evaluate our method on the PASCAL3D+
 dataset~\cite{Xiang14}. This dataset augments PASCAL 2012 images with
 high quality viewpoint annotations thus is ideal to measure pose
-estimation. The dataset proposes new metric called Average Viewpoint
+estimation. The dataset proposes a new metric called Average Viewpoint
 Precision (AVP) where it measures the area under viewpoint precision
-and detection recall curve. The viewpoints is measured by azimuth
+and detection recall curve. The viewpoint is measured by azimuth
 similarity. If the distance between predicted azimuth and ground truth
 azimuth is below a certain threshold, the viewpoint is correct.
 The baseline methods V-DPM~\cite{Xiang14} and
-DPM-VOC+VP~\cite{Pepik12}) reported on the PASCAL3D+ dataset are
+DPM-VOC+VP~\cite{Pepik12} reported on the PASCAL3D+ dataset are
 variants of DPM~\cite{Felzenszwalb10} where each component of DPM
-account for various azimuths. Thus V-DPM and VOC-DPM provide discrete
+accounts for azimuth. Thus V-DPM and DPM-VOC+VP provide discrete
 azimuths only whereas our method provides 3D viewpoint (yaw, pitch,
-roll), CAD instance (model index, rendering, depth) and focal length.
+roll), CAD model instance (model index, rendering, depth) and focal length.
 %
 \begin{figure}[t]
  \begin{center}
@@ -271,9 +271,9 @@ roll), CAD instance (model index, rendering, depth) and focal length.
 
 \paragraph{Setup.}
 We use detection bounding boxes provided by both object detectors and
-augment use our method to perform fine-grained viewpoint estimation. We use
+ use our method to perform fine-grained viewpoint estimation. We use
 detection bounding boxes from two different methods:
-DPM-VOC+VP\cite{Pepik12} and R-CNN~\cite{Girshick14}, both in their
+DPM-VOC+VP~\cite{Pepik12} and R-CNN~\cite{Girshick14}, both in their
 variants trained on 8 viewpoint categories, since these perform best
 in terms of AP. For both cases,
 we use the original score for plotting precision-recall curves
@@ -327,12 +327,12 @@ fine-tuned pose is a better visual match to the true 3D pose.
   \includegraphics[width=0.24\textwidth]{car_cnn/1b.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1c.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1d.png}  \\  
-%   \hline
-%  \includegraphics[width=0.24\textwidth]{car_cnn/2a.png} &   
-%  \includegraphics[width=0.24\textwidth]{car_cnn/2b.png} &   
-%  \includegraphics[width=0.24\textwidth]{car_cnn/2c.png} &   
-%  \includegraphics[width=0.24\textwidth]{car_cnn/2e.png}  \\  
-%   \hline
+   \hline
+  \includegraphics[width=0.24\textwidth]{car_cnn/2a.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/2b.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/2c.png} &   
+  \includegraphics[width=0.24\textwidth]{car_cnn/2e.png}  \\  
+   \hline
   \includegraphics[width=0.24\textwidth]{car_cnn/4a.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/4b.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/4c.png} &   
@@ -376,21 +376,21 @@ fine-tuned pose is a better visual match to the true 3D pose.
     \hline
     AP/AVP              & V-DPM \cite{Xiang14} & DPM-VOC+VP \cite{Pepik12}  & \cite{Pepik12} + Ours (discrete) & \cite{Pepik12} + Ours (full) & R-CNN + Ours (discrete) & R-CNN + Ours (full)\\
     \hline\hline
-    aeroplane-4v        & 40.0 / 34.6         & 41.5 / 37.4             & 41.1 / 32.7       & 41.1 / 30.5        & 67.8 / \textbf{41.3}         & 67.8 / 40.8 \\ \hline
-    aeroplane-8v        & 39.8 / 23.4         & 40.5 / 28.6             & 41.1 / 26.8       & 41.1 / 24.2        & 67.8 / 26.8         & 67.8 / \textbf{27.4} \\ \hline
-    aeroplane-16v       & 43.6 / 15.4         & 38.0 / 15.9             & 41.1 / 17.7       & 41.1 / 16.3        & 67.8 / 21.2         & 67.8 / \textbf{21.5} \\ \hline
-    aeroplane-24v       & 42.2 / 8.0          & 36.0 /  9.7             & 41.1 / 10.9       & 41.1 / 10.2        & 67.8 / 15.6         & 67.8 / \textbf{15.7} \\ \hline
-    \hline
+%    aeroplane-4v        & 40.0 / 34.6         & 41.5 / 37.4             & 41.1 / 32.7       & 41.1 / 30.5        & 67.8 / \textbf{41.3}         & 67.8 / 40.8 \\ \hline
+%    aeroplane-8v        & 39.8 / 23.4         & 40.5 / 28.6             & 41.1 / 26.8       & 41.1 / 24.2        & 67.8 / 26.8         & 67.8 / \textbf{27.4} \\ \hline
+%    aeroplane-16v       & 43.6 / 15.4         & 38.0 / 15.9             & 41.1 / 17.7       & 41.1 / 16.3        & 67.8 / 21.2         & 67.8 / \textbf{21.5} \\ \hline
+%    aeroplane-24v       & 42.2 / 8.0          & 36.0 /  9.7             & 41.1 / 10.9       & 41.1 / 10.2        & 67.8 / 15.6         & 67.8 / \textbf{15.7} \\ \hline
+%    \hline
     car-4v              & 37.2 / 20.2         & 45.6 / 36.9             & 47.6 / 42.7       & 47.6 / \textbf{42.7}        & 49.6 / 41.5         & 49.6 / 41.5\\ \hline
     car-8v              & 37.3 / 23.5         & 47.6 / 36.6             & 47.6 / \textbf{39.8}       & 47.6 / 39.5        & 49.6 / 38.0         & 49.6 / 39.0\\ \hline
     car-16v             & 36.6 / 18.1         & 46.0 / 29.6             & 47.6 / 32.7       & 47.6 / 33.0        & 49.6 / 34.0         & 49.6 / \textbf{34.3}\\ \hline
     car-24v             & 36.3 / 13.7         & 42.1 / 24.6             & 47.6 / 27.4       & 47.6 / 27.4        & 49.6 / 27.0         & 49.6 / \textbf{27.6}\\ \hline
     \hline
-    chair-4v            & 11.1 / 6.8          & 8.7  / 6.1              &  11.4 / 7.1       & 11.4 / 6.7         & 25.2 / 10.6         & 25.2 / \textbf{10.7} \\ \hline
-    chair-8v            & 11.4 / 5.9          & 11.3 / 9.4              &  11.4 / 6.6       & 11.4 / 6.6         & 25.2 / \textbf{9.4}          & 25.2 / 9.3 \\ \hline
-    chair-16v           & 12.8 / 6.0          & 10.2 / 6.1              &  11.4 / 4.7       & 11.4 / 4.7         & 25.2 / \textbf{6.7}          & 25.2 / 6.7 \\ \hline
-    chair-24v           & 12.6 / 4.4          & 8.0  / 4.2              &  11.4 / 3.1       & 11.4 / 3.4         & 25.2 / 4.6          & 25.2 / \textbf{5.4} \\ \hline
-    \hline
+%    chair-4v            & 11.1 / 6.8          & 8.7  / 6.1              &  11.4 / 7.1       & 11.4 / 6.7         & 25.2 / 10.6         & 25.2 / \textbf{10.7} \\ \hline
+%    chair-8v            & 11.4 / 5.9          & 11.3 / 9.4              &  11.4 / 6.6       & 11.4 / 6.6         & 25.2 / \textbf{9.4}          & 25.2 / 9.3 \\ \hline
+%    chair-16v           & 12.8 / 6.0          & 10.2 / 6.1              &  11.4 / 4.7       & 11.4 / 4.7         & 25.2 / \textbf{6.7}          & 25.2 / 6.7 \\ \hline
+%    chair-24v           & 12.6 / 4.4          & 8.0  / 4.2              &  11.4 / 3.1       & 11.4 / 3.4         & 25.2 / 4.6          & 25.2 / \textbf{5.4} \\ \hline
+%    \hline
     bicycle-4v          & 45.2 / 41.7         & 46.9 / 43.9             & 48.1 / 47.6       & 48.1 / 46.6        & 61.7 / 56.5         & 61.7 / \textbf{56.7}\\ \hline
     bicycle-8v          & 47.3 / 36.7         & 48.1 / 40.3             & 48.1 / 40.6       & 48.1 / 40.6        & 61.7 / 48.9         & 61.7 / \textbf{49.2}\\ \hline
     bicycle-16v         & 46.5 / 18.4         & 45.6 / 22.9             & 48.1 / 26.2       & 48.1 / 27.3        & 61.7 / 34.7         & 61.7 / \textbf{35.8}\\ \hline

@@ -39,8 +39,8 @@
 %\title{Enrich Object Detection : 2D-3D registration and continuous viewpoint estimation}
 
 \author{Christopher Bongsoo Choy\textsuperscript{\dag}, Michael Stark\textsuperscript{\dag \ddag}, Sam Corbett-Davies\textsuperscript{\dag}, Silvio Savarese\textsuperscript{\dag}\\
-    \textsuperscript{\dag}Stanford University, \textsuperscript{\ddag}Max Plank Institutes\\
-    {\tt\small \{chrischoy, scorbett, stark, ssilvio\}@stanford.edu}
+	\textsuperscript{\dag}Stanford University, \textsuperscript{\ddag}Max Planck Institute for Informatics\\
+	{\tt\small \{chrischoy, scorbett, ssilvio\}@stanford.edu, \textsuperscript{\ddag}stark@mpi-inf.mpg.de }
 % For a paper whose authors are all at the same institution,
 % omit the following lines up until the closing ``}''.
 % Additional authors and addresses can be added with ``\and'',
@@ -72,8 +72,9 @@ is more numerically stable than standard decomposition-based procedures, and we
 efficiently search for candidate detections by computing FFT-based template
 convolutions. Due to the speed of our template synthesis procedure, we are able
 to perform joint optimization of scale, translation, continuous rotation, and
-focal length. We provide an efficient GPU implementation of our algorithm, and
-we validate its performance on 3D Object Classes and PASCAL3D+ datasets.
+focal length using Metropolis-Hastings algorithm. We provide an efficient GPU
+implementation of our algorithm, and we validate its performance on 3D Object
+Classes and PASCAL3D+ datasets.
 
 %     Using 3D model to detect and register the model to RGB image has been a
 %     growing field of study. Recently, Aubry \etal \cite{Aubry14} and J. Lim
@@ -142,7 +143,8 @@ we validate its performance on 3D Object Classes and PASCAL3D+ datasets.
 \vspace{-.2cm}
 \input{conclusion}
 
-\section{Acknowledgement}
+
+\paragraph{Acknowledgement}
 This work has been supported by the Max Planck Center for Visual Computing \& Communication.
 
 \clearpage

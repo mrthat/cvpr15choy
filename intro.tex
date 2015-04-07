@@ -103,7 +103,7 @@ In this paper, we propose a novel method for 2D-3D alignment of
 exemplar CAD models to real-world images that circumvents the need for
 calibration, and greatly enhances the scalability of WHO. As a
 result, we can render novel views and train corresponding exemplar
-models {\em on the fly}, without the need for offline processing. We call these Non-Zero Whiten Histograms of Orientations(NZ-WHO) templates \ref{fig:front}. As a
+models {\em on-the-fly}, without the need for offline processing. We call these Non-Zero Whitened Histograms of Orientations (NZ-WHO) templates \ref{fig:front}. As a
 by-product, we can formulate the alignment problem as a parameter
 search in a continuous pose space, consisting of yaw, pitch and roll, which
 we implement using MCMC sampling. 
@@ -127,12 +127,12 @@ we implement using MCMC sampling.
 Our paper makes the following contributions:
 
 First, we present a novel method for training exemplar models from
-rendered 3D CAD data {\em on the fly}, enabled by a novel variant of
-WHO, termed Non-Zero Whiten Histograms of Orientations(NZ-WHO), and making efficient use of the specific
+rendered 3D CAD data {\em on-the-fly}, enabled by a novel variant of
+WHO, termed Non-Zero Whitened Histograms of Orientations (NZ-WHO), and making efficient use of the specific
 characteristics of rendered images. To our knowledge, our method
 constitutes the first attempt to simultaneously render and train
-exemplar detectors on the fly.
-% In our paper, we present Non-Zero Whiten Histograms of Orientations
+exemplar detectors on-the-fly.
+% In our paper, we present Non-Zero Whitened Histograms of Orientations
 % (NZ-WHO) to dramatically speed up the template generation and get rid
 % of time consuming calibration and yet achieves performance on par with
 % calibrated templates. First, we will present NZ-WHO is more

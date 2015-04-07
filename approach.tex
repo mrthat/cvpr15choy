@@ -16,11 +16,10 @@ convolutions in the frequency domain (Sect.~\ref{sec:fft}).
 \subsection{Rendering}
 \label{sec:rendering}
 
-We used an off-the-shelf rendering engine to generate a realistic rendering
+We use an off-the-shelf rendering engine to generate a realistic rendering
 and a depth map. The CAD models we used contain texture and material
 information. These make the rendering more realistic and allow us to transfer
-natural image statistics to rendered images. During rendering we extract a depth map which can be used for
-reconstruction\ref{fig:rendering}.
+natural image statistics to rendered images Fig.~\ref{fig:rendering}.
 
 To handle intraclass and viewpoint variability, we used various CAD models and
 made renderings of these CAD models from different viewpoints. Note that we
@@ -49,17 +48,19 @@ classifiers. The confidence score for data $x_i$ can be
 defined as $ S(x_i) = w_{x_t}^T x_i$ where $w_{x_t} = \Sigma^{-1} (x_t - \mu)$
 is an LDA classifier for a template $x_t$. Since collecting covariance matrices
 for all possible template shape is intractable, \cite{Hariharan12} assumed
-Wide-Sense Stationarity(WSS) of HOG features and generated a covariance
+Wide-Sense Stationarity (WSS) of HOG features and generated a covariance
 $\Sigma$ from autocovariance $\Gamma$ collected on a large collection of
-natural images. For a 31 dim HOG feature $x_t$ at location $t$
+natural images. In this paper, we further assumed symmetry of the
+autocovariance. For a 31-dimension HOG feature $x_t$ at location $t$
 
 \begin{align}
-    E[x_t] & = \mu\\
-    E[(x_{t} - \mu ) (x_{\tau} - \mu)] & = E[(x_0 - \mu)(x_{\tau - t} - \mu)].
+    E[x_t] & = E[x_\tau] = \mu\\
+    \Gamma_{\|t - \tau\|} & = E[(x_{t} - \mu ) (x_{\tau} - \mu)] \\
+              & = E[(x_0 - \mu)(x_{\tau - t} - \mu)].
 \end{align}
 
-In this paper, we followed their method to generate $\Sigma$.
-
+for all $t$ and $\tau$. In practice, we gathered $\Gamma$ up to $|t - \tau |
+\le 40$ both horizontally and diagonally.
 
 % \begin{align}
 %     S(x_i) = w_{x_t}^T x_i\\
@@ -130,20 +131,21 @@ background. If the model is rendered over a natural image background, gradients
 in the background will be incorporated into the discriminative template.
 
 Alternatively, if the background is left textureless (see
-Fig.~\ref{fig:rendering}), whitening the resulting HOG template introduces strong negative weights in the textureless region (by
-subtracting the mean $\mu$), as seen in Fig.~\ref{fig:whocomparison}.
+Fig.~\ref{fig:rendering}), whitening the resulting HOG template introduces
+strong negative weights in the textureless region (by subtracting the mean
+$\mu$), as seen in Fig.~\ref{fig:whocomparison}.
 This could result in positive matches being suppressed due to spurious
 background gradients.
 
 NZ-WHO removes these artifacts so that the background has no effect on the
-template response. Let a vectorized HOG features of a rendering image $x = [
+template response. Let a vectorized HOG feature of a rendering image $x = [
 \begin{array}{ccccc}x_1^T & x_2^T & \cdots & x_n^T\end{array} ]^T \in
 \mathcal{R}^{nd}$ where $x_i$ is the $i$th HOG cell feature, $n$ is the
 number of HOG cells and $d$ is the dimension of the HOG feature. We create a new
 vector $\bar{x}$ which contains only the non-zero HOG cell features of $x$. To be
 specific, let $I_d\in \mathcal{R}^{d\times d}$ be the identity matrix, $\bar{n}$ be
 the number of non-zero HOG cells, and a matrix $S\in \mathcal{R}^{\bar{n}d \times
-    nd}$ be the masking matrix that selects non-zero HOG cells. For instance, a
+nd}$ be the masking matrix that selects non-zero HOG cells. For instance, a
 template has  $n=3, \bar{n}=2$, and only the second HOG cell has $0$ norm, then
 
 \begin{align}
@@ -153,14 +155,14 @@ template has  $n=3, \bar{n}=2$, and only the second HOG cell has $0$ norm, then
         \end{array} \right]
 \end{align}
 
-The matrix selects HOG features that correspond to the first and third cells. 
+The matrix selects HOG features that correspond to the first and third cells.
 
 Using the selector $S$, we can define new vectorized HOG features $\bar{x} = S x,
 \bar{\mu} = S\mu, \bar{\Sigma} = S \Sigma S^T$. After solving the resulting system (which
 is now smaller than in the WHO approach) we find
 
 \begin{equation}
-    \bar{w}=\bar{\Sigma}^{-1}(\bar{x} - \bar{\mu}) \label{eq:nz-who},
+    \bar{w}=\bar{\Sigma}^{-1}(\bar{x} - \bar{\mu}) \label{eq:nz-who}
 \end{equation}
 
 To speed up the convolution, we restore zero cells and reshape the vector $\bar{w}$
@@ -207,7 +209,10 @@ and compute convolution.
      \includegraphics[width=0.28\linewidth]{ihog_whiten_non_zero200_crop.png} \\
  \end{tabular}
   \end{center}
-  \caption{Comparison of HOG, WHO and NZ-WHO. Visualization of positive weights (first row),  visualization of negative weights (second row), HOGgles \cite{vondrick2013} (third row). Note that for WHO, whitening all cells results in strong negative edges on the empty region}
+  \caption{Comparison of HOG, WHO and NZ-WHO. Visualization of positive weights
+      (first row),  visualization of negative weights (second row), HOGgles
+      \cite{vondrick2013} (third row). Note that for WHO, whitening all cells
+      results in strong negative edges on the empty region.}
   \label{fig:whocomparison}
 \end{figure}
 
@@ -240,7 +245,7 @@ to $50$, much smaller than the dimension of the matrix (7000).
 
 As a result, a GPU implementation of conjugate gradient converges in 60
 ms when using 250 HOG cells on Nvidia GTX660, two orders of magnitude faster
-than the using Cholesky factorization with Gaussian Elimination.
+than using Cholesky factorization with Gaussian Elimination.
 
 We report the real time analysis of whitening using decomposition and
 Conjugate Gradient methods in Fig.~\ref{fig:whotime}. (a) compares the
@@ -248,15 +253,15 @@ absolute runtime of the different methods while (b) gives the obtained
 speedup. We see that % We compare the speed of each of template generation methods in
 % Fig.~\cite{fig:covariancetime_crop} Using naive Cholesky decomposition,
 whitening the HOG template takes several seconds for realistic template sizes of
-several hundred cells, but only 60ms using the Conjugate Gradient
+several hundred cells, but only 60 ms using the Conjugate Gradient
 method. If we use NZ-WHO, we can gain extra speed
 up since we only whiten non-zero cells.
 
 In addition, since the iterative Conjugate Gradient method directly
 tries to reduce the residual (the norm of $y-Ax$ for $Ax = y$), it is
 more numerically stable than Cholesky decomposition with Gaussian
-Elimination. In Fig.~\ref{fig:whoresidual} we vary the number of cells in a template and show that
-the residual of NZ-WHO is smaller than that of WHO.
+Elimination. In Fig.~\ref{fig:whoresidual} we vary the number of cells in a
+template and show that the residual of NZ-WHO is smaller than that of WHO.
 % Also, the residual from the Conjugate Gradient method (the norm of $y-Ax$ for $Ax = y$) is smaller than 
 % that of Cholesky decomposition. 
 
@@ -269,7 +274,7 @@ the residual of NZ-WHO is smaller than that of WHO.
  \end{tabular}
   \end{center}
   \caption{(a) Runtime analysis of whitening. HOG means feature
-    extraction time, WHO-Chol uses ~\cite{Hariharan12} and
+    extraction time, WHO-Chol uses our implementation of ~\cite{Hariharan12} and
     WHO-CG uses iterative Conjugate Gradient. NZ-WHO-CG (Ours) uses only
     non-zero cells and Conjugate Gradient. (b) final speedup
     of NZ-WHO vs. WHO.}
@@ -279,12 +284,12 @@ the residual of NZ-WHO is smaller than that of WHO.
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.5\linewidth]{residual}
-  \caption{Residuals from different method}
+  \caption{Residuals of different method}
   \label{fig:whoresidual}
 \end{figure}
 
 
-\subsection{High Resolution Templates and FFT based Convolution}
+\subsection{High Resolution Templates and FFT-based Convolution}
 \label{sec:fft} 
 
 We generate high resolution templates with more than 250 HOG cells to capture
