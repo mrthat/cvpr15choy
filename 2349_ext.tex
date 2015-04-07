@@ -35,7 +35,7 @@ Christopher Bongsoo Choy\textsuperscript{\dag}, Michael Stark\textsuperscript{\d
 % exemplar template on-the-fly and align model accurately using MCMC.
 
 A large body of recent work on object detection has focused on providing more
-than a bounding box of an object. Some exploited 3D CAD
+information than a bounding box of an object. Some used 3D CAD
 model databases to provide viewpoint estimation. These approaches work
 by aligning exact 3D models to images using templates generated from renderings
 of the 3D models at a set of discrete viewpoints.
@@ -48,13 +48,13 @@ replacing the standard SVM with an LDA classifier $w_{x_t}$ for a template $x_t$
 ~\cite{Hariharan12}.
 
 The result is a whitened feature representation, termed WHO (Whitened Histogram
-of Orientations). This development makes it feasible to train hundreds of
-thousands of mid-level patch detectors for recognition.
+of Orientations). This development makes it feasible to train a large number of
+mid-level patch detectors for recognition.
 
-Though it achieved remarkable improvements, generating LDA templates (matrix
-decomposition with Gaussian Elimination) and calibrating them are
-computationally expensive and require gigabytes of memory and storage, while
-the viewpoint discretization hampers pose estimation performance.
+Though generating and calibrating LDA templates (matrix decomposition with
+Gaussian Elimination) achieved remarkable improvements, they are
+computationally expensive and use a prohibitive amount of memory and storage.
+In addition, viewpoint discretization hampers pose estimation performance.
 
 % In this paper, instead of caching and calibrating all templates on training
 % time, we selectively generate templates on testing time as well to estimate
@@ -66,7 +66,7 @@ the viewpoint discretization hampers pose estimation performance.
 \begin{figure}[t]
   \centering
   % \includegraphics[width=0.9\linewidth]{schematics} 
-  \includegraphics[width=0.8\linewidth]{front} % \\[-5pt]
+  \includegraphics[width=0.9\linewidth]{front} % \\[-5pt]
   \caption{Using a database of 3D CAD models, we generate NZ-WHO
     templates which can be used to either detect objects directly or
     enrich the output of an existing detector with high-quality,
@@ -80,6 +80,7 @@ the viewpoint discretization hampers pose estimation performance.
 \end{figure}
 
 
+\vspace{-0.1in}
 \paragraph{Overview}
 
 In this paper, we propose a novel method for 2D-3D alignment of exemplar CAD
@@ -87,9 +88,11 @@ models to real-world images that circumvents the need for calibration and
 greatly enhances the scalability of WHO. As a result, we can render novel views
 and train corresponding exemplar models {\em on-the-fly}, without the need for
 offline processing. We call these Non-Zero Whitened Histograms of Orientations
-(NZ-WHO) templates Fig.~\ref{fig:front}. As a by-product, we can formulate the
-alignment problem as a parameter search in a continuous pose space, consisting
-of yaw, pitch and roll, which we implement using MCMC sampling.
+(NZ-WHO) templates. First, we generate an ensemble of NZ-WHO templates to find
+coarse viewpoints and fine-tune them using MCMC. The schematic of our pipeline
+is on Fig.~\ref{fig:front}. As a by-product, we can formulate the alignment
+problem as a parameter search in a continuous pose space, consisting of yaw,
+pitch and roll, which we implement using MCMC sampling.
 
 First, we present a novel method for training exemplar models from
 rendered 3D CAD data on-the-fly, enabled by a novel variant of
@@ -101,12 +104,11 @@ and train exemplar detectors on-the-fly.
 Second, we demonstrate that our method can enrich the output of an existing
 object class detector, such as the DPM or the
 R-CNN with additional 3D information. By applying our
-method to candidate detections provided by the respective detector, we can
-augment the original detections with an estimate of 3D continuous pose and a 3D
+method to candidate detections provided by the respective detector, we augment the original detections with an estimate of 3D continuous pose and a 3D
 CAD model exemplar.
 
-Finally, we give an in-depth experimental study that demonstrates
-the effectiveness of our approach on a standard benchmark for
+Finally, our in-depth experimental study demonstrates
+the effectiveness of the approach on a standard benchmark for
 object detection and viewpoint estimation~\cite{Xiang14}.
 
 
@@ -115,10 +117,10 @@ object detection and viewpoint estimation~\cite{Xiang14}.
 \setlength\tabcolsep{1pt}
 \centering
 \begin{tabular}{ccccc}
-  \includegraphics[width=0.2\textwidth]{car_cnn/2c.png} &
-  \includegraphics[width=0.2\textwidth]{car_cnn/2e.png} \\
-  \includegraphics[width=0.2\textwidth]{bicycle_cnn/4b.png} &
-  \includegraphics[width=0.2\textwidth]{bicycle_cnn/4c.png} \\
+  \includegraphics[width=0.18\textwidth]{car_cnn/2c.png} &
+  \includegraphics[width=0.18\textwidth]{car_cnn/2e.png} \\
+  \includegraphics[width=0.18\textwidth]{bicycle_cnn/4b.png} &
+  \includegraphics[width=0.18\textwidth]{bicycle_cnn/4c.png} \\
 \end{tabular}
 \caption{Example enriched bounding boxes. Given R-CNN
 	detection bounding boxes, our method predicts the best 2D-3D
@@ -128,6 +130,7 @@ object detection and viewpoint estimation~\cite{Xiang14}.
 \end{figure}
 
 
+\vspace{-0.1in}
 \paragraph{Non-Zero Whitened Histograms of Orientations}
 
 NZ-WHO removes these artifacts so that the background has no effect on the
@@ -145,6 +148,7 @@ LDA templates. The method runs in $O(n^2\kappa)$ time, where $\kappa$ is the con
 % $Ax = y$) is smaller than 
 % that of Cholesky decomposition. 
 
+\vspace{-0.1in}
 \paragraph{Fine-Tuning using MCMC}
 Due to the speed of our template synthesis procedure, we are able to perform
 joint optimization of scale, translation, continuous rotation, and focal length
@@ -156,6 +160,7 @@ image $\mathcal{I}$ as $P(\theta| \mathcal{I}) \sim e^{ \max_{s} w(\theta)
 drawing samples from the distribution $P(\theta | \mathcal{I})$, using the
 Metropolis-Hastings algorithm.
 
+\vspace{-0.1in}
 \paragraph{Experiments}
 
 First, we verify that our NZ-WHO method delivers performance that is
