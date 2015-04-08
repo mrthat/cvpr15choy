@@ -28,10 +28,9 @@
 
 % custom commands
 \newcommand{\scream}[1]{{\color{red} \bf *** #1 ***}}
-
 % Pages are numbered in submission mode, and unnumbered in camera-ready
-%\ifcvprfinal\pagestyle{empty}\fi
-\setcounter{page}{1}
+\ifcvprfinal\pagestyle{empty}\fi
+% \setcounter{page}{1}
 \begin{document}
 
 %%%%%%%%% TITLE
@@ -49,7 +48,7 @@
 }
 
 \maketitle
-%\thispagestyle{empty}
+\thispagestyle{empty}
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
@@ -145,7 +144,9 @@ Classes and PASCAL3D+ datasets.
 
 
 \paragraph{Acknowledgement}
-This work has been supported by the Max Planck Center for Visual Computing \& Communication.
+We acknowledge the support of NSF CAREER grant (N1054127), Ford-Stanford
+Innovation Alliance Award, DARPA, Korea Foundation for Advanced Studies and
+the Max Planck Center for Visual Computing \& Communication.
 
 \clearpage
 \clearpage

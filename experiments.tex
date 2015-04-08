@@ -20,6 +20,7 @@ we show a considerable performance improvement compared to previous
 work in the task of joint object class detection and VP
 estimation (Sect.~\ref{sec:exp_enrich}).
 
+\vspace{-0.1in}
 \paragraph{Setup.}
 We use established benchmark datasets to validate our approach, namely
 the 3D Object Classes dataset~\cite{Savarese07}, and
@@ -70,6 +71,7 @@ rendered from 24 azimuth and 4 elevation angles.
 % Gaussian Elemination takes the most time yet performs worse than
 % NZ-WHO which is two order of magnitude faster to generate.
 
+\vspace{-0.1in}
 \paragraph{Results.}
 In Tab.~\ref{tab:who_initializations}, we observe that, on average,
 calibration indeed improves performance in terms of AP, sometimes
@@ -144,6 +146,7 @@ set of $8$ discrete viewpoint classes.
 % \cite{Aubry14} used a very large collection of CAD models to cover
 % variety of chairs. Similarly, \cite{Lim14}
 
+\vspace{-0.1in}
 \paragraph{Results.}
 Tab.~\ref{tab:3dobject} gives the corresponding results, comparing our
 method to two recent state-of-the-art baselines, the aspect layout
@@ -255,13 +258,13 @@ roll), CAD model instance (model index, rendering, depth) and focal length.
     \setlength\tabcolsep{0pt}
     \begin{tabular}{ccc}
     % \includegraphics[width=0.9\linewidth]{tuning} 
-   \includegraphics[width=0.33\linewidth]{tuning/1.png} &
-   \includegraphics[width=0.33\linewidth]{tuning/2.png} &
-   \includegraphics[width=0.33\linewidth]{tuning/3.png} \\[-5pt]
+   \includegraphics[width=0.33\linewidth]{tuning/1_sm.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/2_sm.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/3_sm.png} \\[-5pt]
 %   (a) & (b) & (c)\\
-   \includegraphics[width=0.33\linewidth]{tuning/4.png} &
-   \includegraphics[width=0.33\linewidth]{tuning/5.png} &
-   \includegraphics[width=0.33\linewidth]{tuning/6.png} \\[-5pt]
+   \includegraphics[width=0.33\linewidth]{tuning/4_sm.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/5_sm.png} &
+   \includegraphics[width=0.33\linewidth]{tuning/6_sm.png} \\[-5pt]
 %   (d) & (e) & (f)\\
    \end{tabular}
  \end{center}
@@ -269,6 +272,7 @@ roll), CAD model instance (model index, rendering, depth) and focal length.
  \label{fig:tuning}
 \end{figure}
 
+\vspace{-0.1in}
 \paragraph{Setup.}
 We use detection bounding boxes provided by both object detectors and
  use our method to perform fine-grained viewpoint estimation. We use
@@ -292,6 +296,9 @@ outputs of our method applied to candidate object detections are given
 in Fig.~\ref{fig:pascal12cnn}, and the effect of fine-tuning is
 visualized in Fig.~\ref{fig:tuning}. More qualitative results can be found in the
 supplemental material.
+
+
+\vspace{-0.1in}
 \paragraph{Results.}
 %
 In Tab.~\ref{tab:pascal12}, we make two main observations. First, we
@@ -442,6 +449,7 @@ boat-24v            & 6.0 / 0.3           & 5.3 / 2.2               &  /        
   \label{fig:car_cnn_ap}
 \end{figure}
 
+\vspace{-0.1in}
 \paragraph{Robustness.}
 % Generic object detectors give overlapping detection bounding boxes of the same object which can be handled by non maximal suppression. For these overlapping detections, 
 While the R-CNN detector~\cite{Girshick14} is highly robust to

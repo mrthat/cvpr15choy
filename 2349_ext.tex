@@ -28,17 +28,34 @@ Christopher Bongsoo Choy\textsuperscript{\dag}, Michael Stark\textsuperscript{\d
 % little need for section headers, but you may use \section etc if you
 % wish.
 
-\noindent
+\begin{figure}[t]
+  \centering
+  % \includegraphics[width=0.9\linewidth]{schematics} 
+  \includegraphics[width=0.9\linewidth]{front} % \\[-5pt]
+  \caption{Using a database of 3D CAD models, we generate NZ-WHO
+    templates which can be used to either detect objects directly or
+    enrich the output of an existing detector with high-quality,
+    continuous pose and 3D CAD model exemplar.}
+    % initialize pose of an object in the bounding box from other
+    % detectors. Once initialization is given, we use NZ-WHO to propose
+    % and validate plausible pose on-the-fly and
+    % further tune the translation, 3D viewpoint and focal length continuously.}
+  % \vspace{-1em}
+  \label{fig:front}
+\end{figure}
+\vspace{-0.15in}
+
 % In this paper, we propose a novel method for 2D-3D alignment of exemplar CAD
 % models to real-world images that circumvents the need for calibration and
 % greatly enhances the scalability of WHO. Our model generates a discriminative
 % exemplar template on-the-fly and align model accurately using MCMC.
 
+\noindent
 A large body of recent work on object detection has focused on providing more
 information than a bounding box of an object. Some used 3D CAD
 model databases to provide viewpoint estimation. These approaches work
 by aligning exact 3D models to images using templates generated from renderings
-of the 3D models at a set of discrete viewpoints.
+of the 3D models at a set of discrete viewpoints~\cite{Aubry14}.
 
 However, training the template for all viewpoint and CAD models is not feasible
 since gathering all training data for different viewpoint and CAD models is
@@ -63,54 +80,32 @@ In addition, viewpoint discretization hampers pose estimation performance.
 
 % The method uses Conjugate Gradient method to efficiently generate an LDA template on-the-fly (60 ms) without expensive calibration steps.
 
-\begin{figure}[t]
-  \centering
-  % \includegraphics[width=0.9\linewidth]{schematics} 
-  \includegraphics[width=0.9\linewidth]{front} % \\[-5pt]
-  \caption{Using a database of 3D CAD models, we generate NZ-WHO
-    templates which can be used to either detect objects directly or
-    enrich the output of an existing detector with high-quality,
-    continuous pose and 3D CAD model exemplar.}
-    % initialize pose of an object in the bounding box from other
-    % detectors. Once initialization is given, we use NZ-WHO to propose
-    % and validate plausible pose on-the-fly and
-    % further tune the translation, 3D viewpoint and focal length continuously.}
-  % \vspace{-1em}
-  \label{fig:front}
-\end{figure}
+\vspace{-0.15in}
+\paragraph{Overview.} In this paper, we propose a novel method for 2D-3D
+alignment of exemplar CAD models to real-world images that circumvents the need
+for calibration and greatly enhances the scalability of WHO. As a result, we
+can render novel views and train corresponding exemplar models {\em
+	on-the-fly}, without the need for offline processing. We call these Non-Zero
+Whitened Histograms of Orientations (NZ-WHO) templates. To our knowledge, our
+method constitutes the first attempt to simultaneously render and train
+exemplar detectors on-the-fly.
 
+First, we adapt the whitening to the specific case of rendered images. We show
+how to speed up the whitening by two orders of magnitude for high-resolution
+templates using Conjugate Gradient method. Also, we improve the evaluation of
+our 3D exemplar template detectors at test time by performing convolutions in
+the frequency domain.
 
-\vspace{-0.1in}
-\paragraph{Overview}
+These components make template generation and evaluation computationally
+inexpensive. Thus, we are able to efficiently explore the continuous parameter
+space to find the best object pose, scale, 3D CAD model type and camera focal
+length. The schematic of our pipeline is on Fig.~\ref{fig:front}.
 
-In this paper, we propose a novel method for 2D-3D alignment of exemplar CAD
-models to real-world images that circumvents the need for calibration and
-greatly enhances the scalability of WHO. As a result, we can render novel views
-and train corresponding exemplar models {\em on-the-fly}, without the need for
-offline processing. We call these Non-Zero Whitened Histograms of Orientations
-(NZ-WHO) templates. First, we generate an ensemble of NZ-WHO templates to find
-coarse viewpoints and fine-tune them using MCMC. The schematic of our pipeline
-is on Fig.~\ref{fig:front}. As a by-product, we can formulate the alignment
-problem as a parameter search in a continuous pose space, consisting of yaw,
-pitch and roll, which we implement using MCMC sampling.
-
-First, we present a novel method for training exemplar models from
-rendered 3D CAD data on-the-fly, enabled by a novel variant of
-WHO, termed Non-Zero Whitened Histograms of Orientations (NZ-WHO), and making
-efficient use of the specific characteristics of rendered images. To our
-knowledge, our method constitutes the first attempt to simultaneously render
-and train exemplar detectors on-the-fly.
-
-Second, we demonstrate that our method can enrich the output of an existing
-object class detector, such as the DPM or the
-R-CNN with additional 3D information. By applying our
-method to candidate detections provided by the respective detector, we augment the original detections with an estimate of 3D continuous pose and a 3D
-CAD model exemplar.
-
-Finally, our in-depth experimental study demonstrates
-the effectiveness of the approach on a standard benchmark for
-object detection and viewpoint estimation~\cite{Xiang14}.
-
+Finally, our experimental study demonstrates the effectiveness of the
+approach on several standard benchmarks for object detection and viewpoint
+estimation. We also demonstrate that our method can enrich the output of an
+existing object class detector, such as the DPM or the R-CNN with additional 3D
+information.
 
 \begin{figure}[t]
 \small
@@ -131,28 +126,25 @@ object detection and viewpoint estimation~\cite{Xiang14}.
 
 
 \vspace{-0.1in}
-\paragraph{Non-Zero Whitened Histograms of Orientations}
+\paragraph{Non-Zero Whitened Histograms of Orientations.} Many works that use
+rendering did not take the effect of background into account~\cite{Aubry14}
+when synthesizing and whitening to generate an LDA template. Our NZ-WHO removes
+background region while whitening thus it prevents irrelevant regions from
+corrupting the foreground.
 
-NZ-WHO removes these artifacts so that the background has no effect on the
-template response. Let a vectorized HOG feature of a rendering image $x = [
-x_1^T ,  \cdots , x_n^T ]^T \in \mathcal{R}^{nd}$ where $x_i$ is the $i$th HOG cell feature, $n$ is the
-number of HOG cells and $d$ is the dimension of the HOG feature. We create a new
-vector $\bar{x}$ which contains only the non-zero HOG cell features of $x$.
-Synthesizing the LDA template requires solving the system of linear equations
-$\bar{w}=\bar{\Sigma}^{-1}(\bar{x} - \bar{\mu})$. In \cite{Hariharan12}, the
-authors solve the system via the Cholesky decomposition, which requires
-$O(n^3)$ time. Instead, we introduced the Conjugate Gradient method to generate
-LDA templates. The method runs in $O(n^2\kappa)$ time, where $\kappa$ is the condition number of the matrix and achieved more than 100x speed-up.
+NZ-WHO method greatly speeds up the LDA generation. We introduced the Conjugate
+Gradient method which runs in $O(n^2\kappa)$ time for LDA generation. Finally,
+we experimentally show that our uncalibrated NZ-WHO template performs on par
+with a calibrated WHO template but 100x faster to generate.
 
 % Also, the residual from the Conjugate Gradient method (the norm of $y-Ax$ for
 % $Ax = y$) is smaller than 
 % that of Cholesky decomposition. 
 
 \vspace{-0.1in}
-\paragraph{Fine-Tuning using MCMC}
-Due to the speed of our template synthesis procedure, we are able to perform
-joint optimization of scale, translation, continuous rotation, and focal length
-using the Metropolis-Hastings algorithm.
+\paragraph{Fine-Tuning using MCMC.} Due to the speed of our template synthesis
+procedure, we are able to perform joint optimization of scale, translation,
+continuous rotation, and focal length using the Metropolis-Hastings algorithm.
 
 We model the probability of an object with the parameter $\theta$ in the test
 image $\mathcal{I}$ as $P(\theta| \mathcal{I}) \sim e^{ \max_{s} w(\theta)
@@ -161,12 +153,10 @@ drawing samples from the distribution $P(\theta | \mathcal{I})$, using the
 Metropolis-Hastings algorithm.
 
 \vspace{-0.1in}
-\paragraph{Experiments}
-
-First, we verify that our NZ-WHO method delivers performance that is
-at least on par with the original WHO formulation~\cite{Hariharan12} in terms of
-accuracy, while at the same time resulting in large computational
-savings.
+\paragraph{Experiments} First, we verify that our NZ-WHO method delivers
+performance that is at least on par with the original WHO
+formulation~\cite{Hariharan12} in terms of accuracy, while at the same time
+resulting in large computational savings.
 
 Second, we demonstrate that our method can be used for multi-view
 object class detection in isolation. It can be applied in a sliding
@@ -179,6 +169,12 @@ detections provided by an existing object class detector, such
 as DPM or RCNN. In this case, we show a considerable performance improvement
 compared to previous work in the task of joint object class detection and VP
 estimation. Example outputs of our model are on Fig.~\ref{fig:pascal12cnn}.
+
+\vspace{-0.1in}
+\paragraph{Acknowledgement.} We acknowledge the support of NSF CAREER grant
+(N1054127), Ford-Stanford Innovation Alliance Award, DARPA, Korea Foundation
+for Advanced Studies and the Max Planck Center for Visual Computing \&
+Communication.
 
 \bibliography{egbib}
 
