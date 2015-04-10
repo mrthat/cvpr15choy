@@ -52,14 +52,13 @@ Christopher Bongsoo Choy\textsuperscript{\dag}, Michael Stark\textsuperscript{\d
 
 \noindent
 A large body of recent work on object detection has focused on providing more
-information than a bounding box of an object. Some used 3D CAD
+information than the bounding box of an object. One set of methods use 3D CAD
 model databases to provide viewpoint estimation. These approaches work
 by aligning exact 3D models to images using templates generated from renderings
 of the 3D models at a set of discrete viewpoints~\cite{Aubry14}.
 
-However, training the template for all viewpoint and CAD models is not feasible
-since gathering all training data for different viewpoint and CAD models is
-expensive.  Instead, it has been realized that template-based exemplar
+However, training templates for all viewpoints and CAD models is not feasible
+since it requires a huge amount of training data to be acquired. Instead, it has been realized that template-based exemplar
 detectors based on HOG features can be trained analytically, by
 replacing the standard SVM with an LDA classifier $w_{x_t}$ for a template $x_t$
 ~\cite{Hariharan12}.
@@ -68,7 +67,7 @@ The result is a whitened feature representation, termed WHO (Whitened Histogram
 of Orientations). This development makes it feasible to train a large number of
 mid-level patch detectors for recognition.
 
-Though generating and calibrating LDA templates (matrix decomposition with
+Though generating and calibrating LDA templates (via matrix decomposition with
 Gaussian Elimination) achieved remarkable improvements, they are
 computationally expensive and use a prohibitive amount of memory and storage.
 In addition, viewpoint discretization hampers pose estimation performance.
@@ -99,12 +98,12 @@ the frequency domain.
 These components make template generation and evaluation computationally
 inexpensive. Thus, we are able to efficiently explore the continuous parameter
 space to find the best object pose, scale, 3D CAD model type and camera focal
-length. The schematic of our pipeline is on Fig.~\ref{fig:front}.
+length. An overview of our pipeline can be seen in Fig.~\ref{fig:front}.
 
 Finally, our experimental study demonstrates the effectiveness of the
 approach on several standard benchmarks for object detection and viewpoint
 estimation. We also demonstrate that our method can enrich the output of an
-existing object class detector, such as the DPM or the R-CNN with additional 3D
+existing object class detector, such as DPM or R-CNN, with additional 3D
 information.
 
 \begin{figure}[t]
@@ -127,15 +126,13 @@ information.
 
 \vspace{-0.1in}
 \paragraph{Non-Zero Whitened Histograms of Orientations.} Many works that use
-rendering did not take the effect of background into account~\cite{Aubry14}
-when synthesizing and whitening to generate an LDA template. Our NZ-WHO removes
-background region while whitening thus it prevents irrelevant regions from
+rendering do not take the background into account
+when synthesizing and whitening to generate an LDA template~\cite{Aubry14}. Our NZ-WHO removes the
+background region while whitening thus preventing irrelevant regions from
 corrupting the foreground.
 
-NZ-WHO method greatly speeds up the LDA generation. We introduced the Conjugate
-Gradient method which runs in $O(n^2\kappa)$ time for LDA generation. Finally,
-we experimentally show that our uncalibrated NZ-WHO template performs on par
-with a calibrated WHO template but 100x faster to generate.
+In addition, our NZ-WHO method uses Conjugate Gradient to greatly speeds up the LDA generation. We show that our uncalibrated NZ-WHO template performs on par
+with a calibrated WHO template while being 100x faster to generate.
 
 % Also, the residual from the Conjugate Gradient method (the norm of $y-Ax$ for
 % $Ax = y$) is smaller than 
@@ -148,7 +145,7 @@ continuous rotation, and focal length using the Metropolis-Hastings algorithm.
 
 We model the probability of an object with the parameter $\theta$ in the test
 image $\mathcal{I}$ as $P(\theta| \mathcal{I}) \sim e^{ \max_{s} w(\theta)
-	\ast \mathcal{T}_s(\mathcal{I})}$. We approximate the MAP solution for $p$ by
+	\ast \mathcal{T}_s(\mathcal{I})}$. We approximate the MAP solution for $\theta$ by
 drawing samples from the distribution $P(\theta | \mathcal{I})$, using the
 Metropolis-Hastings algorithm.
 
@@ -160,20 +157,20 @@ resulting in large computational savings.
 
 Second, we demonstrate that our method can be used for multi-view
 object class detection in isolation. It can be applied in a sliding
-window fashion and deliver 2D bounding box as well as viewpoint
+window fashion to deliver 2D bounding boxes and viewpoint
 information. Our method is competitive with the state-of-the-art in this
 case.
 
 Finally, we show that our method can be used to complement the
 detections provided by an existing object class detector, such
-as DPM or RCNN. In this case, we show a considerable performance improvement
-compared to previous work in the task of joint object class detection and VP
-estimation. Example outputs of our model are on Fig.~\ref{fig:pascal12cnn}.
+as DPM or R-CNN. In this case, we show a considerable performance improvement
+compared to previous work in the task of joint object class detection and viewpoint
+estimation. Example outputs of our model are in Fig.~\ref{fig:pascal12cnn}.
 
 \vspace{-0.1in}
 \paragraph{Acknowledgement.} We acknowledge the support of NSF CAREER grant
 (N1054127), Ford-Stanford Innovation Alliance Award, DARPA, Korea Foundation
-for Advanced Studies and the Max Planck Center for Visual Computing \&
+for Advanced Studies, Fulbright New Zealand and the Max Planck Center for Visual Computing \&
 Communication.
 
 \bibliography{egbib}

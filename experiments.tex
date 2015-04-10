@@ -97,7 +97,7 @@ ms vs. 8.5 s when using calibration.
   \centering
   \begin{tabular}{|c|c|r|c|r|}
     \hline
-    Methods (AP/MPPE) & before calib.  & time & after calib.~\cite{Aubry14} & time \\
+    Methods (AP/MPPE) & before calib.  & synth. time & after calib.~\cite{Aubry14} & calib. time \\
     \hline\hline
     HOG\cite{Dalal05}      & 72.3 / 65.0          &  31ms  & 60.4 / 50.2           & 8.7 sec \\ 
     WHO\cite{Hariharan12}  & 82.1 / \textbf{85.4} &  6162ms& 84.4 / 83.0           & 15.4 sec\\
@@ -108,9 +108,9 @@ ms vs. 8.5 s when using calibration.
     \hline
   \end{tabular}
   \caption{Average Precision (AP), Mean Precision in Pose Estimation
-    (MPPE)~\cite{Lopez-Sastre11}, and generation time for variations of WHO on
-    3D Object Classes cars~\cite{Savarese07}. Please see text for
-    details.}
+      (MPPE)~\cite{Lopez-Sastre11} of variants of WHO on 3D Object Classes
+      cars~\cite{Savarese07}, and their corresponding synthesis and calibration
+      time per template. Please see text for details.}
   % WHO refers to standard WHO using the
   % method presented in \cite{Hariharan12}, WHO-CG uses iterative
   % Conjugate Gradient method to generate WHO. WHO-CG-Z uses whiten the
@@ -282,7 +282,7 @@ variants trained on 8 viewpoint categories, since these perform best
 in terms of AP. For both cases,
 we use the original score for plotting precision-recall curves
 (meaning that we can not improve over their AP). We revert back to a default
-viewpoint prediction ($0$ angles) in case the confidence of our
+viewpoint prediction ($0^\circ$ azimuth) in case the confidence of our
 method falls below a threshold.
 
 For both cases, we compare the performance of a discrete incarnation
@@ -328,18 +328,18 @@ fine-tuned pose is a better visual match to the true 3D pose.
 \begin{figure*}[t]
 \setlength\tabcolsep{1pt}
 \centering
-\begin{tabular}{|ccccc|}
-   \hline
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
   \includegraphics[width=0.24\textwidth]{car_cnn/1a.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1b.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1c.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/1d.png}  \\  
-   \hline
+  \hline
   \includegraphics[width=0.24\textwidth]{car_cnn/2a.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/2b.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/2c.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/2e.png}  \\  
-   \hline
+  \hline
   \includegraphics[width=0.24\textwidth]{car_cnn/4a.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/4b.png} &   
   \includegraphics[width=0.24\textwidth]{car_cnn/4c.png} &   
@@ -360,7 +360,7 @@ fine-tuned pose is a better visual match to the true 3D pose.
 %  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7a.png} &   
 %  \includegraphics[width=0.24\textwidth]{bicycle_cnn/7b.png} &   
 %  &\\
-%  \hline
+  \hline
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4a.png} &   
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4b.png} &   
   \includegraphics[width=0.24\textwidth]{bicycle_cnn/4c.png} &   
@@ -369,10 +369,12 @@ fine-tuned pose is a better visual match to the true 3D pose.
   CNN Proposals & \multicolumn{3}{|c|}{Our matching results on proposal bounding boxes} \\
   \hline
 \end{tabular}
-\caption{Example enriched bounding boxes. Given R-CNN~\cite{Girshick14}
-  detection bounding boxes, our method predicted 2D-3D matching
-  reasonably. The first column shows bounding boxes produced by R-CNN detection. Subsequent columns show the output of our method given this bounding box input. Blue boxes are R-CNN output and purple boxes are
-  the tightest bounding box enclosing predicted CAD model.}
+\caption{Examples of enriched bounding boxes. Given R-CNN~\cite{Girshick14}
+    detection bounding boxes, our method predicted 2D-3D matching reasonably.
+    The first column shows bounding box candidates produced by R-CNN detection.
+    Subsequent columns show the output of our method given the bounding box
+    from R-CNN detection candidates. Blue boxes are R-CNN output and purple
+    boxes are the tightest bounding box enclosing predicted CAD model.}
   \label{fig:pascal12cnn}
 \end{figure*}
 %
@@ -429,18 +431,17 @@ boat-24v            & 6.0 / 0.3           & 5.3 / 2.2               &  /        
 \begin{figure}[h]
 \setlength\tabcolsep{1pt}
 \centering
-\begin{tabular}{cc}
+\begin{tabular}{c}
 %  \hline
-  \includegraphics[width=0.49\linewidth]{car_cnn4_crop.png} &   
-  \includegraphics[width=0.49\linewidth]{car_cnn8_crop.png} \\   
-  \includegraphics[width=0.49\linewidth]{car_cnn16_crop.png} &   
-  \includegraphics[width=0.49\linewidth]{car_cnn24_crop.png} \\   
+%  \includegraphics[width=0.49\linewidth]{car_cnn4_crop.png}    
+%  \includegraphics[width=0.49\linewidth]{car_cnn8_crop.png} \\   
+%  \includegraphics[width=0.49\linewidth]{car_cnn16_crop.png} &   
+  \includegraphics[width=0.9\linewidth]{car_cnn24_crop.png} \\   
 %  \hline
 \end{tabular}
 \caption{Average Precision (AP)(red) and Average Viewpoint Precision (AVP)(green)
   and viewpoint confusion table on PASCAL 12 car validation set using
-  R-CNN + Ours (full). From the top left, 4 views, 8 views, 16 views
-  and 24 views.}
+  R-CNN + Ours (full) for 24 views. All four viewpoint discretizations are available on the supplementary paper.}
  % Since our method only augment the object detection,
  %  the AP remains the same for all cases. As we increase the viewpoint
  %  estimation, the AVP decreases. Note that since we estimate null

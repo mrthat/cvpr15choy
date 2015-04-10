@@ -28,10 +28,10 @@ $s$, as defined in Sect.~\ref{sec:nzwho}.
 We approximate the MAP solution for $\theta$ by drawing samples from the
 distribution $P(\theta | \mathcal{I})$, using the Metropolis-Hastings
 algorithm. Specifically, we use a variant that changes only a single
-component of the parameter vector $p$ at a time, termed Single
+component of the parameter vector $\theta$ at a time, termed Single
 Component Metropolis-Hastings \cite{mcmc}.
 
-This algorithm changes the current state $p$ to a new state $q$ based
+This algorithm changes the current state $\theta$ to a new state $\theta^+$ based
 on the acceptance probability
 \begin{align}
     A(\theta \rightarrow \theta^+) & =  min\left( 1, \frac{P(\theta^+ |

@@ -51,16 +51,17 @@ for all possible template shape is intractable, \cite{Hariharan12} assumed
 Wide-Sense Stationarity (WSS) of HOG features and generated a covariance
 $\Sigma$ from autocovariance $\Gamma$ collected on a large collection of
 natural images. In this paper, we further assumed symmetry of the
-autocovariance. For a 31-dimension HOG feature $x_t$ at location $t$
+autocovariance. For a 31 dimensional HOG feature $x_t$ at location $t = (u_t,
+v_t)$, assuming WSS and a symmetric autocovariance, we have
 
 \begin{align}
-    E[x_t] & = E[x_\tau] = \mu\\
+    \mu & = E[x_t] = E[x_\tau]\\
     \Gamma_{\|t - \tau\|} & = E[(x_{t} - \mu ) (x_{\tau} - \mu)] \\
               & = E[(x_0 - \mu)(x_{\tau - t} - \mu)].
 \end{align}
 
-for all $t$ and $\tau$. In practice, we gathered $\Gamma$ up to $|t - \tau |
-\le 40$ both horizontally and diagonally.
+for all $t = (u_t, v_t)$ and $\tau = (u_\tau, v_\tau)$. In practice, we gathered $\Gamma$ up to $|u_t - u_\tau |
+\le 40$ and $|v_t - v_\tau| \le 40$.
 
 % \begin{align}
 %     S(x_i) = w_{x_t}^T x_i\\
